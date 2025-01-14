@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <iostream>
 #include "App.hpp"
+#include "chessBoard.hpp"
 #include "quick_imgui/quick_imgui.hpp"
 
 int main()
@@ -38,7 +39,7 @@ int main()
             // if (ImGui::Button("Yo", ImVec2{50.f, 50.f}))
             //     std::cout << "Clicked button 3\n";
             // ImGui::PopID();
-            app.draw_board();
+            app.update();
 
             // ImGui::PopStyleColor();
 
