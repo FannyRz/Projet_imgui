@@ -5,7 +5,6 @@
 #include "pieces.hpp"
 #include "quick_imgui/quick_imgui.hpp"
 
-
 void App::draw_board()
 {
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{0.f, 0.f}); // Bordure entre les cases à zéro.
@@ -21,7 +20,7 @@ void App::draw_board()
             {
                 ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{1.f, 1.f, 1.f, 1.f});
             }
-            
+
             // Piece* piece = board.get_pîece(x, y);  Code fait par Jules qui demande si sur une case il y a une piece ou non
             std::string piece_label = position_pieces[x][y];
 
