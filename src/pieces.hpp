@@ -1,7 +1,6 @@
 #include <iostream>;
 #include <vector>;
 
-
 inline std::vector<std::vector<std::string>> position_pieces{
     {"T", "C", "F", "D", "R", "F", "C", "T"},
     {"P", "P", "P", "P", "P", "P", "P", "P"},
