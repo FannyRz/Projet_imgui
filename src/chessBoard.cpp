@@ -23,8 +23,9 @@ void ChessBoard::draw_board()
 
             // Piece* piece = board.get_pîece(x, y);  Code fait par Jules qui demande si sur une case il y a une piece ou non
             std::string piece_label = position_pieces[x][y];
+            std::string piece_label_position = position_pieces[x][y] + std::to_string(x) + "_" + std::to_string(y);
 
-            if (ImGui::Button((piece_label != "V" ? piece_label : "Vide##" + std::to_string(x) + "_" + std::to_string(y)).c_str(), ImVec2{50.f, 50.f})) // Le "##" permet d'ajputer un identifiant unique sur chaque bouton sans qu'il apparaisse sur le bouton.
+            if (ImGui::Button((piece_label != "V" ? piece_label_position : "Vide##" + std::to_string(x) + "_" + std::to_string(y)).c_str(), ImVec2{50.f, 50.f})) // Le "##" permet d'ajputer un identifiant unique sur chaque bouton sans qu'il apparaisse sur le bouton.
             {
                 std::cout << "Clicked button (" << x << "," << y << ") \n";
             }
