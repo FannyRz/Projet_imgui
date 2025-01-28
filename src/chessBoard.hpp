@@ -7,5 +7,6 @@
 class ChessBoard {
 private:
 public:
-    void draw_board();
+    ImFont* font;
+    void    draw_board();
 };

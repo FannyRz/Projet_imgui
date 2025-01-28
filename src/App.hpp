@@ -14,4 +14,5 @@ private:
 
 public:
     void update();
+    void setFont(ImFont* font) { this->_chessboard.font = font; };
 };

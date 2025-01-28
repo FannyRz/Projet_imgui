@@ -9,6 +9,15 @@ int main()
 {
     float value{0.f};
 
+    App app{};
+
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+
+    // app.setFont(io.Fonts->AddFontFromFileTTF("../../../assets/chess_magnetic", 50.f));
+
+    ImFont* basicFont = io.Fonts->AddFontDefault();
+
     quick_imgui::loop(
         "Chess",
         /* init: */ [&]() {},
@@ -20,8 +29,7 @@ int main()
 
             ImGui::SliderFloat("My Value", &value, 0.f, 3.f);
 
-            App app{};
-
+            ImGui::PushFont(basicFont);
             // if (ImGui::Button("1", ImVec2{50.f, 50.f}))
             //     std::cout << "Clicked button 1\n";
             // ImGui::SameLine(); // Draw the next ImGui widget on the same line as the previous one. Otherwise it would be below it
@@ -42,6 +50,7 @@ int main()
             app.update();
 
             // ImGui::PopStyleColor();
+            ImGui::PopFont();
 
             ImGui::End();
         }
