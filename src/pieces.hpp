@@ -2,16 +2,21 @@
 #include <vector>;
 
 inline std::vector<std::vector<std::string>> position_pieces{
-    {"T", "C", "F", "D", "R", "F", "C", "T"},
-    {"P", "P", "P", "P", "P", "P", "P", "P"},
+    {"Tn", "Cn", "Fn", "Dn", "Rn", "Fn", "Cn", "Tn"},
+    {"Pn", "Pn", "Pn", "Pn", "Pn", "Pn", "Pn", "Pn"},
     {"V", "V", "V", "V", "V", "V", "V", "V"},
     {"V", "V", "V", "V", "V", "V", "V", "V"},
     {"V", "V", "V", "V", "V", "V", "V", "V"},
     {"V", "V", "V", "V", "V", "V", "V", "V"},
-    {"P", "P", "P", "P", "P", "P", "P", "P"},
-    {"T", "C", "F", "D", "R", "F", "C", "T"}
+    {"Pb", "Pb", "Pb", "Pb", "Pb", "Pb", "Pb", "Pb"},
+    {"Tb", "Cb", "Fb", "Db", "Rb", "Fb", "Cb", "Tb"}
 }; // tableau de positions initiales des pièces.
 
 class Piece {
-    std::string label;
+    private:
+        std::string label;
+        int color; //0:blanc 1:noire
+
+    public:
+        void move(); 
 };
