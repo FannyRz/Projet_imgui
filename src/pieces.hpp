@@ -16,60 +16,63 @@ class Piece {
 protected:
     std::string m_label;
     int         m_color; // 0:blanc 1:noire
-    int         m_x; 
+    int         m_x;
     int         m_y;
 
 public:
     Piece(std::string label, int color, int x, int y);
+    Piece(const Piece& piece);
     ~Piece();
     void position();
+    void possible_move();
     void move();
 };
 
 class Tour : public Piece {
 public:
     Tour(int color, int x, int y)
-        : Piece("Tour", color, x, y)
-    {};
+        : Piece("Tour", color, x, y) {};
+    Tour(const Tour& tour);
     ~Tour();
 };
 
 class Cavalier : public Piece {
 public:
     Cavalier(int color, int x, int y)
-        : Piece("Cavalier", color, x, y)
-    {};
+        : Piece("Cavalier", color, x, y) {};
+    Cavalier(const Cavalier& cavalier);
     ~Cavalier();
 };
 
 class Fou : public Piece {
 public:
     Fou(int color, int x, int y)
-        : Piece("Fou", color, x, y)
-    {};
+        : Piece("Fou", color, x, y) {};
+    Fou(const Fou& fou);
     ~Fou();
 };
 
 class Dame : public Piece {
 public:
     Dame(int color, int x, int y)
-        : Piece("Dame", color, x, y)
-    {};
+        : Piece("Dame", color, x, y) {};
+    Dame(const Dame& dame);
     ~Dame();
 };
 
 class Roi : public Piece {
 public:
     Roi(int color, int x, int y)
-        : Piece("Roi", color, x, y)
-    {};
+        : Piece("Roi", color, x, y) {};
+    Roi(const Roi& roi);
+
     ~Roi();
 };
 
 class Pion : public Piece {
 public:
     Pion(int color, int x, int y)
-        : Piece("Pion", color, x, y)
-    {};
+        : Piece("Pion", color, x, y) {};
+    Pion(const Pion& pion);
     ~Pion();
 };
