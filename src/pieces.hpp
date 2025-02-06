@@ -3,16 +3,77 @@
 #include <vector>;
 
 inline std::vector<std::vector<std::string>> position_pieces{
-    {"T", "C", "F", "D", "R", "F", "C", "T"},
-    {"P", "P", "P", "P", "P", "P", "P", "P"},
+    {"Tn", "Cn", "Fn", "Dn", "Rn", "Fn", "Cn", "Tn"},
+    {"Pn", "Pn", "Pn", "Pn", "Pn", "Pn", "Pn", "Pn"},
     {"V", "V", "V", "V", "V", "V", "V", "V"},
     {"V", "V", "V", "V", "V", "V", "V", "V"},
     {"V", "V", "V", "V", "V", "V", "V", "V"},
     {"V", "V", "V", "V", "V", "V", "V", "V"},
-    {"P", "P", "P", "P", "P", "P", "P", "P"},
-    {"T", "C", "F", "D", "R", "F", "C", "T"}
+    {"Pb", "Pb", "Pb", "Pb", "Pb", "Pb", "Pb", "Pb"},
+    {"Tb", "Cb", "Fb", "Db", "Rb", "Fb", "Cb", "Tb"}
 }; // tableau de positions initiales des pièces.
 
 class Piece {
-    std::string label;
+protected:
+    std::string m_label;
+    int         m_color; // 0:blanc 1:noire
+    int         m_x;
+    int         m_y;
+
+public:
+    Piece(std::string label, int color, int x, int y);
+    Piece(const Piece& piece);
+    ~Piece();
+    void position();
+    void possible_move();
+    void move();
+};
+
+class Tour : public Piece {
+public:
+    Tour(int color, int x, int y)
+        : Piece("Tour", color, x, y) {};
+    Tour(const Tour& tour);
+    ~Tour();
+};
+
+class Cavalier : public Piece {
+public:
+    Cavalier(int color, int x, int y)
+        : Piece("Cavalier", color, x, y) {};
+    Cavalier(const Cavalier& cavalier);
+    ~Cavalier();
+};
+
+class Fou : public Piece {
+public:
+    Fou(int color, int x, int y)
+        : Piece("Fou", color, x, y) {};
+    Fou(const Fou& fou);
+    ~Fou();
+};
+
+class Dame : public Piece {
+public:
+    Dame(int color, int x, int y)
+        : Piece("Dame", color, x, y) {};
+    Dame(const Dame& dame);
+    ~Dame();
+};
+
+class Roi : public Piece {
+public:
+    Roi(int color, int x, int y)
+        : Piece("Roi", color, x, y) {};
+    Roi(const Roi& roi);
+
+    ~Roi();
+};
+
+class Pion : public Piece {
+public:
+    Pion(int color, int x, int y)
+        : Piece("Pion", color, x, y) {};
+    Pion(const Pion& pion);
+    ~Pion();
 };
