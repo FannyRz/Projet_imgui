@@ -9,10 +9,11 @@
 
 class App {
 private:
-    ChessBoard _chessboard{};
+    // ChessBoard _chessboard{};
     Renderer3D _renderer{};
 
 public:
-    void update();
-    void setFont(ImFont* font) { this->_chessboard.font = font; };
+    void       update();
+    void       setFont(ImFont* font) { this->_chessboard.font = font; };
+    ChessBoard _chessboard{};
 };
