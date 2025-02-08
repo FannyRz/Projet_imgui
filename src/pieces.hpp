@@ -23,9 +23,9 @@ public:
     Piece(std::string label, int color, int x, int y);
     Piece(const Piece& piece);
     ~Piece();
-    void position();
-    void possible_move();
-    void move();
+    void                                     position();
+    void                                     draw_possible_move();
+    virtual std::vector<std::pair<int, int>> all_possible_move() = 0;
 };
 
 class Tour : public Piece {
@@ -34,6 +34,7 @@ public:
         : Piece("Tour", color, x, y) {};
     Tour(const Tour& tour);
     ~Tour();
+    std::vector<std::pair<int, int>> all_possible_move() override;
 };
 
 class Cavalier : public Piece {
@@ -42,6 +43,7 @@ public:
         : Piece("Cavalier", color, x, y) {};
     Cavalier(const Cavalier& cavalier);
     ~Cavalier();
+    std::vector<std::pair<int, int>> all_possible_move() override;
 };
 
 class Fou : public Piece {
@@ -50,6 +52,7 @@ public:
         : Piece("Fou", color, x, y) {};
     Fou(const Fou& fou);
     ~Fou();
+    std::vector<std::pair<int, int>> all_possible_move() override;
 };
 
 class Dame : public Piece {
@@ -58,6 +61,7 @@ public:
         : Piece("Dame", color, x, y) {};
     Dame(const Dame& dame);
     ~Dame();
+    std::vector<std::pair<int, int>> all_possible_move() override;
 };
 
 class Roi : public Piece {
@@ -65,8 +69,8 @@ public:
     Roi(int color, int x, int y)
         : Piece("Roi", color, x, y) {};
     Roi(const Roi& roi);
-
     ~Roi();
+    std::vector<std::pair<int, int>> all_possible_move() override;
 };
 
 class Pion : public Piece {
@@ -75,4 +79,5 @@ public:
         : Piece("Pion", color, x, y) {};
     Pion(const Pion& pion);
     ~Pion();
+    std::vector<std::pair<int, int>> all_possible_move() override;
 };
