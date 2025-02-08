@@ -9,5 +9,5 @@
 class Renderer3D {
 private:
 public:
-    void render_board(ChessBoard _chessboard);
+    void render_board(ChessBoard& _chessboard);
 };

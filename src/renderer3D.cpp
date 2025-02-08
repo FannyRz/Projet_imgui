@@ -7,7 +7,7 @@
 #include "quick_imgui/quick_imgui.hpp"
 
 
-void Renderer3D::render_board(ChessBoard _chessboard)
+void Renderer3D::render_board(ChessBoard& _chessboard)
 {
     _chessboard.draw_board();
 }
