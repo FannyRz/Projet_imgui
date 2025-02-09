@@ -20,7 +20,9 @@ int main()
 
     quick_imgui::loop(
         "Chess",
-        /* init: */ [&]() {},
+        /* init: */
+        [&]() {},
+
         /* loop: */
         [&]() {
             // ImGui::ShowDemoWindow(); // This opens a window which shows tons of examples of what you can do with ImGui. You should check it out! Also, you can use the "Item Picker" in the top menu of that demo window: then click on any widget and it will show you the corresponding code directly in your IDE!
@@ -31,17 +33,8 @@ int main()
 
             ImGui::PushFont(basicFont);
 
-            // if (ImGui::IsMouseClicked(ImGuiMouseButton_Left) || ImGui::IsMouseClicked(ImGuiMouseButton_Right))
-            // {
-            //     app._chessboard.select();
-            // }
-            // if (ImGui::IsMouseClicked(ImGuiMouseButton_Right))
-            // {
-            //     app._chessboard.deselect();
-            // }
             app.update();
 
-            //ImGui::PopStyleColor();
             ImGui::PopFont();
 
             ImGui::End();

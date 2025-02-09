@@ -16,7 +16,7 @@ void ChessBoard::select(int x, int y)
     selectedPiece.position_y = y;
     _selected                = selectedPiece;
 
-    std::cout << this->_selected->position_x << " , " << this->_selected->position_y << '\n';
+    // std::cout << this->_selected->position_x << " , " << this->_selected->position_y << '\n';
 };
 
 void ChessBoard::draw_board()
@@ -39,7 +39,6 @@ void ChessBoard::draw_board()
 
             if (_selected.has_value() && x == _selected->position_x && y == _selected->position_y)
             {
-                std::cout << "hey" << '\n';
                 ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 3.0f); // Bordure plus épaisse
                 ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
                 borderActivate = true;
@@ -62,15 +61,12 @@ void ChessBoard::draw_board()
                 {
                     std::cout << "Clicked button (" << x << "," << y << ") \n";
                     this->select(x, y);
-                    std::cout << _selected.has_value() << '\n';
+                    // std::cout << _selected.has_value() << '\n';
                 }
             }
 
             if (borderActivate)
             {
-                std::cout << "tchao" << '\n';
-                // ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 3.0f); // Bordure plus épaisse
-                // ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
                 ImGui::PopStyleColor();
                 ImGui::PopStyleVar();
             }

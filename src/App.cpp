@@ -1,11 +1,5 @@
 #include "App.hpp"
 #include <imgui.h>
-#include <cstddef>
-#include <iostream>
-#include "App.hpp"
-#include "pieces.hpp"
-#include "quick_imgui/quick_imgui.hpp"
-
 
 void App::update()
 {

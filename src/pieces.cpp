@@ -1,7 +1,6 @@
 #include "pieces.hpp"
-#include <iostream>;
 #include <utility>
-#include <vector>;
+#include <vector>
 
 // Calcul de toutes les positions possibles en fonction du type de piece.
 std::vector<std::pair<int, int>> Tour::all_possible_move()

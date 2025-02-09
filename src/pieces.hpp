@@ -1,6 +1,6 @@
 #pragma once
-#include <iostream>;
-#include <vector>;
+#include <iostream>
+#include <vector>
 
 inline std::vector<std::vector<std::string>> position_pieces{
     {"Tn", "Cn", "Fn", "Dn", "Rn", "Fn", "Cn", "Tn"},
