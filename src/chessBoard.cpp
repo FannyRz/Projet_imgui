@@ -59,7 +59,7 @@ void ChessBoard::draw_board()
                 }
                 else
                 {
-                    std::cout << "Clicked button (" << x << "," << y << ") \n";
+                    // std::cout << "Clicked button (" << x << "," << y << ") \n";
                     this->select(x, y);
                     // std::cout << _selected.has_value() << '\n';
                 }

@@ -7,11 +7,11 @@
 #include "quick_imgui/quick_imgui.hpp"
 
 struct SelectedPiece {
-    Piece* piece;
-    int    color;
-    int    position_x;
-    int    position_y;
-    // std::vector<TilePosition>; -> pour savoir les déplacements possibles
+    Piece*                           piece;
+    int                              color;
+    int                              position_x;
+    int                              position_y;
+    std::vector<std::pair<int, int>> all_possible_move{}; //->pour savoir les déplacements possibles
 };
 
 class ChessBoard {
