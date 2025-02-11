@@ -16,18 +16,7 @@ enum class PieceType {
     BISHOP  // fou
 };
 
-void display_piece_type (PieceType type);
-
-// inline std::vector<std::vector<std::string>> position_pieces{
-//     {"Tn", "Cn", "Fn", "Dn", "Rn", "Fn", "Cn", "Tn"},
-//     {"Pn", "Pn", "Pn", "Pn", "Pn", "Pn", "Pn", "Pn"},
-//     {"V", "V", "V", "V", "V", "V", "V", "V"},
-//     {"V", "V", "V", "V", "V", "V", "V", "V"},
-//     {"V", "V", "V", "V", "V", "V", "V", "V"},
-//     {"V", "V", "V", "V", "V", "V", "V", "V"},
-//     {"Pb", "Pb", "Pb", "Pb", "Pb", "Pb", "Pb", "Pb"},
-//     {"Tb", "Cb", "Fb", "Db", "Rb", "Fb", "Cb", "Tb"}
-// }; // tableau de positions initiales des pièces.
+void display_piece_type(PieceType type);
 
 class Piece {
 protected:
@@ -52,7 +41,7 @@ public:
 class Rook : public Piece {
 public:
     Rook(Rook&&)                 = delete;
-    Rook& operator=(const Rook&) = default;
+    Rook& operator=(const Rook&) = delete;
     Rook& operator=(Rook&&)      = delete;
     Rook(PieceColor color, int x, int y)
         : Piece(PieceType::ROOK, color, x, y) {};
@@ -64,7 +53,7 @@ public:
 class Knight : public Piece {
 public:
     Knight(Knight&&)                 = delete;
-    Knight& operator=(const Knight&) = default;
+    Knight& operator=(const Knight&) = delete;
     Knight& operator=(Knight&&)      = delete;
     Knight(PieceColor color, int x, int y)
         : Piece(PieceType::KNIGHT, color, x, y) {};
@@ -76,7 +65,7 @@ public:
 class Bishop : public Piece {
 public:
     Bishop(Bishop&&)                 = delete;
-    Bishop& operator=(const Bishop&) = default;
+    Bishop& operator=(const Bishop&) = delete;
     Bishop& operator=(Bishop&&)      = delete;
     Bishop(PieceColor color, int x, int y)
         : Piece(PieceType::BISHOP, color, x, y) {};
@@ -88,7 +77,7 @@ public:
 class Queen : public Piece {
 public:
     Queen(Queen&&)                 = delete;
-    Queen& operator=(const Queen&) = default;
+    Queen& operator=(const Queen&) = delete;
     Queen& operator=(Queen&&)      = delete;
     Queen(PieceColor color, int x, int y)
         : Piece(PieceType::QUEEN, color, x, y) {};
@@ -100,7 +89,7 @@ public:
 class King : public Piece {
 public:
     King(King&&)                 = delete;
-    King& operator=(const King&) = default;
+    King& operator=(const King&) = delete;
     King& operator=(King&&)      = delete;
     King(PieceColor color, int x, int y)
         : Piece(PieceType::KING, color, x, y) {};
@@ -112,7 +101,7 @@ public:
 class Pawn : public Piece {
 public:
     Pawn(Pawn&&)                 = delete;
-    Pawn& operator=(const Pawn&) = default;
+    Pawn& operator=(const Pawn&) = delete;
     Pawn& operator=(Pawn&&)      = delete;
     Pawn(PieceColor color, int x, int y)
         : Piece(PieceType::PAWN, color, x, y) {};

@@ -1,6 +1,5 @@
 #include "chessBoard.hpp"
 #include <imgui.h>
-#include <iostream>
 #include <memory>
 #include <optional>
 #include "pieces.hpp"
