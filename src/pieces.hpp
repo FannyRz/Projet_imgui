@@ -2,114 +2,119 @@
 #include <iostream>
 #include <vector>
 
-enum class Type {
+enum class PieceColor {
+    WHITE,
+    BLACK
+};
+
+enum class PieceType {
     KING,
     QUEEN,
     ROOK,   // tour
     KNIGHT, // cavalier
     PAWN,   // pion
-    BISHOP, // fou
-    VIDE
+    BISHOP  // fou
 };
 
-inline std::vector<std::vector<std::string>> position_pieces{
-    {"Tn", "Cn", "Fn", "Dn", "Rn", "Fn", "Cn", "Tn"},
-    {"Pn", "Pn", "Pn", "Pn", "Pn", "Pn", "Pn", "Pn"},
-    {"V", "V", "V", "V", "V", "V", "V", "V"},
-    {"V", "V", "V", "V", "V", "V", "V", "V"},
-    {"V", "V", "V", "V", "V", "V", "V", "V"},
-    {"V", "V", "V", "V", "V", "V", "V", "V"},
-    {"Pb", "Pb", "Pb", "Pb", "Pb", "Pb", "Pb", "Pb"},
-    {"Tb", "Cb", "Fb", "Db", "Rb", "Fb", "Cb", "Tb"}
-}; // tableau de positions initiales des pièces.
+// inline std::vector<std::vector<std::string>> position_pieces{
+//     {"Tn", "Cn", "Fn", "Dn", "Rn", "Fn", "Cn", "Tn"},
+//     {"Pn", "Pn", "Pn", "Pn", "Pn", "Pn", "Pn", "Pn"},
+//     {"V", "V", "V", "V", "V", "V", "V", "V"},
+//     {"V", "V", "V", "V", "V", "V", "V", "V"},
+//     {"V", "V", "V", "V", "V", "V", "V", "V"},
+//     {"V", "V", "V", "V", "V", "V", "V", "V"},
+//     {"Pb", "Pb", "Pb", "Pb", "Pb", "Pb", "Pb", "Pb"},
+//     {"Tb", "Cb", "Fb", "Db", "Rb", "Fb", "Cb", "Tb"}
+// }; // tableau de positions initiales des pièces.
 
 class Piece {
 protected:
-    std::string m_label;
-    int         m_color; // 0:blanc 1:noire
-    int         m_x;
-    int         m_y;
+    // std::string m_label;
+    PieceType  m_type;
+    PieceColor m_color;
+    int        m_x;
+    int        m_y;
 
 public:
     Piece(Piece&&)                 = delete;
-    Piece& operator=(const Piece&) = default;
+    Piece& operator=(const Piece&) = delete;
     Piece& operator=(Piece&&)      = delete;
-    Piece(std::string label, int color, int x, int y);
+    Piece(PieceType type, PieceColor color, int x, int y);
     Piece(const Piece& piece);
-    virtual ~Piece();
+    virtual ~Piece() = default;
     void                                     position();
     void                                     draw_possible_move();
     virtual std::vector<std::pair<int, int>> all_possible_move() = 0;
 };
 
-class Tour : public Piece {
+class Rook : public Piece {
 public:
-    Tour(Tour&&)                 = delete;
-    Tour& operator=(const Tour&) = default;
-    Tour& operator=(Tour&&)      = delete;
-    Tour(int color, int x, int y)
-        : Piece("Tour", color, x, y) {};
-    Tour(const Tour& tour);
-    ~Tour() override;
+    Rook(Rook&&)                 = delete;
+    Rook& operator=(const Rook&) = default;
+    Rook& operator=(Rook&&)      = delete;
+    Rook(PieceColor color, int x, int y)
+        : Piece(PieceType::ROOK, color, x, y) {};
+    Rook(const Rook& tour);
+    ~Rook() override;
     std::vector<std::pair<int, int>> all_possible_move() override;
 };
 
-class Cavalier : public Piece {
+class Knight : public Piece {
 public:
-    Cavalier(Cavalier&&)                 = delete;
-    Cavalier& operator=(const Cavalier&) = default;
-    Cavalier& operator=(Cavalier&&)      = delete;
-    Cavalier(int color, int x, int y)
-        : Piece("Cavalier", color, x, y) {};
-    Cavalier(const Cavalier& cavalier);
-    ~Cavalier() override;
+    Knight(Knight&&)                 = delete;
+    Knight& operator=(const Knight&) = default;
+    Knight& operator=(Knight&&)      = delete;
+    Knight(PieceColor color, int x, int y)
+        : Piece(PieceType::KNIGHT, color, x, y) {};
+    Knight(const Knight& cavalier);
+    ~Knight() override;
     std::vector<std::pair<int, int>> all_possible_move() override;
 };
 
-class Fou : public Piece {
+class Bishop : public Piece {
 public:
-    Fou(Fou&&)                 = delete;
-    Fou& operator=(const Fou&) = default;
-    Fou& operator=(Fou&&)      = delete;
-    Fou(int color, int x, int y)
-        : Piece("Fou", color, x, y) {};
-    Fou(const Fou& fou);
-    ~Fou() override;
+    Bishop(Bishop&&)                 = delete;
+    Bishop& operator=(const Bishop&) = default;
+    Bishop& operator=(Bishop&&)      = delete;
+    Bishop(PieceColor color, int x, int y)
+        : Piece(PieceType::BISHOP, color, x, y) {};
+    Bishop(const Bishop& fou);
+    ~Bishop() override;
     std::vector<std::pair<int, int>> all_possible_move() override;
 };
 
-class Dame : public Piece {
+class Queen : public Piece {
 public:
-    Dame(Dame&&)                 = delete;
-    Dame& operator=(const Dame&) = default;
-    Dame& operator=(Dame&&)      = delete;
-    Dame(int color, int x, int y)
-        : Piece("Dame", color, x, y) {};
-    Dame(const Dame& dame);
-    ~Dame() override;
+    Queen(Queen&&)                 = delete;
+    Queen& operator=(const Queen&) = default;
+    Queen& operator=(Queen&&)      = delete;
+    Queen(PieceColor color, int x, int y)
+        : Piece(PieceType::QUEEN, color, x, y) {};
+    Queen(const Queen& dame);
+    ~Queen() override;
     std::vector<std::pair<int, int>> all_possible_move() override;
 };
 
-class Roi : public Piece {
+class King : public Piece {
 public:
-    Roi(Roi&&)                 = delete;
-    Roi& operator=(const Roi&) = default;
-    Roi& operator=(Roi&&)      = delete;
-    Roi(int color, int x, int y)
-        : Piece("Roi", color, x, y) {};
-    Roi(const Roi& roi);
-    ~Roi() override;
+    King(King&&)                 = delete;
+    King& operator=(const King&) = default;
+    King& operator=(King&&)      = delete;
+    King(PieceColor color, int x, int y)
+        : Piece(PieceType::KING, color, x, y) {};
+    King(const King& roi);
+    ~King() override;
     std::vector<std::pair<int, int>> all_possible_move() override;
 };
 
-class Pion : public Piece {
+class Pawn : public Piece {
 public:
-    Pion(Pion&&)                 = delete;
-    Pion& operator=(const Pion&) = default;
-    Pion& operator=(Pion&&)      = delete;
-    Pion(int color, int x, int y)
-        : Piece("Pion", color, x, y) {};
-    Pion(const Pion& pion);
-    ~Pion() override;
+    Pawn(Pawn&&)                 = delete;
+    Pawn& operator=(const Pawn&) = default;
+    Pawn& operator=(Pawn&&)      = delete;
+    Pawn(PieceColor color, int x, int y)
+        : Piece(PieceType::PAWN, color, x, y) {};
+    Pawn(const Pawn& pion);
+    ~Pawn() override;
     std::vector<std::pair<int, int>> all_possible_move() override;
 };
