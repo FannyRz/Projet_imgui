@@ -4,24 +4,24 @@
 #include <imgui.h>
 
 //Afficher les labels des pieces
-void display_piece_type (PieceType type) {
+std::string display_piece_type (PieceType type) {
     if (type == PieceType::KING){
-        ImGui::Button("King", ImVec2{50.f, 50.f});
+        return "King";
     }
     else if (type == PieceType::ROOK){
-        ImGui::Button("Rook", ImVec2{50.f, 50.f});
+        return "Rook";
     }
     else if (type == PieceType::QUEEN){
-        ImGui::Button("Queen", ImVec2{50.f, 50.f});
+        return "Queen";
     }
     else if (type == PieceType::BISHOP){
-        ImGui::Button("Bishop", ImVec2{50.f, 50.f});
+        return "Bishop";
     }
     else if (type == PieceType::PAWN){
-        ImGui::Button("Pawn", ImVec2{50.f, 50.f});
+        return "Pawn";
     }
     else if (type == PieceType::KNIGHT){
-        ImGui::Button("Knight", ImVec2{50.f, 50.f});
+        return "Knight";
     }
 };
 
