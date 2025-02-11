@@ -16,7 +16,7 @@ enum class PieceType {
     BISHOP  // fou
 };
 
-void display_piece_type (PieceType type);
+std::string display_piece_type (PieceType type);
 
 // inline std::vector<std::vector<std::string>> position_pieces{
 //     {"Tn", "Cn", "Fn", "Dn", "Rn", "Fn", "Cn", "Tn"},

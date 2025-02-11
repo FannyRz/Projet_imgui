@@ -1,5 +1,6 @@
 #include "chessBoard.hpp"
 #include <imgui.h>
+#include <cstddef>
 #include <iostream>
 #include <memory>
 #include <optional>
@@ -87,6 +88,17 @@ void ChessBoard::draw_board()
             // determiner la piece sur la case
             std::string piece_label          = position_pieces[x][y];
             std::string piece_label_position = position_pieces[x][y] + std::to_string(x) + "_" + std::to_string(y);
+
+            // std::string piece_type;
+            // for (int x{}; x < 8; x++)
+            // {
+            //     for (int y{}; y < 8; y++)
+            //     {
+            //         if (position_pieces[x][y] != nullptr){
+            //             piece_type = display_piece_type(Piece::Type);
+            //         }
+            //     }
+            // }
 
             if (ImGui::Button((piece_label != "V" ? piece_label_position : "Vide##" + std::to_string(x) + "_" + std::to_string(y)).c_str(), ImVec2{50.f, 50.f})) // Le "##" permet d'ajouter un identifiant unique sur chaque bouton sans qu'il apparaisse sur le bouton.
             {
