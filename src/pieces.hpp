@@ -2,12 +2,12 @@
 #include <iostream>
 #include <vector>
 
-enum class PieceColor {
+enum class PieceColor : std::uint8_t {
     WHITE,
     BLACK
 };
 
-enum class PieceType {
+enum class PieceType : std::uint8_t {
     KING,
     QUEEN,
     ROOK,   // tour
@@ -16,18 +16,7 @@ enum class PieceType {
     BISHOP  // fou
 };
 
-std::string display_piece_type (PieceType type);
-
-// inline std::vector<std::vector<std::string>> position_pieces{
-//     {"Tn", "Cn", "Fn", "Dn", "Rn", "Fn", "Cn", "Tn"},
-//     {"Pn", "Pn", "Pn", "Pn", "Pn", "Pn", "Pn", "Pn"},
-//     {"V", "V", "V", "V", "V", "V", "V", "V"},
-//     {"V", "V", "V", "V", "V", "V", "V", "V"},
-//     {"V", "V", "V", "V", "V", "V", "V", "V"},
-//     {"V", "V", "V", "V", "V", "V", "V", "V"},
-//     {"Pb", "Pb", "Pb", "Pb", "Pb", "Pb", "Pb", "Pb"},
-//     {"Tb", "Cb", "Fb", "Db", "Rb", "Fb", "Cb", "Tb"}
-// }; // tableau de positions initiales des pièces.
+std::string pieceTypeToString(PieceType type);
 
 class Piece {
 protected:
@@ -38,8 +27,8 @@ protected:
     int        m_y;
 
 public:
-    Piece(Piece&&)                 = delete;
     Piece& operator=(const Piece&) = delete;
+    Piece(Piece&&)                 = delete;
     Piece& operator=(Piece&&)      = delete;
     Piece(PieceType type, PieceColor color, int x, int y);
     Piece(const Piece& piece);

@@ -1,12 +1,10 @@
 #include "chessBoard.hpp"
 #include <imgui.h>
-#include <cstddef>
-#include <iostream>
 #include <memory>
 #include <optional>
 #include "pieces.hpp"
 
-void set_position(std::vector<std::vector<std::unique_ptr<Piece>>>& position_pieces)
+static void set_position(std::vector<std::vector<std::unique_ptr<Piece>>>& position_pieces)
 {
     // tour
     position_pieces[0][0] = std::make_unique<Rook>(PieceColor::BLACK, 0, 0);
@@ -52,7 +50,7 @@ void ChessBoard::select(int x, int y)
     SelectedPiece selectedPiece{};
     selectedPiece.position_x = x;
     selectedPiece.position_y = y;
-    _selected                = selectedPiece;
+    //_selected                = selectedPiece;
 
     // std::cout << this->_selected->position_x << " , " << this->_selected->position_y << '\n';
 }
@@ -86,8 +84,8 @@ void ChessBoard::draw_board()
             //  Piece* piece = board.get_pîece(x, y);  Code fait par Jules qui demande si sur une case il y a une piece ou non
 
             // determiner la piece sur la case
-            std::string piece_label          = position_pieces[x][y];
-            std::string piece_label_position = position_pieces[x][y] + std::to_string(x) + "_" + std::to_string(y);
+            // std::string piece_label          = position_pieces[x][y];
+            // std::string piece_label_position = position_pieces[x][y] + std::to_string(x) + "_" + std::to_string(y);
 
             // std::string piece_type;
             // for (int x{}; x < 8; x++)
@@ -100,19 +98,20 @@ void ChessBoard::draw_board()
             //     }
             // }
 
-            if (ImGui::Button((piece_label != "V" ? piece_label_position : "Vide##" + std::to_string(x) + "_" + std::to_string(y)).c_str(), ImVec2{50.f, 50.f})) // Le "##" permet d'ajouter un identifiant unique sur chaque bouton sans qu'il apparaisse sur le bouton.
-            {
-                if (_selected.has_value() && x == _selected->position_x && y == _selected->position_y)
-                {
-                    this->deselect();
-                }
-                else
-                {
-                    // std::cout << "Clicked button (" << x << "," << y << ") \n";
-                    this->select(x, y);
-                    // std::cout << _selected.has_value() << '\n';
-                }
-            }
+            // if (ImGui::Button((piece_label != "V" ? piece_label_position : "Vide##" + std::to_string(x) + "_" + std::to_string(y)).c_str(), ImVec2{50.f, 50.f})) // Le "##" permet d'ajouter un identifiant unique sur chaque bouton sans qu'il apparaisse sur le bouton.
+            // if (ImGui::Button((position_pieces[x][y] != nullptr ? pieceTypeToString(position_pieces[x][y]->m_type) : "").c_str(), ImVec2{50.f, 50.f}))
+            // {
+            //     // if (_selected.has_value() && x == _selected->position_x && y == _selected->position_y)
+            //     // {
+            //     //     this->deselect();
+            //     // }
+            //     // else
+            //     // {
+            //     //     // std::cout << "Clicked button (" << x << "," << y << ") \n";
+            //     //     this->select(x, y);
+            //     //     // std::cout << _selected.has_value() << '\n';
+            //     // }
+            // }
 
             if (borderActivate)
             {

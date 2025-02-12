@@ -21,7 +21,10 @@ int main()
     quick_imgui::loop(
         "Chess",
         /* init: */
-        [&]() {},
+        [&]() {
+            //std::vector<std::vector<std::unique_ptr<Piece>>> position_pieces[8][8];
+            //set_position(position_pieces);
+        },
 
         /* loop: */
         [&]() {

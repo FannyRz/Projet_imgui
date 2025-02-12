@@ -1,29 +1,36 @@
 #include "pieces.hpp"
+#include <imgui.h>
 #include <utility>
 #include <vector>
-#include <imgui.h>
 
-//Afficher les labels des pieces
-std::string display_piece_type (PieceType type) {
-    if (type == PieceType::KING){
+// Afficher les labels des pieces
+std::string pieceTypeToString(PieceType type)
+{
+    if (type == PieceType::KING)
+    {
         return "King";
     }
-    else if (type == PieceType::ROOK){
+    else if (type == PieceType::ROOK)
+    {
         return "Rook";
     }
-    else if (type == PieceType::QUEEN){
+    else if (type == PieceType::QUEEN)
+    {
         return "Queen";
     }
-    else if (type == PieceType::BISHOP){
+    else if (type == PieceType::BISHOP)
+    {
         return "Bishop";
     }
-    else if (type == PieceType::PAWN){
+    else if (type == PieceType::PAWN)
+    {
         return "Pawn";
     }
-    else if (type == PieceType::KNIGHT){
+    else if (type == PieceType::KNIGHT)
+    {
         return "Knight";
     }
-};
+}
 
 // Calcul de toutes les positions possibles en fonction du type de piece.
 std::vector<std::pair<int, int>> Rook::all_possible_move()
