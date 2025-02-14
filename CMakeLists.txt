@@ -11,7 +11,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 # You can set the name of your project here
-project(SimpleCpp)
+project(Chess)
 add_executable(${PROJECT_NAME})
 
 # Choose your C++ version
@@ -43,3 +43,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE src)
 # Add quick-imgui library
 add_subdirectory(lib/quick_imgui)
 target_link_libraries(${PROJECT_NAME} PRIVATE quick_imgui::quick_imgui)
+
+# include("./CMakeUtils/files_and_folders.cmake")
+# Cool__target_copy_folder(${PROJECT_NAME} fonts)

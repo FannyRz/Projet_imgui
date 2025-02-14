@@ -1,5 +1,6 @@
 #pragma once
 #include <imgui.h>
+#include <array>
 #include <cstddef>
 #include <iostream>
 #include <memory>
@@ -7,13 +8,8 @@
 #include <pieces.hpp>
 #include "quick_imgui/quick_imgui.hpp"
 
-inline std::vector<std::vector<std::unique_ptr<Piece>>> position_pieces[8][8]; // tableau de positions initiales des pièces.
-
-void set_position(std::vector<std::vector<Piece>>& position_pieces);
-
 struct SelectedPiece {
-    std::unique_ptr<Piece>           piece;
-    int                              color;
+    Piece*                           piece;
     int                              position_x;
     int                              position_y;
     std::vector<std::pair<int, int>> all_possible_move{}; //->pour savoir les déplacements possibles
@@ -21,13 +17,15 @@ struct SelectedPiece {
 
 class ChessBoard {
 private:
-    std::optional<SelectedPiece> _selected;
+    std::array<std::array<std::unique_ptr<Piece>, 8>, 8> position_pieces{}; // tableau de positions initiales des pièces.
+    std::optional<SelectedPiece>                         _selected;
 
 public:
     ImFont* font;
     void    draw_board();
-    void    deselect();
+    void    set_position();
     void    select(int x, int y);
+    void    deselect();
 };
 
 //_selected.has_value()
