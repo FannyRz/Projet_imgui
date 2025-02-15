@@ -14,17 +14,16 @@ int main()
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     io.Fonts->AddFontDefault();
-    ImFont* basicFont = io.Fonts->AddFontFromFileTTF("fonts/CHEQ_TT.TTF", 60.0f);
+    ImFont* basicFont = io.Fonts->AddFontFromFileTTF("fonts/CHEQ_TT.TTF", 40.0f);
     IM_ASSERT(basicFont != nullptr);
 
+    app._chessboard.set_font(basicFont);
     app._chessboard.set_position();
 
     quick_imgui::loop(
         "Chess",
         /* init: */
         [&]() {
-            // std::vector<std::vector<std::unique_ptr<Piece>>> position_pieces[8][8];
-            // set_position(position_pieces);
         },
 
         /* loop: */
@@ -35,18 +34,7 @@ int main()
 
             ImGui::SliderFloat("My Value", &value, 0.f, 3.f);
 
-            // if (piece != nullptr)
-            // {
-            //     ImGui::PushFont(main_font);
-            //     ImGui::PushStyleColor(ImGuiCol_Text, (piece->get_color() == Color::Black) ? IM_COL32(25, 25, 25, 255) : IM_COL32(250, 250, 250, 255));
-            // }
             app.update();
-
-            // if (piece != nullptr)
-            // {
-            //     ImGui::PopFont();
-            //     ImGui::PopStyleColor();
-            // }
 
             ImGui::End();
         }

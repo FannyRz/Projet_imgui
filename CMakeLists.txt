@@ -44,5 +44,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE src)
 add_subdirectory(lib/quick_imgui)
 target_link_libraries(${PROJECT_NAME} PRIVATE quick_imgui::quick_imgui)
 
-# include("./CMakeUtils/files_and_folders.cmake")
-# Cool__target_copy_folder(${PROJECT_NAME} fonts)
+include("./CMakeUtils/files_and_folders.cmake")
+Cool__target_copy_folder(${PROJECT_NAME} fonts)

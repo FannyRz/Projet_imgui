@@ -45,6 +45,21 @@ void ChessBoard::deselect()
     _selected = std::nullopt;
 }
 
+// Fonction qui retourne le nom du type de la pièce sous forme de chaîne
+std::string ChessBoard::pieceTypeToString(PieceType type)
+{
+    switch (type)
+    {
+    case PieceType::KING: return "KING";
+    case PieceType::QUEEN: return "QUEEN";
+    case PieceType::ROOK: return "ROOK";
+    case PieceType::KNIGHT: return "KNIGHT";
+    case PieceType::PAWN: return "PAWN";
+    case PieceType::BISHOP: return "BISHOP";
+    default: return "UNKNOWN"; // Cas où le type est inconnu
+    }
+}
+
 void ChessBoard::select(int x, int y)
 {
     SelectedPiece selectedPiece{};
@@ -52,7 +67,43 @@ void ChessBoard::select(int x, int y)
     selectedPiece.position_x = x;
     selectedPiece.position_y = y;
     this->_selected          = selectedPiece;
-    std::cout << "(" << &selectedPiece << "\n";
+    std::cout << position_pieces[x][y] << std::endl;
+    std::cout << pieceTypeToString(position_pieces[x][y]->get_type()) << std::endl;
+}
+
+void ChessBoard::set_font(ImFont* font)
+{
+    this->font = font;
+}
+
+ImFont* ChessBoard::get_font() const
+{
+    return this->font;
+}
+
+void ChessBoard::typeToFont(int x, int y)
+{
+    switch (this->position_pieces[x][y]->get_type())
+    {
+    case PieceType::PAWN:
+        this->character = (this->position_pieces[x][y]->get_color() == PieceColor::WHITE) ? 'p' : 'o';
+        break;
+    case PieceType::ROOK:
+        this->character = (this->position_pieces[x][y]->get_color() == PieceColor::WHITE) ? 'r' : 't';
+        break;
+    case PieceType::KNIGHT:
+        this->character = (this->position_pieces[x][y]->get_color() == PieceColor::WHITE) ? 'h' : 'j';
+        break;
+    case PieceType::BISHOP:
+        this->character = (this->position_pieces[x][y]->get_color() == PieceColor::WHITE) ? 'b' : 'n';
+        break;
+    case PieceType::QUEEN:
+        this->character = (this->position_pieces[x][y]->get_color() == PieceColor::WHITE) ? 'q' : 'w';
+        break;
+    case PieceType::KING:
+        this->character = (this->position_pieces[x][y]->get_color() == PieceColor::WHITE) ? 'k' : 'l';
+        break;
+    }
 }
 
 void ChessBoard::draw_board()
@@ -62,25 +113,31 @@ void ChessBoard::draw_board()
     {
         for (int y{0}; y < 8; y++)
         {
+            if (position_pieces[x][y] != nullptr)
+            {
+                ImGui::PushFont(this->get_font());
+                ImGui::PushStyleColor(ImGuiCol_Text, (position_pieces[x][y]->get_color() == PieceColor::BLACK) ? IM_COL32(25, 25, 25, 255) : IM_COL32(250, 250, 250, 255));
+                // this->typeToFont(x, y);
+            }
+
             bool borderActivate = false;
 
             if ((x + y) % 2 == 0)
             {
-                ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.f, 0.f, 0.f, 1.f});
+                ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.4f, 0.0f, 1.0f}); // Orange foncé
             }
             else
             {
-                ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{1.f, 1.f, 1.f, 1.f});
+                ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{1.0f, 0.7f, 0.0f, 1.0f}); // Orange clair
             }
 
             if (_selected.has_value() && x == _selected->position_x && y == _selected->position_y)
             {
-                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 3.0f); // Bordure plus épaisse
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 5.0f); // Bordure plus épaisse
+                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.5f, 0.0f, 0.5f, 1.0f));
                 borderActivate = true;
             }
 
-            ImGui::PushFont(this->font);
             //  Piece* piece = board.get_pîece(x, y);  Code fait par Jules qui demande si sur une case il y a une piece ou non
 
             if (ImGui::Button((position_pieces[x][y] != nullptr ? pieceTypeToString(position_pieces[x][y]->get_type()) + "##" + std::to_string(x) + "_" + std::to_string(y) : "##" + std::to_string(x) + "_" + std::to_string(y)).c_str(), ImVec2{50.f, 50.f}))
@@ -93,8 +150,7 @@ void ChessBoard::draw_board()
                     }
                     else
                     {
-                        std::cout << _selected.has_value() << '\n';
-                        std::cout << position_pieces[x][y] << '\n';
+                        // std::cout << position_pieces[x][y] << '\n';
                         this->select(x, y);
                     }
                 }
@@ -111,8 +167,13 @@ void ChessBoard::draw_board()
                 ImGui::SameLine();
             }
 
-            ImGui::PopFont();
             ImGui::PopStyleColor();
+
+            if (position_pieces[x][y] != nullptr)
+            {
+                ImGui::PopStyleColor();
+                ImGui::PopFont();
+            }
         }
     }
     ImGui::PopStyleVar();

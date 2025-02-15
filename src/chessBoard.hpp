@@ -19,13 +19,19 @@ class ChessBoard {
 private:
     std::array<std::array<std::unique_ptr<Piece>, 8>, 8> position_pieces{}; // tableau de positions initiales des pièces.
     std::optional<SelectedPiece>                         _selected;
+    ImFont*                                              font;
+    char                                                 character;
 
 public:
-    ImFont* font;
-    void    draw_board();
-    void    set_position();
-    void    select(int x, int y);
-    void    deselect();
+    void        draw_board();
+    void        set_position();
+    void        select(int x, int y);
+    void        deselect();
+    void        set_font(ImFont* font);
+    ImFont*     get_font() const;
+    void typeToFont(int x, int y);
+    std::string pieceTypeToString(PieceType type);
+    char        get_char() const { return this->character; };
 };
 
 //_selected.has_value()
