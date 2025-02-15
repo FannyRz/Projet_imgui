@@ -23,15 +23,15 @@ private:
     char                                                 character;
 
 public:
-    void        draw_board();
-    void        set_position();
-    void        select(int x, int y);
-    void        deselect();
-    void        set_font(ImFont* font);
-    ImFont*     get_font() const;
-    void typeToFont(int x, int y);
-    std::string pieceTypeToString(PieceType type);
-    char        get_char() const { return this->character; };
+    void    draw_board();
+    void    set_position();
+    void    select(int x, int y);
+    void    deselect();
+    void    set_font(ImFont* font);
+    ImFont* get_font() const;
+    void    typeToFont(int x, int y);
+    char    get_char() const { return this->character; };
 };
 
 //_selected.has_value()
+void displaytab(const std::vector<std::pair<int, int>>& all_possible_move);

@@ -20,26 +20,22 @@ std::string pieceTypeToString(PieceType type);
 
 class Piece {
 protected:
-    // std::string m_label;
     PieceType  m_type;
     PieceColor m_color;
     int        m_x;
     int        m_y;
-    // char       m_font_letter;
 
 public:
     Piece& operator=(const Piece&) = delete;
     Piece(Piece&&)                 = delete;
     Piece& operator=(Piece&&)      = delete;
-    // Piece(PieceType type, PieceColor color, int x, int y, char font_letter)
-    //     : m_type(type), m_color(color), m_x(x), m_y(y), m_font_letter(font_letter) {};
     Piece(PieceType type, PieceColor color, int x, int y)
         : m_type(type), m_color(color), m_x(x), m_y(y) {};
     Piece(const Piece& piece);
     virtual ~Piece() = default;
     void position();
     void draw_possible_move();
-    // virtual std::vector<std::pair<int, int>> all_possible_move() = 0;
+    virtual std::vector<std::pair<int, int>> all_possible_move() = 0;
 
     PieceType get_type() const
     {
@@ -68,7 +64,7 @@ public:
         : Piece(PieceType::ROOK, color, x, y) {};
     Rook(const Rook& tour);
     ~Rook() override = default;
-    // std::vector<std::pair<int, int>> all_possible_move() override;
+    std::vector<std::pair<int, int>> all_possible_move() override;
 };
 
 class Knight : public Piece {
@@ -80,7 +76,7 @@ public:
         : Piece(PieceType::KNIGHT, color, x, y) {};
     Knight(const Knight& cavalier);
     ~Knight() override = default;
-    // std::vector<std::pair<int, int>> all_possible_move() override;
+    std::vector<std::pair<int, int>> all_possible_move() override;
 };
 
 class Bishop : public Piece {
@@ -92,7 +88,7 @@ public:
         : Piece(PieceType::BISHOP, color, x, y) {};
     Bishop(const Bishop& fou);
     ~Bishop() override = default;
-    // std::vector<std::pair<int, int>> all_possible_move() override;
+    std::vector<std::pair<int, int>> all_possible_move() override;
 };
 
 class Queen : public Piece {
@@ -104,7 +100,7 @@ public:
         : Piece(PieceType::QUEEN, color, x, y) {};
     Queen(const Queen& dame);
     ~Queen() override = default;
-    // std::vector<std::pair<int, int>> all_possible_move() override;
+    std::vector<std::pair<int, int>> all_possible_move() override;
 };
 
 class King : public Piece {
@@ -116,7 +112,7 @@ public:
         : Piece(PieceType::KING, color, x, y) {};
     King(const King& roi);
     ~King() override = default;
-    // std::vector<std::pair<int, int>> all_possible_move() override;
+    std::vector<std::pair<int, int>> all_possible_move() override;
 };
 
 class Pawn : public Piece {
@@ -128,5 +124,5 @@ public:
         : Piece(PieceType::PAWN, color, x, y) {};
     Pawn(const Pawn& pion);
     ~Pawn() override = default;
-    // std::vector<std::pair<int, int>> all_possible_move() override;
+    std::vector<std::pair<int, int>> all_possible_move() override;
 };

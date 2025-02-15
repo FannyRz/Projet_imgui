@@ -45,29 +45,24 @@ void ChessBoard::deselect()
     _selected = std::nullopt;
 }
 
-// Fonction qui retourne le nom du type de la pièce sous forme de chaîne
-std::string ChessBoard::pieceTypeToString(PieceType type)
+void displaytab(const std::vector<std::pair<int, int>>& all_possible_move)
 {
-    switch (type)
+    for (const auto& move : all_possible_move)
     {
-    case PieceType::KING: return "KING";
-    case PieceType::QUEEN: return "QUEEN";
-    case PieceType::ROOK: return "ROOK";
-    case PieceType::KNIGHT: return "KNIGHT";
-    case PieceType::PAWN: return "PAWN";
-    case PieceType::BISHOP: return "BISHOP";
-    default: return "UNKNOWN"; // Cas où le type est inconnu
+        std::cout << "(" << move.first << ", " << move.second << ")" << '\n';
     }
 }
 
 void ChessBoard::select(int x, int y)
 {
     SelectedPiece selectedPiece{};
-    selectedPiece.piece      = position_pieces[x][y].get();
-    selectedPiece.position_x = x;
-    selectedPiece.position_y = y;
-    this->_selected          = selectedPiece;
-    std::cout << position_pieces[x][y] << std::endl;
+    selectedPiece.piece             = position_pieces[x][y].get();
+    selectedPiece.position_x        = x;
+    selectedPiece.position_y        = y;
+    selectedPiece.all_possible_move = position_pieces[x][y]->all_possible_move();
+    this->_selected                 = selectedPiece;
+    displaytab(selectedPiece.all_possible_move);
+    // std::cout << position_pieces[x][y] << std::endl;
     std::cout << pieceTypeToString(position_pieces[x][y]->get_type()) << std::endl;
 }
 
@@ -150,7 +145,7 @@ void ChessBoard::draw_board()
                     }
                     else
                     {
-                        // std::cout << position_pieces[x][y] << '\n';
+                        std::cout << "(" << x << "," << y << ") \n";
                         this->select(x, y);
                     }
                 }
