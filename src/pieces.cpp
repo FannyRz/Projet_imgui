@@ -49,6 +49,7 @@ std::vector<std::pair<int, int>> Rook::all_possible_move()
     return all_theoriq_moves;
 }
 
+
 std::vector<std::pair<int, int>> Knight::all_possible_move()
 {
     std::vector<std::pair<int, int>> all_theoriq_moves{};
