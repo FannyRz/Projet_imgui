@@ -2,6 +2,7 @@
 #include <imgui.h>
 #include <array>
 #include <cstddef>
+#include <filesystem>
 #include <iostream>
 #include <memory>
 #include <optional>
@@ -23,14 +24,16 @@ private:
     char                                                 character;
 
 public:
-    void    draw_board();
-    void    set_position();
-    void    select(int x, int y);
-    void    deselect();
-    void    set_font(ImFont* font);
-    ImFont* get_font() const;
-    void    typeToFont(int x, int y);
-    char    get_char() const { return this->character; };
+    void                             set_font(ImFont* font);
+    ImFont*                          get_font() const;
+    char                             get_char() const { return this->character; };
+    std::vector<std::pair<int, int>> get_all_possible_move() { return _selected.has_value() ? _selected->all_possible_move : std::vector<std::pair<int, int>>{}; }
+
+    void draw_board();
+    void set_position();
+    void select(int x, int y);
+    void deselect();
+    void typeToFont(int x, int y);
 };
 
 //_selected.has_value()

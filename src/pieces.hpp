@@ -33,8 +33,8 @@ public:
         : m_type(type), m_color(color), m_x(x), m_y(y) {};
     Piece(const Piece& piece);
     virtual ~Piece() = default;
-    void position();
-    void draw_possible_move();
+    void                                     position();
+    void                                     draw_possible_move();
     virtual std::vector<std::pair<int, int>> all_possible_move() = 0;
 
     PieceType get_type() const

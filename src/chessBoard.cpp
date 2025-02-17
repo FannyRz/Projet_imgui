@@ -63,7 +63,7 @@ void ChessBoard::select(int x, int y)
     this->_selected                 = selectedPiece;
     displaytab(selectedPiece.all_possible_move);
     // std::cout << position_pieces[x][y] << std::endl;
-    std::cout << pieceTypeToString(position_pieces[x][y]->get_type()) << std::endl;
+    std::cout << pieceTypeToString(position_pieces[x][y]->get_type()) << '\n';
 }
 
 void ChessBoard::set_font(ImFont* font)
@@ -126,11 +126,21 @@ void ChessBoard::draw_board()
                 ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{1.0f, 0.7f, 0.0f, 1.0f}); // Orange clair
             }
 
-            if (_selected.has_value() && x == _selected->position_x && y == _selected->position_y)
+            if (_selected.has_value())
             {
-                ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 5.0f); // Bordure plus épaisse
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.5f, 0.0f, 0.5f, 1.0f));
-                borderActivate = true;
+                auto all_possible_move = this->get_all_possible_move();
+                if (x == _selected->position_x && y == _selected->position_y) // case selectionne
+                {
+                    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 5.0f); // Bordure plus épaisse
+                    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.5f, 0.0f, 0.5f, 1.0f));
+                    borderActivate = true;
+                }
+                else if (!all_possible_move.empty() && (std::find(all_possible_move.begin(), all_possible_move.end(), std::pair<int, int>{x, y}) != all_possible_move.end())) // cases possibles
+                {
+                    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 5.0f);
+                    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.5f, 0.0f, 0.5f, 1.0f));
+                    borderActivate = true;
+                }
             }
 
             //  Piece* piece = board.get_pîece(x, y);  Code fait par Jules qui demande si sur une case il y a une piece ou non
