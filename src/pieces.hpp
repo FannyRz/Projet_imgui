@@ -16,8 +16,6 @@ enum class PieceType : std::uint8_t {
     BISHOP  // fou
 };
 
-std::string pieceTypeToString(PieceType type);
-
 class Piece {
 protected:
     PieceType  m_type;
