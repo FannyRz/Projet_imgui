@@ -34,6 +34,7 @@ public:
     void select(int x, int y);
     void deselect();
     void typeToFont(int x, int y);
+    void move(int x, int y, int new_x, int new_y);
 };
 
 //_selected.has_value()

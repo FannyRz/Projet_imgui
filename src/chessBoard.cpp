@@ -101,6 +101,12 @@ void ChessBoard::typeToFont(int x, int y)
     }
 }
 
+void ChessBoard::move(int x, int y, int new_x, int new_y)
+{
+    this->position_pieces[new_x][new_y] = std::move(this->position_pieces[x][y]);
+    this->position_pieces[x][y]         = nullptr;
+}
+
 void ChessBoard::draw_board()
 {
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{0.f, 0.f}); // Bordure entre les cases à zéro.
@@ -135,7 +141,7 @@ void ChessBoard::draw_board()
                     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.5f, 0.0f, 0.5f, 1.0f));
                     borderActivate = true;
                 }
-                else if (!all_possible_move.empty() && (std::find(all_possible_move.begin(), all_possible_move.end(), std::pair<int, int>{x, y}) != all_possible_move.end())) // cases possibles
+                else if (std::find(all_possible_move.begin(), all_possible_move.end(), std::pair<int, int>{x, y}) != all_possible_move.end()) // cases possibles
                 {
                     ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 5.0f);
                     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.5f, 0.0f, 0.5f, 1.0f));
