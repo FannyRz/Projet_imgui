@@ -15,7 +15,7 @@ struct SelectedPiece {
 
 class ChessBoard {
 private:
-    std::array<std::array<std::unique_ptr<Piece>, 8>, 8> position_pieces{}; // tableau de positions initiales des pièces.
+    std::array<std::array<std::unique_ptr<Piece>, 8>, 8> position_pieces{}; // tableau de positions initiales des pièces
     std::optional<SelectedPiece>                         _selected;
     ImFont*                                              font;
 
