@@ -2,7 +2,14 @@
 #include <imgui.h>
 #include <memory>
 #include <optional>
-#include "pieces.hpp"
+#include <iostream>
+#include "pieces/bishop.hpp"
+#include "pieces/king.hpp"
+#include "pieces/knight.hpp"
+#include "pieces/pawn.hpp"
+#include "pieces/queen.hpp"
+#include "pieces/rook.hpp"
+#include "utils.hpp"
 
 void ChessBoard::set_position()
 {
@@ -45,14 +52,6 @@ void ChessBoard::deselect()
     _selected = std::nullopt;
 }
 
-void displaytab(const std::vector<std::pair<int, int>>& all_possible_move)
-{
-    for (const auto& move : all_possible_move)
-    {
-        std::cout << "(" << move.first << ", " << move.second << ")" << '\n';
-    }
-}
-
 void ChessBoard::select(int x, int y)
 {
     SelectedPiece selectedPiece{};
@@ -61,18 +60,8 @@ void ChessBoard::select(int x, int y)
     selectedPiece.position_y        = y;
     selectedPiece.all_possible_move = position_pieces[x][y]->all_possible_move();
     this->_selected                 = selectedPiece;
-    std::cout << from_type_to_char(x, y) << std::endl;
+    std::cout << from_type_to_char(x, y) << '\n';
     displaytab(selectedPiece.all_possible_move);
-}
-
-void ChessBoard::set_font(ImFont* font)
-{
-    this->font = font;
-}
-
-ImFont* ChessBoard::get_font() const
-{
-    return this->font;
 }
 
 std::string ChessBoard::from_type_to_char(int x, int y) const

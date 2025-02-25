@@ -1,10 +1,7 @@
 #pragma once
 
 #include <imgui.h>
-#include <cstddef>
-#include <iostream>
 #include "chessBoard.hpp"
-#include "quick_imgui/quick_imgui.hpp"
 #include "renderer3D.hpp"
 
 class App {

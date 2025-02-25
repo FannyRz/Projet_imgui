@@ -1,0 +1,14 @@
+#pragma once
+#include "pieces.hpp"
+
+class Pawn : public Piece {
+public:
+    Pawn(Pawn&&)                 = delete;
+    Pawn& operator=(const Pawn&) = delete;
+    Pawn& operator=(Pawn&&)      = delete;
+    Pawn(PieceColor color, int x, int y)
+        : Piece(PieceType::PAWN, color, x, y) {};
+    Pawn(const Pawn& pion);
+    ~Pawn() override = default;
+    std::vector<std::pair<int, int>> all_possible_move() override;
+};
