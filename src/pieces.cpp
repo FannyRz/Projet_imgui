@@ -3,6 +3,11 @@
 #include <utility>
 #include <vector>
 
+bool Piece::isOnTheChessboard(int x, int y)
+{
+    return x < 8 && x >= 0 && y < 8 && y >= 0;
+}
+
 // Calcul de toutes les positions possibles en fonction du type de piece.
 std::vector<std::pair<int, int>> Rook::all_possible_move()
 {
@@ -26,8 +31,10 @@ std::vector<std::pair<int, int>> Knight::all_possible_move()
     std::vector<std::pair<int, int>> moves = {{-2, -1}, {-2, 1}, {2, -1}, {2, 1}, {1, -2}, {-1, -2}, {1, 2}, {-1, 2}};
     for (const std::pair<int, int> move : moves)
     {
-        // std::cout << move.first << " , " << move.second << std::endl;
-        all_theoriq_moves.emplace_back(this->m_x + move.first, this->m_y + move.second);
+        if (isOnTheChessboard(this->m_x + move.first, this->m_y + move.second))
+        {
+            all_theoriq_moves.emplace_back(this->m_x + move.first, this->m_y + move.second);
+        }
     }
     return all_theoriq_moves;
 }

@@ -14,7 +14,7 @@ int main()
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     io.Fonts->AddFontDefault();
-    ImFont* basicFont = io.Fonts->AddFontFromFileTTF("fonts/CHEQ_TT.TTF", 90.0f);
+    ImFont* basicFont = io.Fonts->AddFontFromFileTTF("fonts/CHEQ_TT.TTF", 70.0f);
     IM_ASSERT(basicFont != nullptr);
 
     app._chessboard.set_font(basicFont);
@@ -30,7 +30,7 @@ int main()
         [&]() {
             // ImGui::ShowDemoWindow(); // This opens a window which shows tons of examples of what you can do with ImGui. You should check it out! Also, you can use the "Item Picker" in the top menu of that demo window: then click on any widget and it will show you the corresponding code directly in your IDE!
 
-            ImGui::Begin("Example");
+            ImGui::Begin("Le jeu d'echec de la mort qui tue !!");
 
             app.update();
 

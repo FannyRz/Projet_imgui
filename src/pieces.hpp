@@ -51,6 +51,16 @@ public:
     {
         return this->m_y;
     };
+    void set_positionx(int x)
+    {
+        this->m_x = x;
+    };
+    void set_positiony(int y)
+    {
+        this->m_y = y;
+    };
+
+    bool isOnTheChessboard(int x, int y);
 };
 
 class Rook : public Piece {

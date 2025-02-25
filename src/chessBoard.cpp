@@ -61,8 +61,8 @@ void ChessBoard::select(int x, int y)
     selectedPiece.position_y        = y;
     selectedPiece.all_possible_move = position_pieces[x][y]->all_possible_move();
     this->_selected                 = selectedPiece;
+    std::cout << from_type_to_char(x, y) << std::endl;
     displaytab(selectedPiece.all_possible_move);
-    // std::cout << position_pieces[x][y] << std::endl;
 }
 
 void ChessBoard::set_font(ImFont* font)
@@ -102,22 +102,20 @@ std::string ChessBoard::from_type_to_char(int x, int y) const
 
 void ChessBoard::move(int x, int y, int new_x, int new_y)
 {
+    this->position_pieces[x][y]->set_positionx(new_x);
+    this->position_pieces[x][y]->set_positiony(new_y);
     this->position_pieces[new_x][new_y] = std::move(this->position_pieces[x][y]);
     this->position_pieces[x][y]         = nullptr;
 }
 
 bool ChessBoard::can_move(int x, int y, int new_x, int new_y)
 {
-    if (std::find(this->_selected->all_possible_move.begin(), this->_selected->all_possible_move.end(), std::make_pair(new_x, new_y)) != this->_selected->all_possible_move.end())
-    {
-        std::cout << "la valeur est dans le tableau \n";
-        return true;
-    }
-    else
-    {
-        std::cout << "la valeur n'est âs dans le tableau \n";
-        return false;
-    }
+    return std::find(this->_selected->all_possible_move.begin(), this->_selected->all_possible_move.end(), std::make_pair(new_x, new_y)) != this->_selected->all_possible_move.end();
+}
+
+bool ChessBoard::get_piece(int x, int y)
+{
+    return this->position_pieces[x][y] != nullptr;
 }
 
 void ChessBoard::draw_board()
@@ -127,10 +125,12 @@ void ChessBoard::draw_board()
     {
         for (int y{0}; y < 8; y++)
         {
+            bool isFontActive = false;
             if (position_pieces[x][y] != nullptr)
             {
                 ImGui::PushFont(this->get_font());
                 ImGui::PushStyleColor(ImGuiCol_Text, (position_pieces[x][y]->get_color() == PieceColor::BLACK) ? IM_COL32(25, 25, 25, 255) : IM_COL32(250, 250, 250, 255));
+                isFontActive = true;
             }
 
             bool borderActivate = false;
@@ -149,35 +149,33 @@ void ChessBoard::draw_board()
                 auto all_possible_move = this->get_all_possible_move();
                 if (x == _selected->position_x && y == _selected->position_y) // case selectionne
                 {
-                    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 10.0f); // Bordure plus épaisse
+                    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 8.0f); // Bordure plus épaisse
                     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.5f, 0.0f, 0.5f, 1.0f));
                     borderActivate = true;
                 }
                 else if (std::find(all_possible_move.begin(), all_possible_move.end(), std::pair<int, int>{x, y}) != all_possible_move.end()) // cases possibles
                 {
-                    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 10.0f);
+                    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 8.0f);
                     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.5f, 0.0f, 0.5f, 1.0f));
                     borderActivate = true;
                 }
             }
 
-            if (ImGui::Button((position_pieces[x][y] != nullptr ? from_type_to_char(x, y) + "##" + std::to_string(x) + "_" + std::to_string(y) : "##" + std::to_string(x) + "_" + std::to_string(y)).c_str(), ImVec2{100.f, 100.f}))
+            if (ImGui::Button((position_pieces[x][y] != nullptr ? from_type_to_char(x, y) + "##" + std::to_string(x) + "_" + std::to_string(y) : "##" + std::to_string(x) + "_" + std::to_string(y)).c_str(), ImVec2{80.f, 80.f}))
             {
-                if (position_pieces[x][y] != nullptr)
+                if (_selected.has_value() && x == _selected->position_x && y == _selected->position_y)
                 {
-                    if (_selected.has_value() && x == _selected->position_x && y == _selected->position_y)
-                    {
-                        this->deselect();
-                    }
-                    else if (_selected.has_value() && can_move(_selected->position_x, _selected->position_y, x, y))
-                    {
-                        move(_selected->position_x, _selected->position_y, x, y);
-                    }
-                    else
-                    {
-                        std::cout << "(" << x << "," << y << ") \n";
-                        this->select(x, y);
-                    }
+                    this->deselect();
+                }
+                else if (_selected.has_value() && can_move(_selected->position_x, _selected->position_y, x, y))
+                {
+                    move(_selected->position_x, _selected->position_y, x, y);
+                    this->deselect();
+                }
+                else if (position_pieces[x][y] != nullptr)
+                {
+                    // std::cout << "(" << x << "," << y << ") \n";
+                    this->select(x, y);
                 }
             }
 
@@ -194,7 +192,7 @@ void ChessBoard::draw_board()
 
             ImGui::PopStyleColor();
 
-            if (position_pieces[x][y] != nullptr)
+            if (isFontActive)
             {
                 ImGui::PopStyleColor();
                 ImGui::PopFont();

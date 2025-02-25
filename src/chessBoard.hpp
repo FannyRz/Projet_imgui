@@ -29,14 +29,14 @@ public:
     char                             get_char() const { return this->character; };
     std::vector<std::pair<int, int>> get_all_possible_move() { return _selected.has_value() ? _selected->all_possible_move : std::vector<std::pair<int, int>>{}; }
 
-    void draw_board();
-    void set_position();
-    void select(int x, int y);
-    void deselect();
+    void        draw_board();
+    void        set_position();
+    void        select(int x, int y);
+    void        deselect();
     std::string from_type_to_char(int x, int y) const;
-    void move(int x, int y, int new_x, int new_y);
-    bool can_move(int x, int y, int new_x, int new_y);
+    void        move(int x, int y, int new_x, int new_y);
+    bool        can_move(int x, int y, int new_x, int new_y);
+    bool        get_piece(int x, int y);
 };
 
-//_selected.has_value()
 void displaytab(const std::vector<std::pair<int, int>>& all_possible_move);
