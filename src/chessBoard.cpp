@@ -14,10 +14,10 @@
 void ChessBoard::set_position()
 {
     // tour
-    this->position_pieces[0][0] = std::make_unique<Rook>(PieceColor::BLACK, 0, 0);
+    this->position_pieces[4][3] = std::make_unique<Rook>(PieceColor::BLACK, 4, 3);
     this->position_pieces[0][7] = std::make_unique<Rook>(PieceColor::BLACK, 0, 7);
     this->position_pieces[7][0] = std::make_unique<Rook>(PieceColor::WHITE, 7, 0);
-    this->position_pieces[7][7] = std::make_unique<Rook>(PieceColor::WHITE, 7, 7);
+    this->position_pieces[4][1] = std::make_unique<Rook>(PieceColor::WHITE, 4, 1);
 
     // cavalier
     this->position_pieces[0][1] = std::make_unique<Knight>(PieceColor::BLACK, 0, 1);
@@ -58,10 +58,10 @@ void ChessBoard::select(int x, int y)
     selectedPiece.piece             = position_pieces[x][y].get();
     selectedPiece.position_x        = x;
     selectedPiece.position_y        = y;
-    selectedPiece.all_possible_move = position_pieces[x][y]->all_possible_move();
+    selectedPiece.all_possible_move = position_pieces[x][y]->all_possible_move(this->position_pieces);
     this->_selected                 = selectedPiece;
     std::cout << from_type_to_char(x, y) << '\n';
-    displaytab(selectedPiece.all_possible_move);
+    // displaytab(selectedPiece.all_possible_move);
 }
 
 std::string ChessBoard::from_type_to_char(int x, int y) const
