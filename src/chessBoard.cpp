@@ -14,10 +14,10 @@
 void ChessBoard::set_position()
 {
     // tour
-    this->position_pieces[4][3] = std::make_unique<Rook>(PieceColor::BLACK, 4, 3);
+    this->position_pieces[0][0] = std::make_unique<Rook>(PieceColor::BLACK, 0, 0);
     this->position_pieces[0][7] = std::make_unique<Rook>(PieceColor::BLACK, 0, 7);
     this->position_pieces[7][0] = std::make_unique<Rook>(PieceColor::WHITE, 7, 0);
-    this->position_pieces[4][1] = std::make_unique<Rook>(PieceColor::WHITE, 4, 1);
+    this->position_pieces[7][7] = std::make_unique<Rook>(PieceColor::WHITE, 7, 7);
 
     // cavalier
     this->position_pieces[0][1] = std::make_unique<Knight>(PieceColor::BLACK, 0, 1);
