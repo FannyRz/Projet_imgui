@@ -10,5 +10,5 @@ public:
         : Piece(PieceType::QUEEN, color, x, y) {};
     Queen(const Queen& dame);
     ~Queen() override = default;
-    std::vector<std::pair<int, int>> all_possible_move() override;
+    std::vector<std::pair<int, int>> all_possible_move(std::array<std::array<std::unique_ptr<Piece>, 8>, 8>& position_pieces) override;
 };

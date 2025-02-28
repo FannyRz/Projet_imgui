@@ -1,8 +1,8 @@
 #include "chessBoard.hpp"
 #include <imgui.h>
+#include <iostream>
 #include <memory>
 #include <optional>
-#include <iostream>
 #include "pieces/bishop.hpp"
 #include "pieces/king.hpp"
 #include "pieces/knight.hpp"
@@ -58,10 +58,10 @@ void ChessBoard::select(int x, int y)
     selectedPiece.piece             = position_pieces[x][y].get();
     selectedPiece.position_x        = x;
     selectedPiece.position_y        = y;
-    selectedPiece.all_possible_move = position_pieces[x][y]->all_possible_move();
+    selectedPiece.all_possible_move = position_pieces[x][y]->all_possible_move(this->position_pieces);
     this->_selected                 = selectedPiece;
     std::cout << from_type_to_char(x, y) << '\n';
-    displaytab(selectedPiece.all_possible_move);
+    // displaytab(selectedPiece.all_possible_move);
 }
 
 std::string ChessBoard::from_type_to_char(int x, int y) const
@@ -99,7 +99,26 @@ void ChessBoard::move(int x, int y, int new_x, int new_y)
 
 bool ChessBoard::can_move(int x, int y, int new_x, int new_y)
 {
-    return std::find(this->_selected->all_possible_move.begin(), this->_selected->all_possible_move.end(), std::make_pair(new_x, new_y)) != this->_selected->all_possible_move.end();
+    if (std::find(this->_selected->all_possible_move.begin(), this->_selected->all_possible_move.end(), std::make_pair(new_x, new_y)) != this->_selected->all_possible_move.end())
+    {
+        if (get_piece(new_x, new_y))
+        {
+            if (this->position_pieces[x][y]->get_color() == this->position_pieces[new_x][new_y]->get_color()) // un ami
+            {
+                return false;
+            }
+            else if (this->position_pieces[x][y]->get_color() != this->position_pieces[new_x][new_y]->get_color()) // un ennemi
+            {
+                std::cout << "un mechant" << '\n';
+                return true;
+            }
+        }
+        else
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool ChessBoard::get_piece(int x, int y)
@@ -114,12 +133,12 @@ void ChessBoard::draw_board()
     {
         for (int y{0}; y < 8; y++)
         {
-            bool isFontActive = false;
+            bool FontActive = false;
             if (position_pieces[x][y] != nullptr)
             {
                 ImGui::PushFont(this->get_font());
                 ImGui::PushStyleColor(ImGuiCol_Text, (position_pieces[x][y]->get_color() == PieceColor::BLACK) ? IM_COL32(25, 25, 25, 255) : IM_COL32(250, 250, 250, 255));
-                isFontActive = true;
+                FontActive = true;
             }
 
             bool borderActivate = false;
@@ -163,7 +182,6 @@ void ChessBoard::draw_board()
                 }
                 else if (position_pieces[x][y] != nullptr)
                 {
-                    // std::cout << "(" << x << "," << y << ") \n";
                     this->select(x, y);
                 }
             }
@@ -181,7 +199,7 @@ void ChessBoard::draw_board()
 
             ImGui::PopStyleColor();
 
-            if (isFontActive)
+            if (FontActive)
             {
                 ImGui::PopStyleColor();
                 ImGui::PopFont();

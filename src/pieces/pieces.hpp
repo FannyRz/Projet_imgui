@@ -1,5 +1,7 @@
 #pragma once
 #include <vector>
+#include <array>
+#include <memory>
 
 enum class PieceColor : std::uint8_t {
     WHITE,
@@ -32,7 +34,7 @@ public:
     virtual ~Piece() = default;
     void                                     position();
     void                                     draw_possible_move();
-    virtual std::vector<std::pair<int, int>> all_possible_move() = 0;
+    virtual std::vector<std::pair<int, int>> all_possible_move(std::array<std::array<std::unique_ptr<Piece>, 8>, 8>& position_pieces) = 0;
 
     PieceType  get_type() const { return this->m_type; };
     PieceColor get_color() const { return this->m_color; };
