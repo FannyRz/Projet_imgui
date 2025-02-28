@@ -7,13 +7,12 @@ std::vector<std::pair<int, int>> Bishop::all_possible_move()
     {
         for (int y{0}; y < 8; y++)
         {
-            for (int i{1}; i < 7; i++)
+            int sum_x_y = (this->m_x)+(this->m_y) ;
+            int subtraction_x_y = (this->m_x)-(this->m_y);
+            if ((sum_x_y == x+y || subtraction_x_y == x-y))
             {
-                if ((this->m_x == x + i && this->m_y == y + i) || (this->m_x != x - i && this->m_y != y - i) || (this->m_x == x + i && this->m_y == y - i) || (this->m_x != x - i && this->m_y != y + i))
-                {
-                    all_theoriq_moves.emplace_back(x, y);
-                }
-            }
+                all_theoriq_moves.emplace_back(x, y);
+            } 
         }
     }
     return all_theoriq_moves;
