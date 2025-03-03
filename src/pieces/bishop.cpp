@@ -1,19 +1,42 @@
 #include "bishop.hpp"
+#include <cstddef>
 
 std::vector<std::pair<int, int>> Bishop::all_possible_move([[maybe_unused]] std::array<std::array<std::unique_ptr<Piece>, 8>, 8>& position_pieces)
 {
-    std::vector<std::pair<int, int>> all_theoriq_moves{};
-    for (int x{0}; x < 8; x++)
-    {
-        for (int y{0}; y < 8; y++)
+    std::vector<std::pair<int, int>> all_theoriq_moves;
+
+    // Fonction lambda
+    auto add_moves_in_direction = [&](int dx, int dy) {
+        int x = this->m_x;
+        int y = this->m_y;
+
+        while (isOnTheChessboard(x, y))
         {
-            int sum_x_y = (this->m_x)+(this->m_y) ;
-            int subtraction_x_y = (this->m_x)-(this->m_y);
-            if ((sum_x_y == x+y || subtraction_x_y == x-y))
+            x += dx;
+            y += dy;
+            if (!isOnTheChessboard(x, y))
+                break;
+            if (position_pieces[x][y] != nullptr)
             {
-                all_theoriq_moves.emplace_back(x, y);
-            } 
+                if (position_pieces[x][y]->get_color() == this->get_color())
+                {
+                    break;
+                }
+                else
+                {
+                    all_theoriq_moves.emplace_back(x, y);
+                    break;
+                }
+            }
+            all_theoriq_moves.emplace_back(x, y);
         }
-    }
+    };
+
+    // Ajouter les mouvements dans les 4 directions
+    add_moves_in_direction(1, 1);  // Droite
+    add_moves_in_direction(-1, -1); // Gauche
+    add_moves_in_direction(-1, 1);  // Haut
+    add_moves_in_direction(1, -1); // Bas
+
     return all_theoriq_moves;
 }
