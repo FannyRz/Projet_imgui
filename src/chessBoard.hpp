@@ -30,6 +30,6 @@ public:
     void        deselect();
     std::string from_type_to_char(int x, int y) const;
     void        move(int x, int y, int new_x, int new_y);
-    bool        can_move(int x, int y, int new_x, int new_y);
+    bool        can_move(int new_x, int new_y);
     bool        get_piece(int x, int y);
 };

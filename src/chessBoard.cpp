@@ -97,28 +97,9 @@ void ChessBoard::move(int x, int y, int new_x, int new_y)
     this->position_pieces[x][y]         = nullptr;
 }
 
-bool ChessBoard::can_move(int x, int y, int new_x, int new_y)
+bool ChessBoard::can_move(int new_x, int new_y)
 {
-    if (std::find(this->_selected->all_possible_move.begin(), this->_selected->all_possible_move.end(), std::make_pair(new_x, new_y)) != this->_selected->all_possible_move.end())
-    {
-        if (get_piece(new_x, new_y))
-        {
-            if (this->position_pieces[x][y]->get_color() == this->position_pieces[new_x][new_y]->get_color()) // un ami
-            {
-                return false;
-            }
-            else if (this->position_pieces[x][y]->get_color() != this->position_pieces[new_x][new_y]->get_color()) // un ennemi
-            {
-                std::cout << "un mechant" << '\n';
-                return true;
-            }
-        }
-        else
-        {
-            return true;
-        }
-    }
-    return false;
+    return std::find(this->_selected->all_possible_move.begin(), this->_selected->all_possible_move.end(), std::make_pair(new_x, new_y)) != this->_selected->all_possible_move.end();
 }
 
 bool ChessBoard::get_piece(int x, int y)
@@ -142,7 +123,6 @@ void ChessBoard::draw_board()
             }
 
             bool borderActivate = false;
-
             if ((x + y) % 2 == 0)
             {
                 ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.4f, 0.0f, 1.0f}); // Orange foncé
@@ -175,7 +155,7 @@ void ChessBoard::draw_board()
                 {
                     this->deselect();
                 }
-                else if (_selected.has_value() && can_move(_selected->position_x, _selected->position_y, x, y))
+                else if (_selected.has_value() && can_move(x, y))
                 {
                     move(_selected->position_x, _selected->position_y, x, y);
                     this->deselect();
