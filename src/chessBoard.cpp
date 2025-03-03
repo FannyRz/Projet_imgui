@@ -61,7 +61,7 @@ void ChessBoard::select(int x, int y)
     selectedPiece.all_possible_move = position_pieces[x][y]->all_possible_move(this->position_pieces);
     this->_selected                 = selectedPiece;
     std::cout << from_type_to_char(x, y) << '\n';
-    // displaytab(selectedPiece.all_possible_move);
+    displaytab(selectedPiece.all_possible_move);
 }
 
 std::string ChessBoard::from_type_to_char(int x, int y) const
