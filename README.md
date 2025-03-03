@@ -8,6 +8,7 @@ A FAIRE :
 - victoire : quand on mange le roi
 - les pions deviennent au choix une autre pièce quand ils atteignent l'autre cote du plateau 
 - "en passant"
+- faut ranger le code, voir comment faire pour draw_chessboard
 ----------> et après on sera tout bon pour la prog
 
 BONUS : 

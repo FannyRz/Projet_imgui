@@ -1,7 +1,8 @@
 #pragma once
-#include <vector>
 #include <array>
 #include <memory>
+#include <vector>
+
 
 enum class PieceColor : std::uint8_t {
     WHITE,
