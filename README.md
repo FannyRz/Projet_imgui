@@ -3,8 +3,9 @@
 organisation / tâches : 
 
 A FAIRE : 
-- déplacement : fou + pion + dame 
-- gestion des tours + commencer par le blanc
+- déplacement : pion pour manger
+- couleur differente pour les case ou on peut pas aller
+- gestion des tours de jeu + commencer par le blanc
 - victoire : quand on mange le roi
 - les pions deviennent au choix une autre pièce quand ils atteignent l'autre cote du plateau 
 - "en passant"
