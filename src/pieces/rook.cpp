@@ -17,15 +17,11 @@ std::vector<std::pair<int, int>> Rook::all_possible_move([[maybe_unused]] std::a
                 break;
             if (position_pieces[x][y] != nullptr)
             {
-                if (position_pieces[x][y]->get_color() == this->get_color())
-                {
-                    break;
-                }
-                else
+                if (position_pieces[x][y]->get_color() != this->get_color())
                 {
                     all_theoriq_moves.emplace_back(x, y);
-                    break;
                 }
+                break;
             }
             all_theoriq_moves.emplace_back(x, y);
         }

@@ -18,25 +18,21 @@ std::vector<std::pair<int, int>> Bishop::all_possible_move([[maybe_unused]] std:
                 break;
             if (position_pieces[x][y] != nullptr)
             {
-                if (position_pieces[x][y]->get_color() == this->get_color())
-                {
-                    break;
-                }
-                else
+                if (position_pieces[x][y]->get_color() != this->get_color())
                 {
                     all_theoriq_moves.emplace_back(x, y);
-                    break;
                 }
+                break;
             }
             all_theoriq_moves.emplace_back(x, y);
         }
     };
 
     // Ajouter les mouvements dans les 4 directions
-    add_moves_in_direction(1, 1);  // Droite
+    add_moves_in_direction(1, 1);   // Droite
     add_moves_in_direction(-1, -1); // Gauche
     add_moves_in_direction(-1, 1);  // Haut
-    add_moves_in_direction(1, -1); // Bas
+    add_moves_in_direction(1, -1);  // Bas
 
     return all_theoriq_moves;
 }
