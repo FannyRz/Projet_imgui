@@ -13,6 +13,21 @@ std::vector<std::pair<int, int>> Pawn::all_possible_move([[maybe_unused]] std::a
         first_move(position_pieces, all_theoriq_moves, direction);
     }
 
+    if (this->get_color() == PieceColor::BLACK)
+    {
+        int x = this->m_x;
+        int y = this->m_y;
+
+        if (isOnTheChessboard(x + 1, y + 1) && position_pieces[x + 1][y + 1] != nullptr && position_pieces[x + 1][y + 1]->get_color() == PieceColor::WHITE)
+        {
+            all_theoriq_moves.emplace_back(x + 1, y - 1);
+        }
+        if (isOnTheChessboard(x + 1, y + 1) && position_pieces[x + 1][y + 1] != nullptr && position_pieces[x + 1][y + 1]->get_color() == PieceColor::WHITE)
+        {
+            all_theoriq_moves.emplace_back(x + 1, y + 1);
+        }
+    }
+
     return all_theoriq_moves;
 }
 

@@ -37,15 +37,11 @@ std::vector<std::pair<int, int>> Queen::all_possible_move([[maybe_unused]] std::
                 break;
             if (position_pieces[x][y] != nullptr)
             {
-                if (position_pieces[x][y]->get_color() == this->get_color())
-                {
-                    break;
-                }
-                else
+                if (position_pieces[x][y]->get_color() != this->get_color())
                 {
                     all_theoriq_moves.emplace_back(x, y);
-                    break;
                 }
+                break;
             }
             all_theoriq_moves.emplace_back(x, y);
         }
