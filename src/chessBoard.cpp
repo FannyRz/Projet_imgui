@@ -95,6 +95,7 @@ void ChessBoard::move(int x, int y, int new_x, int new_y)
     this->position_pieces[x][y]->set_positiony(new_y);
     this->position_pieces[new_x][new_y] = std::move(this->position_pieces[x][y]);
     this->position_pieces[x][y]         = nullptr;
+    set_is_white_turn(!is_white_turn);
 }
 
 bool ChessBoard::can_move(int new_x, int new_y)
@@ -107,6 +108,13 @@ bool ChessBoard::get_piece(int x, int y)
     return this->position_pieces[x][y] != nullptr;
 }
 
+bool ChessBoard::is_my_turn(int x, int y)
+{
+    std::cout << "coucou" << std::endl;
+    if ((this->position_pieces[x][y]->get_color() == PieceColor::WHITE && get_is_white_turn()) || (this->position_pieces[x][y]->get_color() == PieceColor::BLACK && !get_is_white_turn()))
+        std::cout << "coucou" << std::endl;
+    return true;
+}
 void ChessBoard::draw_board()
 {
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{0.f, 0.f}); // Bordure entre les cases à zéro.
@@ -151,6 +159,7 @@ void ChessBoard::draw_board()
 
             if (ImGui::Button((position_pieces[x][y] != nullptr ? from_type_to_char(x, y) + "##" + std::to_string(x) + "_" + std::to_string(y) : "##" + std::to_string(x) + "_" + std::to_string(y)).c_str(), ImVec2{80.f, 80.f}))
             {
+                std::cout << "hey";
                 if (_selected.has_value() && x == _selected->position_x && y == _selected->position_y)
                 {
                     this->deselect();
@@ -160,9 +169,10 @@ void ChessBoard::draw_board()
                     move(_selected->position_x, _selected->position_y, x, y);
                     this->deselect();
                 }
-                else if (position_pieces[x][y] != nullptr)
+                else if (get_piece(x, y))
                 {
                     this->select(x, y);
+                    std::cout << this->is_white_turn;
                 }
             }
 

@@ -18,6 +18,7 @@ private:
     std::array<std::array<std::unique_ptr<Piece>, 8>, 8> position_pieces{}; // tableau de positions initiales des pièces
     std::optional<SelectedPiece>                         _selected;
     ImFont*                                              font;
+    bool                                                 is_white_turn = true;
 
 public:
     void                             set_font(ImFont* font) { this->font = font; };
@@ -32,4 +33,7 @@ public:
     void        move(int x, int y, int new_x, int new_y);
     bool        can_move(int new_x, int new_y);
     bool        get_piece(int x, int y);
+    void        set_is_white_turn(bool is_white_turn) { this->is_white_turn = is_white_turn; };
+    bool        get_is_white_turn() const { return this->is_white_turn; };
+    bool        is_my_turn(int x, int y);
 };
