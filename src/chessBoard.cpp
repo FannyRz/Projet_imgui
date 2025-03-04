@@ -110,10 +110,7 @@ bool ChessBoard::get_piece(int x, int y)
 
 bool ChessBoard::is_my_turn(int x, int y)
 {
-    std::cout << "coucou" << std::endl;
-    if ((this->position_pieces[x][y]->get_color() == PieceColor::WHITE && get_is_white_turn()) || (this->position_pieces[x][y]->get_color() == PieceColor::BLACK && !get_is_white_turn()))
-        std::cout << "coucou" << std::endl;
-    return true;
+    return (this->position_pieces[x][y]->get_color() == PieceColor::WHITE && get_is_white_turn()) || (this->position_pieces[x][y]->get_color() == PieceColor::BLACK && !get_is_white_turn());
 }
 void ChessBoard::draw_board()
 {
@@ -159,7 +156,6 @@ void ChessBoard::draw_board()
 
             if (ImGui::Button((position_pieces[x][y] != nullptr ? from_type_to_char(x, y) + "##" + std::to_string(x) + "_" + std::to_string(y) : "##" + std::to_string(x) + "_" + std::to_string(y)).c_str(), ImVec2{80.f, 80.f}))
             {
-                std::cout << "hey";
                 if (_selected.has_value() && x == _selected->position_x && y == _selected->position_y)
                 {
                     this->deselect();
@@ -169,7 +165,7 @@ void ChessBoard::draw_board()
                     move(_selected->position_x, _selected->position_y, x, y);
                     this->deselect();
                 }
-                else if (get_piece(x, y))
+                else if (get_piece(x, y) && is_my_turn(x, y))
                 {
                     this->select(x, y);
                     std::cout << this->is_white_turn;
