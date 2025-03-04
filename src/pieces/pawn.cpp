@@ -7,6 +7,9 @@ std::vector<std::pair<int, int>> Pawn::all_possible_move([[maybe_unused]] std::a
     std::vector<std::pair<int, int>> all_theoriq_moves{};
     int                              direction = (this->get_color() == PieceColor::BLACK) ? 1 : -1;
 
+    int x = this->m_x;
+    int y = this->m_y;
+
     if (position_pieces[this->get_positionx() + direction][this->get_positiony()] == nullptr)
     {
         all_theoriq_moves.emplace_back(this->get_positionx() + direction * 1, this->get_positiony());
@@ -15,16 +18,24 @@ std::vector<std::pair<int, int>> Pawn::all_possible_move([[maybe_unused]] std::a
 
     if (this->get_color() == PieceColor::BLACK)
     {
-        int x = this->m_x;
-        int y = this->m_y;
-
-        if (isOnTheChessboard(x + 1, y + 1) && position_pieces[x + 1][y + 1] != nullptr && position_pieces[x + 1][y + 1]->get_color() == PieceColor::WHITE)
+        if (isOnTheChessboard(x + 1, y - 1) && position_pieces[x + 1][y - 1] != nullptr && position_pieces[x + 1][y - 1]->get_color() == PieceColor::WHITE)
         {
             all_theoriq_moves.emplace_back(x + 1, y - 1);
         }
         if (isOnTheChessboard(x + 1, y + 1) && position_pieces[x + 1][y + 1] != nullptr && position_pieces[x + 1][y + 1]->get_color() == PieceColor::WHITE)
         {
             all_theoriq_moves.emplace_back(x + 1, y + 1);
+        }
+    }
+    else
+    {
+        if (isOnTheChessboard(x - 1, y - 1) && position_pieces[x - 1][y - 1] != nullptr && position_pieces[x - 1][y - 1]->get_color() == PieceColor::BLACK)
+        {
+            all_theoriq_moves.emplace_back(x - 1, y - 1);
+        }
+        if (isOnTheChessboard(x - 1, y + 1) && position_pieces[x - 1][y + 1] != nullptr && position_pieces[x - 1][y + 1]->get_color() == PieceColor::BLACK)
+        {
+            all_theoriq_moves.emplace_back(x - 1, y + 1);
         }
     }
 
