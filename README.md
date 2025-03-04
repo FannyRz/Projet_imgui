@@ -2,13 +2,11 @@
 
 organisation / tâches : 
 
-A FAIRE : 
-- déplacement : pion pour manger
-- couleur differente pour les case ou on peut pas aller
-- gestion des tours de jeu + commencer par le blanc
-- victoire : quand on mange le roi
+A FAIRE :
+- victoire : quand on mange le roi + message de victoire/defaite
 - les pions deviennent au choix une autre pièce quand ils atteignent l'autre cote du plateau 
 - "en passant"
+- optimiser le code
 - faut ranger le code, voir comment faire pour draw_chessboard
 ----------> et après on sera tout bon pour la prog
 
