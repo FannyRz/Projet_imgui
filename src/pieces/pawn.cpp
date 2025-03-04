@@ -52,3 +52,18 @@ void Pawn::first_move([[maybe_unused]] std::array<std::array<std::unique_ptr<Pie
         }
     }
 }
+
+// void Pawn::en_passant([[maybe_unused]] std::array<std::array<std::unique_ptr<Piece>, 8>, 8>& position_pieces)
+// {
+//     /*noir*/
+//     if (/*en_passant_droite*/)
+//     {
+//         all_theoriq_moves.emplace_back(x - 1, y + 1);
+//     }
+//     if (/*en_passant_gauche*/)
+//     {
+//         all_theoriq_moves.emplace_back(x - 1, y + 1);
+//     }
+//     // si la personne a cliquer sur la case +2
+//     // alors un pion on peut lui ajouter une case dans all possible move
+// }
