@@ -10,6 +10,7 @@ struct SelectedPiece {
     Piece*                           piece;
     int                              position_x;
     int                              position_y;
+    PieceColor                       piececolor;
     std::vector<std::pair<int, int>> all_possible_move{}; //->pour savoir les déplacements possibles
 };
 
@@ -17,6 +18,7 @@ class ChessBoard {
 private:
     std::array<std::array<std::unique_ptr<Piece>, 8>, 8> position_pieces{}; // tableau de positions initiales des pièces
     std::optional<SelectedPiece>                         _selected;
+    std::optional<SelectedPiece>                         _selected_pawn;
     ImFont*                                              font;
     bool                                                 is_white_turn = true;
 
@@ -25,15 +27,19 @@ public:
     ImFont*                          get_font() const { return this->font; };
     std::vector<std::pair<int, int>> get_all_possible_move() { return _selected.has_value() ? _selected->all_possible_move : std::vector<std::pair<int, int>>{}; }
 
-    void        draw_board();
-    void        set_position();
-    void        select(int x, int y);
-    void        deselect();
-    std::string from_type_to_char(int x, int y) const;
-    void        move(int x, int y, int new_x, int new_y);
-    bool        can_move(int new_x, int new_y);
-    bool        get_piece(int x, int y);
-    void        set_is_white_turn(bool is_white_turn) { this->is_white_turn = is_white_turn; };
-    bool        get_is_white_turn() const { return this->is_white_turn; };
-    bool        is_my_turn(int x, int y);
+    void                         draw_board();
+    void                         set_position();
+    void                         select(int x, int y);
+    std::optional<SelectedPiece> select_pawn(int x, int y);
+    void                         deselect();
+    std::string                  from_type_to_char(int x, int y) const;
+    void                         move(int x, int y, int new_x, int new_y);
+    bool                         can_move(int new_x, int new_y);
+    bool                         get_piece(int x, int y);
+    void                         set_is_white_turn(bool is_white_turn) { this->is_white_turn = is_white_turn; };
+    bool                         get_is_white_turn() const { return this->is_white_turn; };
+    bool                         is_my_turn(int x, int y);
+    bool                         piece_at_the_end(int x, int y);
+    void                         print_popup(std::optional<SelectedPiece> selected);
+    void                         change_piece(int x, int y, PieceType nouveau_type, PieceColor color);
 };
