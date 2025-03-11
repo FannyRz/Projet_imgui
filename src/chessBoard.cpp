@@ -256,7 +256,8 @@ void ChessBoard::print_popup(std::optional<SelectedPiece> selected)
     // Always center this window when appearing
     ImVec2 center = ImGui::GetMainViewport()->GetCenter();
     ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-    
+    ImGui::SetNextWindowSize(ImVec2(500, 140)); 
+
     if (ImGui::BeginPopupModal("NEW PIECE", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
     {
         ImGui::Text("Choisis ta pièce !");
@@ -271,6 +272,7 @@ void ChessBoard::print_popup(std::optional<SelectedPiece> selected)
             ImGui::CloseCurrentPopup();
         }
         ImGui::PopStyleColor();
+        ImGui::SameLine();
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{1.0f, 0.7f, 0.0f, 1.0f});
         if (ImGui::Button(selected->piececolor == PieceColor::WHITE ? "R" : "T", ImVec2(120, 0)))
         {
@@ -278,6 +280,7 @@ void ChessBoard::print_popup(std::optional<SelectedPiece> selected)
             ImGui::CloseCurrentPopup();
         }
         ImGui::PopStyleColor();
+        ImGui::SameLine();
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.4f, 0.0f, 1.0f});
         if (ImGui::Button(selected->piececolor == PieceColor::WHITE ? "B" : "N", ImVec2(120, 0)))
         {
@@ -285,6 +288,7 @@ void ChessBoard::print_popup(std::optional<SelectedPiece> selected)
             ImGui::CloseCurrentPopup();
         }
         ImGui::PopStyleColor();
+        ImGui::SameLine();
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{1.0f, 0.7f, 0.0f, 1.0f});
         if (ImGui::Button(selected->piececolor == PieceColor::WHITE ? "H" : "J", ImVec2(120, 0)))
         {
@@ -296,7 +300,4 @@ void ChessBoard::print_popup(std::optional<SelectedPiece> selected)
         ImGui::PopStyleColor();
         ImGui::EndPopup();
     }
-    
-    
-
 }
