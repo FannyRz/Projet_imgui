@@ -13,5 +13,4 @@ public:
     std::vector<std::pair<int, int>> all_possible_move(std::array<std::array<std::unique_ptr<Piece>, 8>, 8>& position_pieces) override;
 
     void first_move(std::array<std::array<std::unique_ptr<Piece>, 8>, 8>& position_pieces, std::vector<std::pair<int, int>>& all_theoriq_moves, int direction);
-    void en_passant(std::array<std::array<std::unique_ptr<Piece>, 8>, 8>& position_pieces);
 };
