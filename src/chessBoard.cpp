@@ -213,7 +213,7 @@ void ChessBoard::draw_board()
                     // ajouter l'affichage du pions qui se transforme une fois au bout
                     if (this->position_pieces[x][y]->get_type() == PieceType::PAWN && piece_at_the_end(x, y))
                     {
-                        _selected_pawn = this->select_pawn(x, y); // TODO store position and color of current piece x y
+                        _selected_pawn = this->select_pawn(x, y);
                         ImGui::OpenPopup("NEW PIECE");
                     }
                     this->deselect();
@@ -256,7 +256,7 @@ void ChessBoard::print_popup(std::optional<SelectedPiece> selected)
     // Always center this window when appearing
     ImVec2 center = ImGui::GetMainViewport()->GetCenter();
     ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-    ImGui::SetNextWindowSize(ImVec2(500, 140)); 
+    ImGui::SetNextWindowSize(ImVec2(500, 140));
 
     if (ImGui::BeginPopupModal("NEW PIECE", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
     {
@@ -264,40 +264,42 @@ void ChessBoard::print_popup(std::optional<SelectedPiece> selected)
         ImGui::Separator();
 
         ImGui::PushFont(this->get_font());
+
+        // Définition des pièces et couleurs associées
+        struct PieceButton {
+            PieceType   type;
+            const char* white_label;
+            const char* black_label;
+            ImVec4      color;
+        };
+
+        std::vector<PieceButton> buttons = {
+            {.type = PieceType::QUEEN, .white_label = "Q", .black_label = "W", .color = ImVec4{0.8f, 0.4f, 0.0f, 1.0f}},
+            {.type = PieceType::ROOK, .white_label = "R", .black_label = "T", .color = ImVec4{1.0f, 0.7f, 0.0f, 1.0f}},
+            {.type = PieceType::BISHOP, .white_label = "B", .black_label = "N", .color = ImVec4{0.8f, 0.4f, 0.0f, 1.0f}},
+            {.type = PieceType::KNIGHT, .white_label = "H", .black_label = "J", .color = ImVec4{1.0f, 0.7f, 0.0f, 1.0f}}
+        };
+
         ImGui::PushStyleColor(ImGuiCol_Text, (selected->piececolor == PieceColor::BLACK) ? IM_COL32(25, 25, 25, 255) : IM_COL32(250, 250, 250, 255));
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.4f, 0.0f, 1.0f});
-        if (ImGui::Button(selected->piececolor == PieceColor::WHITE ? "Q" : "W", ImVec2(120, 0)))
+
+        for (size_t i{}; i < buttons.size(); i++)
         {
-            change_piece(selected->position_x, selected->position_y, PieceType::QUEEN, selected->piececolor);
-            ImGui::CloseCurrentPopup();
+            const auto& btn = buttons[i];
+
+            ImGui::PushStyleColor(ImGuiCol_Button, btn.color);
+            if (ImGui::Button(selected->piececolor == PieceColor::WHITE ? btn.white_label : btn.black_label, ImVec2(120, 0)))
+            {
+                change_piece(selected->position_x, selected->position_y, btn.type, selected->piececolor);
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::PopStyleColor();
+
+            if (i < buttons.size() - 1)
+                ImGui::SameLine();
         }
+
         ImGui::PopStyleColor();
-        ImGui::SameLine();
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{1.0f, 0.7f, 0.0f, 1.0f});
-        if (ImGui::Button(selected->piececolor == PieceColor::WHITE ? "R" : "T", ImVec2(120, 0)))
-        {
-            change_piece(selected->position_x, selected->position_y, PieceType::ROOK, selected->piececolor);
-            ImGui::CloseCurrentPopup();
-        }
-        ImGui::PopStyleColor();
-        ImGui::SameLine();
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.4f, 0.0f, 1.0f});
-        if (ImGui::Button(selected->piececolor == PieceColor::WHITE ? "B" : "N", ImVec2(120, 0)))
-        {
-            change_piece(selected->position_x, selected->position_y, PieceType::BISHOP, selected->piececolor);
-            ImGui::CloseCurrentPopup();
-        }
-        ImGui::PopStyleColor();
-        ImGui::SameLine();
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{1.0f, 0.7f, 0.0f, 1.0f});
-        if (ImGui::Button(selected->piececolor == PieceColor::WHITE ? "H" : "J", ImVec2(120, 0)))
-        {
-            change_piece(selected->position_x, selected->position_y, PieceType::KNIGHT, selected->piececolor);
-            ImGui::CloseCurrentPopup();
-        }
         ImGui::PopFont();
-        ImGui::PopStyleColor();
-        ImGui::PopStyleColor();
         ImGui::EndPopup();
     }
 }
