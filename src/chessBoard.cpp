@@ -62,8 +62,6 @@ void ChessBoard::select(int x, int y)
     selectedPiece.piececolor        = position_pieces[x][y]->get_color();
     selectedPiece.all_possible_move = position_pieces[x][y]->all_possible_move(this->position_pieces);
     this->_selected                 = selectedPiece;
-    // std::cout << from_type_to_char(x, y) << '\n';
-    // displaytab(selectedPiece.all_possible_move);
 }
 
 std::optional<SelectedPiece> ChessBoard::select_pawn(int x, int y)
@@ -99,6 +97,9 @@ std::string ChessBoard::from_type_to_char(int x, int y) const
     case PieceType::KING:
         return (this->position_pieces[x][y]->get_color() == PieceColor::WHITE) ? "K" : "L";
         break;
+    default:
+        std::cerr << "Erreur: type de pièce inconnu /n";
+        return "";
     }
 }
 
@@ -118,12 +119,27 @@ void ChessBoard::move(int x, int y, int new_x, int new_y)
     this->position_pieces[x][y]->set_positiony(new_y);
     this->position_pieces[new_x][new_y] = std::move(this->position_pieces[x][y]);
     this->position_pieces[x][y]         = nullptr;
-    set_is_white_turn(!is_white_turn);
+
+    if (this->_enPassantPiece.has_value() && piece_Moved)
+    {
+        this->reset_en_passant();
+    }
 
     if (this->position_pieces[new_x][new_y]->get_type() == PieceType::PAWN && abs(new_x - x) == 2)
     {
         set_en_passant(new_x, new_y);
     }
+
+    if (this->_enPassantPiece.has_value() && this->position_pieces[new_x][new_y]->get_type() == PieceType::PAWN && std::find(std::begin(this->_enPassantPiece->en_passant_piece), std::end(this->_enPassantPiece->en_passant_piece), this->_selected->piece) != std::end(this->_enPassantPiece->en_passant_piece))
+    {
+        int direction = (this->_selected->piece->get_color() == PieceColor::BLACK) ? 1 : -1;
+        if (new_x == this->_enPassantPiece->piece->get_positionx() + direction && new_y == this->_enPassantPiece->piece->get_positiony())
+        {
+            attack_en_passant();
+        }
+    }
+
+    set_is_white_turn(!is_white_turn);
 }
 
 bool ChessBoard::can_move(int new_x, int new_y)
@@ -133,8 +149,7 @@ bool ChessBoard::can_move(int new_x, int new_y)
 
 void ChessBoard::set_en_passant(int x, int y)
 {
-    EnPassantPiece enPassantPiece{};
-    enPassantPiece.piece = this->_selected->piece;
+    std::vector<Piece*> en_passant_piece{};
 
     // gauche
     if (get_piece(x, y + 1))
@@ -142,8 +157,7 @@ void ChessBoard::set_en_passant(int x, int y)
         Pawn* pawn = dynamic_cast<Pawn*>(this->position_pieces[x][y + 1].get());
         if (pawn && pawn->get_color() != this->position_pieces[x][y]->get_color())
         {
-            enPassantPiece.en_passant_piece.push_back(this->position_pieces[x][y + 1].get());
-            pawn->set_enpassant(true);
+            en_passant_piece.push_back(this->position_pieces[x][y + 1].get());
         }
     }
 
@@ -153,20 +167,29 @@ void ChessBoard::set_en_passant(int x, int y)
         Pawn* pawn = dynamic_cast<Pawn*>(this->position_pieces[x][y - 1].get());
         if (pawn && pawn->get_color() != this->position_pieces[x][y]->get_color())
         {
-            enPassantPiece.en_passant_piece.push_back(this->position_pieces[x][y - 1].get());
-            pawn->set_enpassant(true);
+            en_passant_piece.push_back(this->position_pieces[x][y - 1].get());
         }
+    }
+
+    if (!en_passant_piece.empty())
+    {
+        EnPassantPiece enPassantPiece{};
+        Pawn*          pawn             = dynamic_cast<Pawn*>(this->_selected->piece);
+        enPassantPiece.piece            = this->_selected->piece;
+        enPassantPiece.en_passant_piece = en_passant_piece;
+        this->_enPassantPiece           = enPassantPiece;
+
+        piece_Moved = true;
     }
 }
 
-void ChessBoard::get_en_passant(int x, int y)
+void ChessBoard::get_en_passant()
 {
     if (std::find(std::begin(this->_enPassantPiece->en_passant_piece), std::end(this->_enPassantPiece->en_passant_piece), this->_selected->piece) != std::end(this->_enPassantPiece->en_passant_piece))
     {
         int direction = (this->_selected->piece->get_color() == PieceColor::BLACK) ? 1 : -1;
         this->_selected->all_possible_move.emplace_back(this->_enPassantPiece->piece->get_positionx() + direction, this->_enPassantPiece->piece->get_positiony());
         Pawn* pawn = dynamic_cast<Pawn*>(this->_selected->piece);
-        pawn->set_enpassant(false);
     }
 }
 
@@ -178,10 +201,8 @@ void ChessBoard::attack_en_passant()
 
 void ChessBoard::reset_en_passant()
 {
-    for (Piece* piece : this->_enPassantPiece->en_passant_piece)
-    {
-        delete piece;
-    }
+    piece_Moved                  = false;
+    this->_enPassantPiece->piece = nullptr;
     this->_enPassantPiece->en_passant_piece.clear();
 }
 
@@ -254,9 +275,9 @@ void ChessBoard::draw_board()
             if (_selected.has_value())
             {
                 auto all_possible_move = this->get_all_possible_move();
-                if (this->_enPassantPiece.has_value() && this->position_pieces[x][y]->get_type() == PieceType::PAWN)
+                if (this->_enPassantPiece.has_value() && this->_selected->piece->get_type() == PieceType::PAWN)
                 {
-                    get_en_passant(x, y);
+                    get_en_passant();
                 }
 
                 if (x == _selected->position_x && y == _selected->position_y) // case selectionne

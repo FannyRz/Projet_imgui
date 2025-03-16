@@ -3,7 +3,6 @@
 #include <memory>
 #include <vector>
 
-
 enum class PieceColor : std::uint8_t {
     WHITE,
     BLACK
@@ -43,5 +42,4 @@ public:
     int        get_positiony() const { return this->m_y; };
     void       set_positionx(int x) { this->m_x = x; };
     void       set_positiony(int y) { this->m_y = y; };
-
 };

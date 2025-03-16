@@ -36,6 +36,7 @@ private:
     bool                                                 is_white_turn = true;
     bool                                                 game_won      = false;
     PieceColor                                           winner_color;
+    bool                                                 piece_Moved = false;
 
 public:
     void                             set_font(ImFont* font) { this->font = font; };
@@ -62,7 +63,7 @@ public:
 
     /*gestion de en_passsant*/
     void set_en_passant(int x, int y);
-    void get_en_passant(int x, int y);
+    void get_en_passant();
     void attack_en_passant();
     void reset_en_passant();
 };
