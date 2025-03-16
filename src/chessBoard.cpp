@@ -111,6 +111,7 @@ void ChessBoard::move(int x, int y, int new_x, int new_y)
         if (this->position_pieces[new_x][new_y]->get_type() == PieceType::KING)
         {
             game_won = true;
+            winner_color = this->position_pieces[x][y]->get_color();
         }
     }
     this->position_pieces[x][y]->set_positionx(new_x);
@@ -324,7 +325,7 @@ void ChessBoard::print_popup_win()
 
     if (ImGui::BeginPopupModal("WIN", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
     {
-        ImGui::Text("Bravo tu as gagne !");
+        ImGui::Text((winner_color == PieceColor::WHITE) ? "Bravo, les Blancs ont gagné !" : "Bravo, les Noirs ont gagné !");
 
         if (ImGui::Button("Recommancer une partie !"))
         {

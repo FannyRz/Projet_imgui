@@ -22,6 +22,7 @@ private:
     ImFont*                                              font;
     bool                                                 is_white_turn = true;
     bool                                                 game_won      = false;
+    PieceColor                                           winner_color;
 
 public:
     void                             set_font(ImFont* font) { this->font = font; };
