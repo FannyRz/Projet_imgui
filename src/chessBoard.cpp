@@ -110,7 +110,7 @@ void ChessBoard::move(int x, int y, int new_x, int new_y)
         // Vérifie si c'est un roi
         if (this->position_pieces[new_x][new_y]->get_type() == PieceType::KING)
         {
-            game_won = true;
+            game_won     = true;
             winner_color = this->position_pieces[x][y]->get_color();
         }
     }
@@ -120,10 +120,10 @@ void ChessBoard::move(int x, int y, int new_x, int new_y)
     this->position_pieces[x][y]         = nullptr;
     set_is_white_turn(!is_white_turn);
 
-    // if (this->position_pieces[new_x][new_y]->get_type() == PieceType::PAWN && abs(new_x - x) == 2)
-    // {
-    //     set_en_passant(new_x, new_y);
-    // }
+    if (this->position_pieces[new_x][new_y]->get_type() == PieceType::PAWN && abs(new_x - x) == 2)
+    {
+        set_en_passant(new_x, new_y);
+    }
 }
 
 bool ChessBoard::can_move(int new_x, int new_y)
@@ -135,6 +135,8 @@ void ChessBoard::set_en_passant(int x, int y)
 {
     EnPassantPiece enPassantPiece{};
     enPassantPiece.piece = this->_selected->piece;
+    std::cout << "hey" << std::endl;
+    std::cout << x << y << std::endl;
 
     // gauche
     if (get_piece(x, y + 1))
@@ -163,18 +165,31 @@ void ChessBoard::get_en_passant(int x, int y)
 {
     if (std::find(std::begin(this->_enPassantPiece->en_passant_piece), std::end(this->_enPassantPiece->en_passant_piece), this->_selected->piece) != std::end(this->_enPassantPiece->en_passant_piece))
     {
-        this->_selected->all_possible_move.emplace_back(this->_enPassantPiece->piece->get_positionx(), this->_enPassantPiece->piece->get_positiony());
+        int direction = (this->_selected->piece->get_color() == PieceColor::BLACK) ? 1 : -1;
+        this->_selected->all_possible_move.emplace_back(this->_enPassantPiece->piece->get_positionx() + direction, this->_enPassantPiece->piece->get_positiony());
         Pawn* pawn = dynamic_cast<Pawn*>(this->_selected->piece);
         pawn->set_enpassant(false);
     }
-    // if (pawn->get_enpassantgauche())
-    // {
-    // }
+}
+
+void ChessBoard::attack_en_passant()
+{
+    this->position_pieces[this->_enPassantPiece->piece->get_positionx()][this->_enPassantPiece->piece->get_positiony()].reset();
+    this->_enPassantPiece->piece = nullptr;
+}
+
+void ChessBoard::reset_en_passant()
+{
+    for (Piece* piece : this->_enPassantPiece->en_passant_piece)
+    {
+        delete piece;
+    }
+    this->_enPassantPiece->en_passant_piece.clear();
 }
 
 bool ChessBoard::get_piece(int x, int y)
 {
-    return this->position_pieces[x][y] != nullptr;
+    return isOnTheChessboard(x, y) && this->position_pieces[x][y] != nullptr;
 }
 
 bool ChessBoard::is_my_turn(int x, int y)
@@ -241,6 +256,11 @@ void ChessBoard::draw_board()
             if (_selected.has_value())
             {
                 auto all_possible_move = this->get_all_possible_move();
+                if (this->_enPassantPiece.has_value() && this->position_pieces[x][y]->get_type() == PieceType::PAWN)
+                {
+                    get_en_passant(x, y);
+                }
+
                 if (x == _selected->position_x && y == _selected->position_y) // case selectionne
                 {
                     ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 8.0f); // Bordure plus épaisse
@@ -302,9 +322,9 @@ void ChessBoard::draw_board()
         }
     }
 
-    //Affichage de la popup pour upgrade un pion
+    // Affichage de la popup pour upgrade un pion
     print_popup(_selected_pawn);
-    //Affichage de la popup quand on a manger un roi
+    // Affichage de la popup quand on a manger un roi
     print_popup_win();
 
     ImGui::PopStyleVar();
@@ -339,7 +359,7 @@ void ChessBoard::print_popup(std::optional<SelectedPiece> selected)
             ImGui::PushStyleColor(ImGuiCol_Button, btn.color);
             if (ImGui::Button(selected->piececolor == PieceColor::WHITE ? btn.white_label : btn.black_label, ImVec2(120, 0)))
             {
-                // changer la piece en fonction de sur la case ou l'on clic
+                // changer la piece en fonction de la case sur laquelle on clique
                 change_piece(selected->position_x, selected->position_y, btn.type, selected->piececolor);
                 ImGui::CloseCurrentPopup();
             }
@@ -366,7 +386,7 @@ void ChessBoard::print_popup_win()
     {
         ImGui::Text((winner_color == PieceColor::WHITE) ? "Bravo, les Blancs ont gagné !" : "Bravo, les Noirs ont gagné !");
 
-        if (ImGui::Button("Recommancer une partie !"))
+        if (ImGui::Button("Recommencer une partie !"))
         {
             game_won = false; // Fermer la popup
             ImGui::CloseCurrentPopup();
@@ -380,9 +400,9 @@ void ChessBoard::print_popup_win()
 void ChessBoard::reset_board()
 {
     // Réinitialiser l'état du jeu
-    game_won = false;
-    is_white_turn = true;
-    _selected = std::nullopt;
+    game_won       = false;
+    is_white_turn  = true;
+    _selected      = std::nullopt;
     _selected_pawn = std::nullopt;
 
     // Effacer toutes les pièces

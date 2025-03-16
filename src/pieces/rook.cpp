@@ -1,4 +1,5 @@
 #include "rook.hpp"
+#include "utils.hpp"
 
 std::vector<std::pair<int, int>> Rook::all_possible_move([[maybe_unused]] std::array<std::array<std::unique_ptr<Piece>, 8>, 8>& position_pieces)
 {

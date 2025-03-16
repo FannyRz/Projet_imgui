@@ -59,6 +59,10 @@ public:
     void                         print_popup_win();
     void                         change_piece(int x, int y, PieceType nouveau_type, PieceColor color);
     void                         reset_board();
-    void                         set_en_passant(int x, int y);
-    void                         get_en_passant(int x, int y);
+
+    /*gestion de en_passsant*/
+    void set_en_passant(int x, int y);
+    void get_en_passant(int x, int y);
+    void attack_en_passant();
+    void reset_en_passant();
 };

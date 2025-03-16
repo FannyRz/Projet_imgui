@@ -1,6 +1,7 @@
 #include "pawn.hpp"
 #include <utility>
 #include "pieces.hpp"
+#include "utils.hpp"
 
 std::vector<std::pair<int, int>> Pawn::all_possible_move([[maybe_unused]] std::array<std::array<std::unique_ptr<Piece>, 8>, 8>& position_pieces)
 {
@@ -52,14 +53,3 @@ void Pawn::first_move([[maybe_unused]] std::array<std::array<std::unique_ptr<Pie
         }
     }
 }
-
-// //si un pion peu avance de 2 cases
-// /*noir*/
-// if (/*en_passant_droite*/)
-// {
-//     all_theoriq_moves.emplace_back(x - 1, y + 1);
-// }
-// if (/*en_passant_gauche*/)
-// {
-//     all_theoriq_moves.emplace_back(x - 1, y + 1);
-// }void Pawn::set_enpassantdroit(bool enpassantdroit) {this->enpassantdroit = enpassantdroit; };
