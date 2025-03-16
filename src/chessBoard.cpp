@@ -135,8 +135,6 @@ void ChessBoard::set_en_passant(int x, int y)
 {
     EnPassantPiece enPassantPiece{};
     enPassantPiece.piece = this->_selected->piece;
-    std::cout << "hey" << std::endl;
-    std::cout << x << y << std::endl;
 
     // gauche
     if (get_piece(x, y + 1))
