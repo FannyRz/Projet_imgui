@@ -13,10 +13,16 @@ struct SelectedPiece {
     std::vector<std::pair<int, int>> all_possible_move{}; //->pour savoir les déplacements possibles
 };
 
+struct EnPassantPiece {
+    Piece*              piece;
+    std::vector<Piece*> en_passant_piece{}; // pour garder en memoire les cases qui peuvent manger en_passant
+};
+
 class ChessBoard {
 private:
     std::array<std::array<std::unique_ptr<Piece>, 8>, 8> position_pieces{}; // tableau de positions initiales des pièces
     std::optional<SelectedPiece>                         _selected;
+    std::optional<EnPassantPiece>                        _enPassantPiece;
     ImFont*                                              font;
     bool                                                 is_white_turn = true;
 
@@ -36,4 +42,6 @@ public:
     void        set_is_white_turn(bool is_white_turn) { this->is_white_turn = is_white_turn; };
     bool        get_is_white_turn() const { return this->is_white_turn; };
     bool        is_my_turn(int x, int y);
+    void        set_en_passant(int x, int y);
+    void        get_en_passant(int x, int y);
 };

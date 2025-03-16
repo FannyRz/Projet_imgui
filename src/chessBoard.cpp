@@ -7,6 +7,7 @@
 #include "pieces/king.hpp"
 #include "pieces/knight.hpp"
 #include "pieces/pawn.hpp"
+#include "pieces/pieces.hpp"
 #include "pieces/queen.hpp"
 #include "pieces/rook.hpp"
 #include "utils.hpp"
@@ -96,11 +97,57 @@ void ChessBoard::move(int x, int y, int new_x, int new_y)
     this->position_pieces[new_x][new_y] = std::move(this->position_pieces[x][y]);
     this->position_pieces[x][y]         = nullptr;
     set_is_white_turn(!is_white_turn);
+
+    // if (this->position_pieces[new_x][new_y]->get_type() == PieceType::PAWN && abs(new_x - x) == 2)
+    // {
+    //     set_en_passant(new_x, new_y);
+    // }
 }
 
 bool ChessBoard::can_move(int new_x, int new_y)
 {
     return std::find(this->_selected->all_possible_move.begin(), this->_selected->all_possible_move.end(), std::make_pair(new_x, new_y)) != this->_selected->all_possible_move.end();
+}
+
+void ChessBoard::set_en_passant(int x, int y)
+{
+    EnPassantPiece enPassantPiece{};
+    enPassantPiece.piece = this->_selected->piece;
+
+    // gauche
+    if (get_piece(x, y + 1))
+    {
+        Pawn* pawn = dynamic_cast<Pawn*>(this->position_pieces[x][y + 1].get());
+        if (pawn && pawn->get_color() != this->position_pieces[x][y]->get_color())
+        {
+            enPassantPiece.en_passant_piece.push_back(this->position_pieces[x][y + 1].get());
+            pawn->set_enpassant(true);
+        }
+    }
+
+    // droite
+    if (get_piece(x, y - 1))
+    {
+        Pawn* pawn = dynamic_cast<Pawn*>(this->position_pieces[x][y - 1].get());
+        if (pawn && pawn->get_color() != this->position_pieces[x][y]->get_color())
+        {
+            enPassantPiece.en_passant_piece.push_back(this->position_pieces[x][y - 1].get());
+            pawn->set_enpassant(true);
+        }
+    }
+}
+
+void ChessBoard::get_en_passant(int x, int y)
+{
+    if (std::find(std::begin(this->_enPassantPiece->en_passant_piece), std::end(this->_enPassantPiece->en_passant_piece), this->_selected->piece) != std::end(this->_enPassantPiece->en_passant_piece))
+    {
+        this->_selected->all_possible_move.emplace_back(this->_enPassantPiece->piece->get_positionx(), this->_enPassantPiece->piece->get_positiony());
+        Pawn* pawn = dynamic_cast<Pawn*>(this->_selected->piece);
+        pawn->set_enpassant(false);
+    }
+    // if (pawn->get_enpassantgauche())
+    // {
+    // }
 }
 
 bool ChessBoard::get_piece(int x, int y)
@@ -110,11 +157,9 @@ bool ChessBoard::get_piece(int x, int y)
 
 bool ChessBoard::is_my_turn(int x, int y)
 {
-    std::cout << "coucou" << std::endl;
-    if ((this->position_pieces[x][y]->get_color() == PieceColor::WHITE && get_is_white_turn()) || (this->position_pieces[x][y]->get_color() == PieceColor::BLACK && !get_is_white_turn()))
-        std::cout << "coucou" << std::endl;
-    return true;
+    return (this->position_pieces[x][y]->get_color() == PieceColor::WHITE && get_is_white_turn()) || (this->position_pieces[x][y]->get_color() == PieceColor::BLACK && !get_is_white_turn());
 }
+
 void ChessBoard::draw_board()
 {
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{0.f, 0.f}); // Bordure entre les cases à zéro.
@@ -159,7 +204,6 @@ void ChessBoard::draw_board()
 
             if (ImGui::Button((position_pieces[x][y] != nullptr ? from_type_to_char(x, y) + "##" + std::to_string(x) + "_" + std::to_string(y) : "##" + std::to_string(x) + "_" + std::to_string(y)).c_str(), ImVec2{80.f, 80.f}))
             {
-                std::cout << "hey";
                 if (_selected.has_value() && x == _selected->position_x && y == _selected->position_y)
                 {
                     this->deselect();
@@ -169,10 +213,9 @@ void ChessBoard::draw_board()
                     move(_selected->position_x, _selected->position_y, x, y);
                     this->deselect();
                 }
-                else if (get_piece(x, y))
+                else if (get_piece(x, y) && is_my_turn(x, y))
                 {
                     this->select(x, y);
-                    std::cout << this->is_white_turn;
                 }
             }
 
