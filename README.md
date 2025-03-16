@@ -2,13 +2,9 @@
 
 organisation / tâches : 
 
-A FAIRE : 
-- déplacement : pion pour manger
-- couleur differente pour les case ou on peut pas aller
-- gestion des tours de jeu + commencer par le blanc
-- victoire : quand on mange le roi
-- les pions deviennent au choix une autre pièce quand ils atteignent l'autre cote du plateau 
-- "en passant"
+A FAIRE :
+- "en passant" -> FANNY 
+- optimiser le code -> normalement c bon a voir ensemble 
 - faut ranger le code, voir comment faire pour draw_chessboard
 ----------> et après on sera tout bon pour la prog
 
@@ -17,3 +13,4 @@ BONUS :
 
 AUTRE : 
 faudra voir ce qu'on doit faire en synthèse d'image et en maths pour pouvoir y implémenter
+
