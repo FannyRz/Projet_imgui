@@ -104,6 +104,15 @@ std::string ChessBoard::from_type_to_char(int x, int y) const
 
 void ChessBoard::move(int x, int y, int new_x, int new_y)
 {
+    // Vérifie s'il y a une pièce sur la case d'arrivée
+    if (get_piece(new_x, new_y))
+    {
+        // Vérifie si c'est un roi
+        if (this->position_pieces[new_x][new_y]->get_type() == PieceType::KING)
+        {
+            game_won = true;
+        }
+    }
     this->position_pieces[x][y]->set_positionx(new_x);
     this->position_pieces[x][y]->set_positiony(new_y);
     this->position_pieces[new_x][new_y] = std::move(this->position_pieces[x][y]);
@@ -128,8 +137,7 @@ bool ChessBoard::is_my_turn(int x, int y)
 
 bool ChessBoard::piece_at_the_end(int x, int y)
 {
-    return (this->position_pieces[x][y]->get_positionx() == 0 && this->position_pieces[x][y]->get_color() == PieceColor::WHITE) ||
-           (this->position_pieces[x][y]->get_positionx() == 7 && this->position_pieces[x][y]->get_color() == PieceColor::BLACK);
+    return (this->position_pieces[x][y]->get_positionx() == 0 && this->position_pieces[x][y]->get_color() == PieceColor::WHITE) || (this->position_pieces[x][y]->get_positionx() == 7 && this->position_pieces[x][y]->get_color() == PieceColor::BLACK);
 }
 
 void ChessBoard::change_piece(int x, int y, PieceType nouveau_type, PieceColor color)
@@ -214,12 +222,15 @@ void ChessBoard::draw_board()
                         _selected_pawn = this->select_pawn(x, y);
                         ImGui::OpenPopup("NEW PIECE");
                     }
+                    if (game_won)
+                    {
+                        ImGui::OpenPopup("WIN");
+                    }
                     this->deselect();
                 }
                 else if (get_piece(x, y) && is_my_turn(x, y))
                 {
                     this->select(x, y);
-                    std::cout << this->is_white_turn;
                 }
             }
 
@@ -243,7 +254,11 @@ void ChessBoard::draw_board()
             }
         }
     }
+
+    //Affichage de la popup pour upgrade un pion
     print_popup(_selected_pawn);
+    //Affichage de la popup quand on a manger un roi
+    print_popup_win();
 
     ImGui::PopStyleVar();
 }
@@ -284,7 +299,7 @@ void ChessBoard::print_popup(std::optional<SelectedPiece> selected)
             ImGui::PushStyleColor(ImGuiCol_Button, btn.color);
             if (ImGui::Button(selected->piececolor == PieceColor::WHITE ? btn.white_label : btn.black_label, ImVec2(120, 0)))
             {
-                //changer la piece en fonction de sur la case ou l'on clic
+                // changer la piece en fonction de sur la case ou l'on clic
                 change_piece(selected->position_x, selected->position_y, btn.type, selected->piececolor);
                 ImGui::CloseCurrentPopup();
             }
@@ -296,6 +311,27 @@ void ChessBoard::print_popup(std::optional<SelectedPiece> selected)
 
         ImGui::PopStyleColor();
         ImGui::PopFont();
+        ImGui::EndPopup();
+    }
+}
+
+void ChessBoard::print_popup_win()
+{
+    // Affichage de la popup WIN
+    ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+    ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+    ImGui::SetNextWindowSize(ImVec2(500, 140));
+
+    if (ImGui::BeginPopupModal("WIN", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        ImGui::Text("Bravo tu as gagne !");
+
+        if (ImGui::Button("OK"))
+        {
+            game_won = false; // Fermer la popup
+            ImGui::CloseCurrentPopup();
+        }
+
         ImGui::EndPopup();
     }
 }

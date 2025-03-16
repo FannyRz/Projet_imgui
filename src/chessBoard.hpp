@@ -21,6 +21,7 @@ private:
     std::optional<SelectedPiece>                         _selected_pawn;
     ImFont*                                              font;
     bool                                                 is_white_turn = true;
+    bool                                                 game_won      = false;
 
 public:
     void                             set_font(ImFont* font) { this->font = font; };
@@ -41,5 +42,6 @@ public:
     bool                         is_my_turn(int x, int y);
     bool                         piece_at_the_end(int x, int y);
     void                         print_popup(std::optional<SelectedPiece> selected);
+    void                         print_popup_win();
     void                         change_piece(int x, int y, PieceType nouveau_type, PieceColor color);
 };
