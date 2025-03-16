@@ -17,6 +17,8 @@ struct SelectedPiece {
 struct EnPassantPiece {
     Piece*              piece;
     std::vector<Piece*> en_passant_piece{}; // pour garder en memoire les cases qui peuvent manger en_passant
+};
+
 struct PieceButton {
     PieceType   type;
     const char* white_label;
@@ -57,4 +59,6 @@ public:
     void                         print_popup_win();
     void                         change_piece(int x, int y, PieceType nouveau_type, PieceColor color);
     void                         reset_board();
+    void                         set_en_passant(int x, int y);
+    void                         get_en_passant(int x, int y);
 };
