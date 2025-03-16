@@ -277,13 +277,6 @@ void ChessBoard::print_popup(std::optional<SelectedPiece> selected)
 
         ImGui::PushFont(this->get_font());
 
-        struct PieceButton {
-            PieceType   type;
-            const char* white_label;
-            const char* black_label;
-            ImVec4      color;
-        };
-
         std::vector<PieceButton> buttons = {
             {.type = PieceType::QUEEN, .white_label = "Q", .black_label = "W", .color = ImVec4{0.8f, 0.4f, 0.0f, 1.0f}},
             {.type = PieceType::ROOK, .white_label = "R", .black_label = "T", .color = ImVec4{1.0f, 0.7f, 0.0f, 1.0f}},

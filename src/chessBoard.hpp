@@ -14,6 +14,13 @@ struct SelectedPiece {
     std::vector<std::pair<int, int>> all_possible_move{}; //->pour savoir les déplacements possibles
 };
 
+struct PieceButton {
+            PieceType   type;
+            const char* white_label;
+            const char* black_label;
+            ImVec4      color;
+        };
+
 class ChessBoard {
 private:
     std::array<std::array<std::unique_ptr<Piece>, 8>, 8> position_pieces{}; // tableau de positions initiales des pièces
