@@ -44,4 +44,5 @@ public:
     void                         print_popup(std::optional<SelectedPiece> selected);
     void                         print_popup_win();
     void                         change_piece(int x, int y, PieceType nouveau_type, PieceColor color);
+    void                         reset_board();
 };

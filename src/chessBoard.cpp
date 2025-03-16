@@ -320,18 +320,40 @@ void ChessBoard::print_popup_win()
     // Affichage de la popup WIN
     ImVec2 center = ImGui::GetMainViewport()->GetCenter();
     ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-    ImGui::SetNextWindowSize(ImVec2(500, 140));
+    ImGui::SetNextWindowSize(ImVec2(250, 70));
 
     if (ImGui::BeginPopupModal("WIN", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
     {
         ImGui::Text("Bravo tu as gagne !");
 
-        if (ImGui::Button("OK"))
+        if (ImGui::Button("Recommancer une partie !"))
         {
             game_won = false; // Fermer la popup
             ImGui::CloseCurrentPopup();
+            reset_board();
         }
 
         ImGui::EndPopup();
     }
+}
+
+void ChessBoard::reset_board()
+{
+    // Réinitialiser l'état du jeu
+    game_won = false;
+    is_white_turn = true;
+    _selected = std::nullopt;
+    _selected_pawn = std::nullopt;
+
+    // Effacer toutes les pièces
+    for (int x = 0; x < 8; x++)
+    {
+        for (int y = 0; y < 8; y++)
+        {
+            position_pieces[x][y] = nullptr;
+        }
+    }
+
+    // Remettre les pièces en place
+    set_position();
 }
