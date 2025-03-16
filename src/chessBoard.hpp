@@ -15,11 +15,11 @@ struct SelectedPiece {
 };
 
 struct PieceButton {
-            PieceType   type;
-            const char* white_label;
-            const char* black_label;
-            ImVec4      color;
-        };
+    PieceType   type;
+    const char* white_label;
+    const char* black_label;
+    ImVec4      color;
+};
 
 class ChessBoard {
 private:
