@@ -128,9 +128,8 @@ bool ChessBoard::is_my_turn(int x, int y)
 
 bool ChessBoard::piece_at_the_end(int x, int y)
 {
-    if (((this->position_pieces[x][y]->get_positionx() == 0 && this->position_pieces[x][y]->get_color() == PieceColor::WHITE)) || ((this->position_pieces[x][y]->get_positionx() == 7 && this->position_pieces[x][y]->get_color() == PieceColor::BLACK)))
-        return true;
-    return false;
+    return (this->position_pieces[x][y]->get_positionx() == 0 && this->position_pieces[x][y]->get_color() == PieceColor::WHITE) ||
+           (this->position_pieces[x][y]->get_positionx() == 7 && this->position_pieces[x][y]->get_color() == PieceColor::BLACK);
 }
 
 void ChessBoard::change_piece(int x, int y, PieceType nouveau_type, PieceColor color)
@@ -210,7 +209,6 @@ void ChessBoard::draw_board()
                 else if (_selected.has_value() && can_move(x, y))
                 {
                     move(_selected->position_x, _selected->position_y, x, y);
-                    // ajouter l'affichage du pions qui se transforme une fois au bout
                     if (this->position_pieces[x][y]->get_type() == PieceType::PAWN && piece_at_the_end(x, y))
                     {
                         _selected_pawn = this->select_pawn(x, y);
@@ -224,7 +222,6 @@ void ChessBoard::draw_board()
                     std::cout << this->is_white_turn;
                 }
             }
-            // delete temporary_pawn_to_upgrade;
 
             if (borderActivate)
             {
@@ -253,7 +250,6 @@ void ChessBoard::draw_board()
 
 void ChessBoard::print_popup(std::optional<SelectedPiece> selected)
 {
-    // Always center this window when appearing
     ImVec2 center = ImGui::GetMainViewport()->GetCenter();
     ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
     ImGui::SetNextWindowSize(ImVec2(500, 140));
@@ -265,7 +261,6 @@ void ChessBoard::print_popup(std::optional<SelectedPiece> selected)
 
         ImGui::PushFont(this->get_font());
 
-        // Définition des pièces et couleurs associées
         struct PieceButton {
             PieceType   type;
             const char* white_label;
@@ -289,6 +284,7 @@ void ChessBoard::print_popup(std::optional<SelectedPiece> selected)
             ImGui::PushStyleColor(ImGuiCol_Button, btn.color);
             if (ImGui::Button(selected->piececolor == PieceColor::WHITE ? btn.white_label : btn.black_label, ImVec2(120, 0)))
             {
+                //changer la piece en fonction de sur la case ou l'on clic
                 change_piece(selected->position_x, selected->position_y, btn.type, selected->piececolor);
                 ImGui::CloseCurrentPopup();
             }
