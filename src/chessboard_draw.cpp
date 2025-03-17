@@ -63,7 +63,7 @@ void ChessBoard::draw_board()
                     move(_selected->position_x, _selected->position_y, x, y);
                     if (this->position_pieces[x][y]->get_type() == PieceType::PAWN && piece_at_the_end(x, y))
                     {
-                        _selected_pawn = this->select_pawn(x, y);
+                        _selected_pawn = this->select_pawn_to_upgrade(x, y);
                         ImGui::OpenPopup("NEW PIECE");
                     }
                     if (game_won)

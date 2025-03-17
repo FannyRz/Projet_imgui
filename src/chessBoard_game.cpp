@@ -27,7 +27,7 @@ void ChessBoard::select_selectedPiece(int x, int y)
     this->_selected                 = selectedPiece;
 }
 
-std::optional<SelectedPiece> ChessBoard::select_pawn(int x, int y)
+std::optional<SelectedPiece> ChessBoard::select_pawn_to_upgrade(int x, int y)
 {
     SelectedPiece selectedPiece{};
     selectedPiece.piece      = position_pieces[x][y].get();

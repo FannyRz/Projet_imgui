@@ -51,7 +51,7 @@ public:
     void                         select_selectedPiece(int x, int y);
     void                         deselect_selectedPiece();
     
-    std::optional<SelectedPiece> select_pawn(int x, int y);
+    std::optional<SelectedPiece> select_pawn_to_upgrade(int x, int y);
     std::string                  from_type_to_char(int x, int y) const;
     void                         move(int x, int y, int new_x, int new_y);
     bool                         can_move(int new_x, int new_y);
