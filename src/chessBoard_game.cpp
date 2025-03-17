@@ -27,7 +27,7 @@ void ChessBoard::select_selectedPiece(int x, int y)
     this->_selected                 = selectedPiece;
 }
 
-std::optional<SelectedPiece> ChessBoard::select_pawn(int x, int y)
+std::optional<SelectedPiece> ChessBoard::select_pawn_to_upgrade(int x, int y)
 {
     SelectedPiece selectedPiece{};
     selectedPiece.piece      = position_pieces[x][y].get();
@@ -143,7 +143,7 @@ void ChessBoard::reset_en_passant()
     this->_enPassantPiece->en_passant_piece.clear();
 }
 
-/* ------------------------------ gestion de upgrate pawn ------------------------------ */
+/* ------------------------------ gestion de upgrade pawn ------------------------------ */
 bool ChessBoard::piece_at_the_end(int x, int y)
 {
     return (this->position_pieces[x][y]->get_positionx() == 0 && this->position_pieces[x][y]->get_color() == PieceColor::WHITE) || (this->position_pieces[x][y]->get_positionx() == 7 && this->position_pieces[x][y]->get_color() == PieceColor::BLACK);
