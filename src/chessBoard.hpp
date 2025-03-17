@@ -28,26 +28,30 @@ struct PieceButton {
 
 class ChessBoard {
 private:
+    std::optional<SelectedPiece>  _selected;
+    std::optional<EnPassantPiece> _enPassantPiece;
+    std::optional<SelectedPiece>  _selected_pawn;
+
     std::array<std::array<std::unique_ptr<Piece>, 8>, 8> position_pieces{}; // tableau de positions initiales des pièces
-    std::optional<SelectedPiece>                         _selected;
-    std::optional<EnPassantPiece>                        _enPassantPiece;
-    std::optional<SelectedPiece>                         _selected_pawn;
     ImFont*                                              font;
+    bool                                                 piece_Moved   = false;
     bool                                                 is_white_turn = true;
     bool                                                 game_won      = false;
     PieceColor                                           winner_color;
-    bool                                                 piece_Moved = false;
 
 public:
-    void                             set_font(ImFont* font) { this->font = font; };
-    ImFont*                          get_font() const { return this->font; };
+    void    set_font(ImFont* font) { this->font = font; };
+    ImFont* get_font() const { return this->font; };
+    void    set_position();
+
     std::vector<std::pair<int, int>> get_all_possible_move() { return _selected.has_value() ? _selected->all_possible_move : std::vector<std::pair<int, int>>{}; }
 
-    void                         draw_board();
-    void                         set_position();
-    void                         select(int x, int y);
+    void draw_board();
+
+    void                         select_selectedPiece(int x, int y);
+    void                         deselect_selectedPiece();
+    
     std::optional<SelectedPiece> select_pawn(int x, int y);
-    void                         deselect();
     std::string                  from_type_to_char(int x, int y) const;
     void                         move(int x, int y, int new_x, int new_y);
     bool                         can_move(int new_x, int new_y);
