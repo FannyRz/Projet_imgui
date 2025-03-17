@@ -52,7 +52,7 @@ int main()
             ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 0, 0, 255));
             if (ImGui::Button("Recommencer une partie !", ImVec2(250, 50)))
             {
-                app._chessboard.reset_board();
+                app.get_chessboard().reset_board();
             }
             if (ImGui::Button("Quitter la partie !", ImVec2(250, 50)))
             {

@@ -399,19 +399,28 @@ void ChessBoard::print_popup_win()
     // Affichage de la popup WIN
     ImVec2 center = ImGui::GetMainViewport()->GetCenter();
     ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-    ImGui::SetNextWindowSize(ImVec2(250, 70));
+    ImGui::SetNextWindowSize(ImVec2(370, 170));
 
     if (ImGui::BeginPopupModal("WIN", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
     {
         ImGui::Text((winner_color == PieceColor::WHITE) ? "Bravo, les Blancs ont gagné !" : "Bravo, les Noirs ont gagné !");
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(20, 20));
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.4f, 0.0f, 1.0f});
+        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 255));
 
-        if (ImGui::Button("Recommencer une partie !"))
+        if (ImGui::Button("Recommencer une partie !", ImVec2(250, 40)))
         {
             game_won = false; // Fermer la popup
             ImGui::CloseCurrentPopup();
             reset_board();
         }
+        if (ImGui::Button("Quitter la partie !", ImVec2(250, 40)))
+        {
+            exit(0);
+        }
 
+        ImGui::PopStyleVar();
+        ImGui::PopStyleColor(2);
         ImGui::EndPopup();
     }
 }
