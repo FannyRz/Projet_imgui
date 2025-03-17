@@ -18,8 +18,8 @@ int main()
     ImFont* basicFont = io.Fonts->AddFontFromFileTTF("fonts/CHEQ_TT.TTF", 70.0f);
     IM_ASSERT(basicFont != nullptr);
 
-    app._chessboard.set_font(basicFont);
-    app._chessboard.set_position();
+    app.get_chessboard().set_font(basicFont);
+    app.get_chessboard().set_position();
 
     quick_imgui::loop(
         "Chess",

@@ -6,10 +6,10 @@
 
 class App {
 private:
-    // ChessBoard _chessboard{};
+    ChessBoard _chessboard{};
     Renderer3D _renderer{};
 
 public:
-    void       update();
-    ChessBoard _chessboard{};
+    void        update();
+    ChessBoard& get_chessboard() { return this->_chessboard; };
 };

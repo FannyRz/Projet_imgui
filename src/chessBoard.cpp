@@ -120,6 +120,15 @@ void ChessBoard::move(int x, int y, int new_x, int new_y)
     this->position_pieces[new_x][new_y] = std::move(this->position_pieces[x][y]);
     this->position_pieces[x][y]         = nullptr;
 
+    if (this->_enPassantPiece.has_value() && this->position_pieces[new_x][new_y]->get_type() == PieceType::PAWN && std::find(std::begin(this->_enPassantPiece->en_passant_piece), std::end(this->_enPassantPiece->en_passant_piece), this->_selected->piece) != std::end(this->_enPassantPiece->en_passant_piece))
+    {
+        int direction = (this->_selected->piece->get_color() == PieceColor::BLACK) ? 1 : -1;
+        if (new_x == this->_enPassantPiece->piece->get_positionx() + direction && new_y == this->_enPassantPiece->piece->get_positiony())
+        {
+            attack_en_passant();
+        }
+    }
+
     if (this->_enPassantPiece.has_value() && piece_Moved)
     {
         this->reset_en_passant();
@@ -128,15 +137,6 @@ void ChessBoard::move(int x, int y, int new_x, int new_y)
     if (this->position_pieces[new_x][new_y]->get_type() == PieceType::PAWN && abs(new_x - x) == 2)
     {
         set_en_passant(new_x, new_y);
-    }
-
-    if (this->_enPassantPiece.has_value() && this->position_pieces[new_x][new_y]->get_type() == PieceType::PAWN && std::find(std::begin(this->_enPassantPiece->en_passant_piece), std::end(this->_enPassantPiece->en_passant_piece), this->_selected->piece) != std::end(this->_enPassantPiece->en_passant_piece))
-    {
-        int direction = (this->_selected->piece->get_color() == PieceColor::BLACK) ? 1 : -1;
-        if (new_x == this->_enPassantPiece->piece->get_positionx() + direction && new_y == this->_enPassantPiece->piece->get_positiony())
-        {
-            attack_en_passant();
-        }
     }
 
     set_is_white_turn(!is_white_turn);
