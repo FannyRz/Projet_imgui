@@ -61,27 +61,8 @@ int main()
                 ImGui::PopFont();
                 ImGui::EndGroup();
 
-            // Ajouter un espace pour pousser les boutons à droite
-            ImGui::Dummy(ImVec2(20, 0));  
-            ImGui::SameLine();
-            ImGui::BeginGroup();
-            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 10)); // Augmente l'espacement interne du bouton
-            ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(20, 20));  // Espacement entre les boutons
-            ImGui::PushFont(bigDefaultFont);
-            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.4f, 0.0f, 1.0f});
-            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 0, 0, 255));
-            if (ImGui::Button("Recommencer une partie !", ImVec2(250, 50)))
-            {
-                app.get_chessboard().reset_board();
-            }
-            if (ImGui::Button("Quitter la partie !", ImVec2(250, 50)))
-            {
-                exit(0);
-            }
-            ImGui::PopStyleColor(2);
-            ImGui::PopStyleVar(2);
-            ImGui::PopFont(); 
-            ImGui::EndGroup();
+                ImGui::End();
+            },
 
             // .key_callback             = [](int key, int scancode, int action, int mods) { std::cout << "Key: " << key << " Scancode: " << scancode << " Action: " << action << " Mods: " << mods << '\n'; },
             // .mouse_button_callback    = [](int button, int action, int mods) { std::cout << "Button: " << button << " Action: " << action << " Mods: " << mods << '\n'; },
