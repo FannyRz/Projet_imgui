@@ -42,7 +42,8 @@ private:
 public:
     void    set_font(ImFont* font) { this->font = font; };
     ImFont* get_font() const { return this->font; };
-    void    set_position();
+
+    void set_position();
 
     std::vector<std::pair<int, int>> get_all_possible_move() { return _selected.has_value() ? _selected->all_possible_move : std::vector<std::pair<int, int>>{}; }
 
@@ -65,7 +66,7 @@ public:
     void                         change_piece(int x, int y, PieceType nouveau_type, PieceColor color);
     void                         reset_board();
 
-    /*gestion de en_passsant*/
+    /*gestion de en_passant*/
     void set_en_passant(int x, int y);
     void get_en_passant();
     void attack_en_passant();

@@ -4,6 +4,7 @@
 #include "chessBoard.hpp"
 #include "glad/glad.h"
 #include "quick_imgui/quick_imgui.hpp"
+#include "maths/maths.hpp"
 
 int main()
 {
@@ -13,14 +14,13 @@ int main()
 
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
+
     // Charger la police par défaut avec une taille plus grande (EX: 40px)
     ImFont* bigDefaultFont = io.Fonts->AddFontDefault();
     bigDefaultFont->Scale  = 1.5f;
-    // Font de l'echiquier
-    ImFont* basicFont = io.Fonts->AddFontFromFileTTF("fonts/CHEQ_TT.TTF", 70.0f);
-    IM_ASSERT(basicFont != nullptr);
 
-    app.get_chessboard().set_font(basicFont);
+    // Font
+    app.get_chessboard().set_font(load_font_based_on_bernoulli(io));
     app.get_chessboard().set_position();
 
     quick_imgui::loop(
