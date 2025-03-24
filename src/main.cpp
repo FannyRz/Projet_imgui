@@ -1,12 +1,16 @@
+#include <glad/glad.h>
 #include <imgui.h>
 #include <iostream>
 #include "App.hpp"
+#include "GLFW/glfw3.h"
 #include "chessBoard.hpp"
-#include "glad/glad.h"
-#include "quick_imgui/quick_imgui.hpp"
+#include "../lib/glimac/glimac/FilePath.hpp"
+#include "../lib/glimac/glimac/Program.hpp"
 #include "maths/maths.hpp"
+#include "quick_imgui/quick_imgui.hpp"
+#include "renderer3D.hpp"
 
-int main()
+int main(int argc, char* argv[])
 {
     float value{0.f};
 
@@ -23,12 +27,62 @@ int main()
     app.get_chessboard().set_font(load_font_based_on_bernoulli(io));
     app.get_chessboard().set_position();
 
+    /*=============================================================*/
+    /* Initialize the library */
+    if (!glfwInit())
+    {
+        return -1;
+    }
+
+/* Create a window and its OpenGL context */
+#ifdef __APPLE__
+    /* We need to explicitly ask for a 3.3 context on Mac */
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#endif
+    GLFWwindow* window =
+        glfwCreateWindow(800, 800, "TP1", nullptr, nullptr);
+    if (!window)
+    {
+        glfwTerminate();
+        return -1;
+    }
+
+    /* Make the window's context current */
+    glfwMakeContextCurrent(window);
+
+    /* Intialize glad (loads the OpenGL functions) */
+    if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
+    {
+        return -1;
+    }
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH);
+
+    /*********************************
+     * HERE SHOULD COME THE INITIALIZATION CODE
+     *********************************/
+
+    glimac::FilePath applicationPath(argv[0]);
+    // glimac::Program  program = glimac::loadProgram("../../../fonts/color.vs.glsl", "../../../fonts/color.fs.glsl");
+
+    // program.use();
+
+    /*=============================================================*/
+
     quick_imgui::loop(
         "Quick ImGui",
         {
             // .init = []() { std::cout << "Init\n"; },
 
             .loop = [&]() {
+                glClearColor(1., 0.5, 0.5, 1.);
+
                 ImGui::Begin("Le jeu d'echec de la mort qui tue !!");
 
                 // Afficher l'échiquier en premier
@@ -62,6 +116,7 @@ int main()
                 ImGui::EndGroup();
 
                 ImGui::End();
+
             },
 
             // .key_callback             = [](int key, int scancode, int action, int mods) { std::cout << "Key: " << key << " Scancode: " << scancode << " Action: " << action << " Mods: " << mods << '\n'; },

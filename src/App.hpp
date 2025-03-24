@@ -12,4 +12,5 @@ private:
 public:
     void        update();
     ChessBoard& get_chessboard() { return this->_chessboard; };
+    Renderer3D& get_renderer() { return this->_renderer; };
 };
