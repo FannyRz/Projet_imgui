@@ -89,7 +89,7 @@ bool ChessBoard::is_my_turn(int x, int y)
     return (this->position_pieces[x][y]->get_color() == PieceColor::WHITE && get_is_white_turn()) || (this->position_pieces[x][y]->get_color() == PieceColor::BLACK && !get_is_white_turn());
 }
 
-/* ------------------------------ popup ------------------------------ */
+/* ------------------------------ popups ------------------------------ */
 void ChessBoard::print_popup(std::optional<SelectedPiece> selected)
 {
     ImVec2 center = ImGui::GetMainViewport()->GetCenter();
