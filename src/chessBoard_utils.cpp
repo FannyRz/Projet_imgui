@@ -11,6 +11,7 @@
 #include "pieces/queen.hpp"
 #include "pieces/rook.hpp"
 #include "utils.hpp"
+#include "maths/maths.hpp"
 
 /* ------------------------------ font ------------------------------ */
 std::string ChessBoard::from_type_to_char(int x, int y) const
@@ -73,15 +74,15 @@ void ChessBoard::set_position()
     // pion
     for (int i{0}; i < 8; i++)
     {
-        this->position_pieces[1][i] = std::make_unique<Pawn>(PieceColor::BLACK, 1, i);
-        this->position_pieces[6][i] = std::make_unique<Pawn>(PieceColor::WHITE, 6, i);
+        this->position_pieces[1][i] = std::make_unique<Pawn>(PieceColor::WHITE, 1, i);
+        this->position_pieces[6][i] = std::make_unique<Pawn>(PieceColor::BLACK, 6, i);
     }
 }
 
 /* ------------------------------ some utils functions ------------------------------ */
 bool ChessBoard::get_piece(int x, int y)
 {
-    return isOnTheChessboard(x, y) && this->position_pieces[x][y] != nullptr;
+    return is_on_the_chessboard(x, y) && this->position_pieces[x][y] != nullptr;
 }
 
 bool ChessBoard::is_my_turn(int x, int y)

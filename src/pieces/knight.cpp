@@ -11,7 +11,7 @@ std::vector<std::pair<int, int>> Knight::all_possible_move([[maybe_unused]] std:
         int new_x = this->m_x + move.first;
         int new_y = this->m_y + move.second;
 
-        if (isOnTheChessboard(new_x, new_y))
+        if (is_on_the_chessboard(new_x, new_y))
         {
             if (position_pieces[new_x][new_y] != nullptr)
             {

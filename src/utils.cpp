@@ -1,7 +1,8 @@
 #include "utils.hpp"
 #include <iostream>
+#include "maths/maths.hpp"
 
-void displaytab(const std::vector<std::pair<int, int>>& all_possible_move)
+void display_tab(const std::vector<std::pair<int, int>>& all_possible_move)
 {
     for (const auto& move : all_possible_move)
     {
@@ -9,7 +10,7 @@ void displaytab(const std::vector<std::pair<int, int>>& all_possible_move)
     }
 }
 
-bool isOnTheChessboard(int x, int y)
+bool is_on_the_chessboard(int x, int y)
 {
     return x < 8 && x >= 0 && y < 8 && y >= 0;
 }

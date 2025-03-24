@@ -3,7 +3,9 @@
 #include <memory>
 #include <optional>
 #include "chessBoard.hpp"
+#include "maths/maths.hpp"
 #include "pieces/pieces.hpp"
+#include "utils.hpp"
 
 void ChessBoard::draw_board()
 {
@@ -63,8 +65,18 @@ void ChessBoard::draw_board()
                     move(_selected->position_x, _selected->position_y, x, y);
                     if (this->position_pieces[x][y]->get_type() == PieceType::PAWN && piece_at_the_end(x, y))
                     {
-                        _selected_pawn = this->select_pawn_to_upgrade(x, y);
-                        ImGui::OpenPopup("NEW PIECE");
+                        _selected_pawn              = this->select_pawn_to_upgrade(x, y);
+                        bool is_random_upgrate_pawn = bernoulli(0.7);
+                        std::cout << is_random_upgrate_pawn << std::endl;
+                        
+                        if (is_random_upgrate_pawn)
+                        {
+                            ImGui::OpenPopup("NEW PIECE");
+                        }
+                        else
+                        {
+                            change_piece(x, y, select_piece_promotion(), _selected_pawn->piece->get_color());
+                        }
                     }
                     if (game_won)
                     {

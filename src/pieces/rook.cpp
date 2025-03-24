@@ -10,11 +10,11 @@ std::vector<std::pair<int, int>> Rook::all_possible_move([[maybe_unused]] std::a
         int x = this->m_x;
         int y = this->m_y;
 
-        while (isOnTheChessboard(x, y))
+        while (is_on_the_chessboard(x, y))
         {
             x += dx;
             y += dy;
-            if (!isOnTheChessboard(x, y))
+            if (!is_on_the_chessboard(x, y))
                 break;
             if (position_pieces[x][y] != nullptr)
             {
