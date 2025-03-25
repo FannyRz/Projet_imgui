@@ -1,4 +1,4 @@
-#include "maths.hpp"
+// #include "maths.hpp"
 
 // int main()
 // {
@@ -92,5 +92,39 @@
 // // Affichage des résultats
 // std::cout << "Variance experimentale  : " << variance_emp << std::endl;
 // std::cout << "Variance theorique: " << variance_theo << std::endl;
+
+/* ---------- loi de Gamma ---------- */
+// // Paramètres de la loi Gamma
+// int   alpha = 2;     // Paramètre de forme (nombre d'événements)
+// float beta  = 10.0f; // Paramètre d'échelle (temps moyen par événement)
+
+// std::vector<float> samples;
+// float              sum = 0;
+
+// // Générer un certain nombre d'échantillons
+// for (int i = 0; i < 1000; ++i)
+// {
+//     float sample = generateGamma(alpha, beta);
+//     samples.push_back(sample);
+//     sum += sample;
+// }
+
+// // Calcul de l'espérance (moyenne des échantillons)
+// float esperance = sum / 1000;
+
+// // Calcul de la variance
+// float squaredSum = 0;
+// for (float sample : samples)
+// {
+//     squaredSum += (sample - esperance) * (sample - esperance);
+// }
+// float variance = squaredSum / 1000;
+
+// // Affichage des résultats
+// std::cout << "Estimation experimentale de l'esperance : " << esperance
+//           << std::endl;
+// std::cout << "Estimation experimentale de la variance : " << variance
+//           << std::endl;
+
 //     return 0;
 // }

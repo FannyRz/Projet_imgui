@@ -65,3 +65,33 @@ double varianceExperimentale(const std::vector<double>& echantillons, double moy
     }
     return somme / echantillons.size();
 }
+
+// Fonction pour générer une variable aléatoire suivant une loi uniforme [0,1]
+float generateUniform()
+{
+    std::random_device                    rd;
+    std::mt19937                          gen(rd());
+    std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+    return dist(gen);
+}
+
+// Fonction pour générer une variable suivant une loi exponentielle de paramètre 1/beta
+float generateExponential(float beta)
+{
+    float U = generateUniform();
+    return -beta * std::log(U);
+}
+
+// Fonction pour générer une variable suivant une loi Gamma
+float generateGamma(int alpha, float beta)
+{
+    float sum = 0.0f;
+
+    // Somme de alpha variables exponentielles
+    for (int i = 0; i < alpha; ++i)
+    {
+        sum += generateExponential(beta);
+    }
+
+    return sum;
+}
