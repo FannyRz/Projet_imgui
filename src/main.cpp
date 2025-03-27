@@ -1,8 +1,8 @@
 #include <glad/glad.h>
 #include <imgui.h>
 #include <iostream>
-#include "../lib/glimac/glimac/FilePath.hpp"
-#include "../lib/glimac/glimac/Program.hpp"
+#include "OpenGLutils/glimac/glimac/FilePath.hpp"
+#include "OpenGLutils/glimac/glimac/Program.hpp"
 #include "App.hpp"
 #include "GLFW/glfw3.h"
 #include "chessBoard.hpp"

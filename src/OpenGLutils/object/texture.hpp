@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 #include <glfw/src/internal.h>
 #include <string>
-#include "../../../lib/glimac/glimac/Image.hpp"
+#include "../glimac/glimac/Image.hpp"
 
 class Texture {
 private:

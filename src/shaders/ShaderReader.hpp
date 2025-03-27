@@ -2,7 +2,7 @@
 #define SHADER_LOADER_H
 
 #include <glad/glad.h>
-#include "../../../lib/glimac/glimac/Program.hpp"
+#include "../OpenGLutils/glimac/glimac/Program.hpp"
 
 class ShaderLoader {
 private:

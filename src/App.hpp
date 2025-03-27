@@ -1,6 +1,5 @@
 #pragma once
 
-#include <imgui.h>
 #include "chessBoard.hpp"
 #include "renderer3D.hpp"
 
