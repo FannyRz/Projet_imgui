@@ -1,10 +1,7 @@
 #include <glad/glad.h>
 #include <imgui.h>
-#include <iostream>
 #include "OpenGLutils/glimac/glimac/FilePath.hpp"
-#include "OpenGLutils/glimac/glimac/Program.hpp"
 #include "App.hpp"
-#include "GLFW/glfw3.h"
 #include "chessBoard.hpp"
 #include "maths/maths.hpp"
 #include "quick_imgui/quick_imgui.hpp"
@@ -48,32 +45,18 @@ int main(int argc, char* argv[])
             .init =
                 [&]() {
                     GLuint vbo{};
-                    // Le VBO contient les données
-                    glGenBuffers(1, &vbo);
-                    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-                    GLfloat vertices[] = {-0.5f, -0.5f, 0.5f, -0.5f, 0.0f, 0.5f};
-                    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
-                    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-                    // Le VAO décrit les données
-                    glGenVertexArrays(1, &vao);
-                    glBindVertexArray(vao);
-                    const GLuint VERTEX_ATTR_POSITION = 0;
-                    glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
-                    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-                    glVertexAttribPointer(VERTEX_ATTR_POSITION, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), nullptr);
-                    glBindBuffer(GL_ARRAY_BUFFER, 0);
-                    glBindVertexArray(0);
+       
+
+                    app.get_renderer().setup_obj();
                 },
 
             .loop = [&]() {
         glClearColor(1., 0.5, 0.5, 1.);
         glClear(GL_COLOR_BUFFER_BIT);
 
+                app.get_renderer().draw_obj();
 
-        glBindVertexArray(vao);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        glBindVertexArray(0);
 
         ImGui::Begin("Le jeu d'echec de la mort qui tue !!");
 

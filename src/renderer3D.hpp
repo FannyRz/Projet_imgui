@@ -3,11 +3,14 @@
 #include "OpenGLutils/object/object.hpp"
 #include "chessBoard.hpp"
 
-
 class Renderer3D {
 private:
     std::vector<Object> listOfObjects;
 
 public:
     void render_board(ChessBoard& _chessboard);
+
+    void setup_obj();
+
+    void draw_obj();
 };
