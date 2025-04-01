@@ -1,6 +1,5 @@
 #include "utils.hpp"
 #include <iostream>
-#include "maths/maths.hpp"
 
 void display_tab(const std::vector<std::pair<int, int>>& all_possible_move)
 {

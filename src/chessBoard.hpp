@@ -1,9 +1,12 @@
 #pragma once
 #include <imgui.h>
 #include <array>
+#include <chrono>
+#include <iostream>
 #include <memory>
 #include <optional>
 #include <string>
+#include "maths/maths.hpp"
 #include "pieces/pieces.hpp"
 
 struct SelectedPiece {
@@ -30,7 +33,9 @@ class ChessBoard {
 private:
     std::optional<SelectedPiece>  _selected;
     std::optional<EnPassantPiece> _enPassantPiece;
-    std::optional<SelectedPiece>  _selected_pawn;
+    std::optional<SelectedPiece>  _selectedPawn;
+    LoiDeGamma                    _loiDeGamma;
+    Chronometer                   _chronometer;
 
     std::array<std::array<std::unique_ptr<Piece>, 8>, 8> position_pieces{}; // tableau de positions initiales des pièces
     ImFont*                                              font;
@@ -51,6 +56,11 @@ public:
 
     void select_selectedPiece(int x, int y);
     void deselect_selectedPiece();
+
+    void       set_loiDeGamma(const LoiDeGamma& loiDeGamma) { _loiDeGamma = loiDeGamma; }
+    LoiDeGamma get_loiDeGamma() const { return this->_loiDeGamma; }
+
+    Chronometer& get_chronometer() { return this->_chronometer; }
 
     std::optional<SelectedPiece> select_pawn_to_upgrade(int x, int y);
     std::string                  from_type_to_char(int x, int y) const;

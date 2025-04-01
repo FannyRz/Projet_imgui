@@ -36,7 +36,7 @@ std::optional<SelectedPiece> ChessBoard::select_pawn_to_upgrade(int x, int y)
     selectedPiece.position_x = x;
     selectedPiece.position_y = y;
     selectedPiece.piececolor = position_pieces[x][y]->get_color();
-    this->_selected_pawn     = selectedPiece;
+    this->_selectedPawn     = selectedPiece;
     return {selectedPiece};
 }
 

@@ -8,7 +8,6 @@
 #include "maths/maths.hpp"
 #include "pieces/pawn.hpp"
 #include "pieces/pieces.hpp"
-#include "utils.hpp"
 
 void ChessBoard::draw_board()
 {
@@ -129,9 +128,13 @@ void ChessBoard::draw_board()
                 else if (_selected.has_value() && can_move(x, y))
                 {
                     move(_selected->position_x, _selected->position_y, x, y);
+                    if (!_loiDeGamma.is_display_chronometer)
+                    {
+                        this->_loiDeGamma.increment_moveTimeChronometer();
+                    }
                     if (this->position_pieces[x][y]->get_type() == PieceType::PAWN && piece_at_the_end(x, y))
                     {
-                        _selected_pawn              = this->select_pawn_to_upgrade(x, y);
+                        _selectedPawn              = this->select_pawn_to_upgrade(x, y);
                         bool is_random_upgrate_pawn = bernoulli(0.7);
                         std::cout << is_random_upgrate_pawn << std::endl;
 
@@ -141,7 +144,7 @@ void ChessBoard::draw_board()
                         }
                         else
                         {
-                            change_piece(x, y, select_piece_promotion(), _selected_pawn->piece->get_color());
+                            change_piece(x, y, select_piece_promotion(), _selectedPawn->piece->get_color());
                         }
                     }
                     if (game_won)
@@ -177,8 +180,13 @@ void ChessBoard::draw_board()
         }
     }
 
+    if (_loiDeGamma.is_display_chronometer)
+    {
+        _chronometer.displayGameTime();
+    }
+
     // Affichage de la popup pour upgrade un pion
-    print_popup(_selected_pawn);
+    print_popup(_selectedPawn);
     // Affichage de la popup quand on a manger un roi
     print_popup_win();
 

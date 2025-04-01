@@ -1,6 +1,3 @@
-#include <iostream>
-#include <chrono>
-#include <thread>
 #include "maths.hpp"
 
 /* ---------- Bernoulli  ---------- */
@@ -40,6 +37,46 @@ PieceType select_piece_promotion()
             return PieceType::BISHOP;
         }
     }
+}
+
+/* ---------- Gamma  ---------- */
+void LoiDeGamma::increment_moveTimeChronometer()
+{
+    moveTimeChronometer += generateGamma(2.0, 10.0);
+
+    if (moveTimeChronometer > 300)
+    {
+        this->is_display_chronometer = true;
+    }
+    std::cout << "Temps total accumule: " << moveTimeChronometer << " secondes" << '\n';
+}
+
+void LoiDeGamma::reset_LoiDeGamma()
+{
+    is_display_chronometer = false;
+    moveTimeChronometer    = 0.f;
+}
+
+/* ---------- Chronometer  ---------- */
+void Chronometer::startChronometer()
+{
+    gameStartTime = std::chrono::steady_clock::now();
+}
+
+void Chronometer::displayGameTime() const
+{
+    // Calcul du temps écoulé depuis le début du jeu
+    std::chrono::steady_clock::time_point currentTime = std::chrono::steady_clock::now();
+    auto                                  duration    = std::chrono::duration_cast<std::chrono::seconds>(currentTime - gameStartTime);
+
+    int minutes = duration.count() / 60; // Calcul des minutes
+    int seconds = duration.count() % 60; // Calcul des secondes
+    ImGui::Text("Temps de jeu : %02d:%02d", minutes, seconds);
+}
+
+void Chronometer::reset_Chronometer()
+{
+    startChronometer();
 }
 
 /* ---------- Exponentielle  ---------- */

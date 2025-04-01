@@ -3,6 +3,7 @@
 #include <memory>
 #include <optional>
 #include "chessBoard.hpp"
+#include "maths/maths.hpp"
 #include "pieces/bishop.hpp"
 #include "pieces/king.hpp"
 #include "pieces/knight.hpp"
@@ -11,7 +12,6 @@
 #include "pieces/queen.hpp"
 #include "pieces/rook.hpp"
 #include "utils.hpp"
-#include "maths/maths.hpp"
 
 /* ------------------------------ font ------------------------------ */
 std::string ChessBoard::from_type_to_char(int x, int y) const
@@ -74,8 +74,8 @@ void ChessBoard::set_position()
     // pion
     for (int i{0}; i < 8; i++)
     {
-        this->position_pieces[1][i] = std::make_unique<Pawn>(PieceColor::WHITE, 1, i);
-        this->position_pieces[6][i] = std::make_unique<Pawn>(PieceColor::BLACK, 6, i);
+        this->position_pieces[1][i] = std::make_unique<Pawn>(PieceColor::BLACK, 1, i);
+        this->position_pieces[6][i] = std::make_unique<Pawn>(PieceColor::WHITE, 6, i);
     }
 }
 
@@ -174,7 +174,7 @@ void ChessBoard::reset_board()
     game_won       = false;
     is_white_turn  = true;
     _selected      = std::nullopt;
-    _selected_pawn = std::nullopt;
+    _selectedPawn = std::nullopt;
 
     // Effacer toutes les pièces
     for (int x = 0; x < 8; x++)
@@ -186,4 +186,6 @@ void ChessBoard::reset_board()
     }
 
     set_position();
+    _chronometer.reset_Chronometer();
+    _loiDeGamma.reset_LoiDeGamma();
 }
