@@ -1,3 +1,6 @@
+#include <iostream>
+#include <chrono>
+#include <thread>
 #include "maths.hpp"
 
 /* ---------- Bernoulli  ---------- */
@@ -37,4 +40,16 @@ PieceType select_piece_promotion()
             return PieceType::BISHOP;
         }
     }
+}
+
+/* ---------- Exponentielle  ---------- */
+void print_random_pawn (){
+    double min = 0.0;
+    double max = 1.0;
+    double lambda = 0.5; 
+
+    double attente = exponentielle(lambda, min, max);
+    std::this_thread::sleep_for(std::chrono::duration<double>(attente)); // Attendre le temps généré
+
+    std::cout << "evenement  apres " << attente << " secondes." << std::endl;
 }

@@ -92,5 +92,32 @@
 // // Affichage des résultats
 // std::cout << "Variance experimentale  : " << variance_emp << std::endl;
 // std::cout << "Variance theorique: " << variance_theo << std::endl;
+
+/*  ---------- test Exponentielle  ---------- */
+// double min    = 0.0;
+// double max    = 1.0;
+// double lambda = 0.5;
+// int    N      = 1000; // Nombre d'échantillons
+// double somme  = 0.0;
+
+// std::vector<double> echantillons;
+// for (int i{}; i < N; i++)
+// {
+//     echantillons.push_back(loiExponentielle(lambda, min, max));
+// }
+
+// for (double sample : echantillons)
+// {
+//     somme += sample;
+// }
+
+// double moyenne = somme / N;
+
+// double variance_exp = varianceExperimentale(echantillons, moyenne);
+// double variance_th  = 1 / pow(0.5, 2);
+
+// std::cout << "Variance exp : " << variance_exp << "\n";
+// std::cout << "Variance th : " << variance_th << "\n";
+
 //     return 0;
 // }

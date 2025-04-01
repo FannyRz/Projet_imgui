@@ -1,4 +1,5 @@
 #include <random>
+#include <iostream>
 #include "maths.hpp"
 
 // Fonction pour générer un nombre aléatoire entre 2 valeurs
@@ -10,11 +11,15 @@ double genererDouble(double min, double max)
     return distrib(gen);                                      // Retourne un nombre aléatoire dans la plage [min, max]
 }
 
+/********************************************************BERNOULLI***************************************************/
+
 // Fonction pour simuler une loi de Bernoulli
 int bernoulli(double p)
 {
     return genererDouble(0.0, 1.0) < p; // Compare le nombre généré avec p pour obtenir un nombre aleatoire en 0 et 1
 }
+
+/********************************************************BINOMIAL***************************************************/
 
 // Fonction pour simuler une loi binomiale (n, p)
 int binomial(int n, double p)
@@ -26,6 +31,8 @@ int binomial(int n, double p)
     }
     return y;
 }
+
+/********************************************************POISSON***************************************************/
 
 // Fonction pour générer la loi de Poisson
 int poisson(double lambda)
@@ -48,6 +55,8 @@ int poisson(double lambda)
                   // de sortir de la boucle
 }
 
+/********************************************************PARETO***************************************************/  
+
 // Fonction pour générer la loi de Pareto
 double pareto(double alpha, double x0)
 {
@@ -56,7 +65,7 @@ double pareto(double alpha, double x0)
 }
 
 // Fonction pour calculer la variance experimentale
-double varianceExperimentale(const std::vector<double>& echantillons, double moyenne)
+double variance_experimentale_pareto(const std::vector<double>& echantillons, double moyenne)
 {
     double somme = 0.0;
     for (double echantillons : echantillons)
@@ -64,4 +73,25 @@ double varianceExperimentale(const std::vector<double>& echantillons, double moy
         somme += pow(echantillons - moyenne, 2);
     }
     return somme / echantillons.size();
+}
+
+/********************************************************EXPONENTIELLE***************************************************/
+
+// Fonction pour générer un nombre selon la loi exponentielle
+double exponentielle(double lambda, double min, double max) {
+    double U = genererDouble(min, max); // Générer un nombre aléatoire entre 0 et 1
+    // Ajouter une vérification pour éviter que U soit trop proche de 0
+    if (U <= 0.0001) {
+        U = 0.0001; // Fixer U à une valeur minimale acceptable
+        std::cout << "Valeur de U trop faible, ajustée à " << U << std::endl;
+    }
+    return -std::log(U) / lambda;
+}
+
+double variance_experimentale_exponentielle(std::vector<double> &echantillons, double moyenne){
+  double somme = 0.0;
+  for (double echantillon : echantillons){
+    somme += pow(echantillon-moyenne, 2) ;
+  }
+  return somme/echantillons.size();
 }

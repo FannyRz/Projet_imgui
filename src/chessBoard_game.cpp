@@ -3,6 +3,8 @@
 #include <memory>
 #include <optional>
 #include "chessBoard.hpp"
+#include "maths/maths.hpp"
+#include <thread>
 #include "pieces/bishop.hpp"
 #include "pieces/knight.hpp"
 #include "pieces/pawn.hpp"
