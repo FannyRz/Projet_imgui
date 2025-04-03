@@ -83,7 +83,7 @@ double exponentielle(double lambda, double min, double max) {
     // Ajouter une vérification pour éviter que U soit trop proche de 0
     if (U <= 0.0001) {
         U = 0.0001; // Fixer U à une valeur minimale acceptable
-        std::cout << "Valeur de U trop faible, ajustée à " << U << std::endl;
+        std::cout << "Valeur de U trop faible, ajustée à " << U << '\n';
     }
     return -std::log(U) / lambda;
 }

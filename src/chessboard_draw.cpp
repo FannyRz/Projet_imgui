@@ -24,7 +24,7 @@ void ChessBoard::draw_board()
     if (exponentielle_time == 0.0)
     {
         exponentielle_time = exponentielle(lambda, min, max);
-        std::cout << "Exponentielle Time Calculé: " << exponentielle_time << " secondes." << std::endl;
+        std::cout << "Exponentielle Time Calculé: " << exponentielle_time << " secondes." << '\n';
     }
 
     // Récupérer le temps écoulé (en secondes)
@@ -48,7 +48,7 @@ void ChessBoard::draw_board()
     {
         // Réinitialiser elapsed_time après le calcul du delta_time
         elapsed_time = current_time; // Mettre à jour elapsed_time pour le prochain cycle
-        std::cout << "Ajout d'un pion après " << 2 * exponentielle_time << " secondes." << std::endl;
+        std::cout << "Ajout d'un pion après " << 2 * exponentielle_time << " secondes." << '\n';
 
         for (int x = 0; x < 8; ++x)
         {
@@ -59,7 +59,7 @@ void ChessBoard::draw_board()
                 {
                     // Attendre le temps généré par exponentielle_time
                     std::this_thread::sleep_for(std::chrono::duration<double>(exponentielle_time)); // Attendre avant d'ajouter le pion
-                    std::cout << "Événement après " << exponentielle_time << " secondes." << std::endl;
+                    std::cout << "Événement après " << exponentielle_time << " secondes." << '\n';
 
                     // Ajouter un pion à cette case
                     position_pieces[x][y] = std::make_unique<Pawn>(PieceColor::WHITE, x, y); // Ajouter un pion blanc
@@ -136,7 +136,7 @@ void ChessBoard::draw_board()
                     {
                         _selectedPawn              = this->select_pawn_to_upgrade(x, y);
                         bool is_random_upgrate_pawn = bernoulli(0.7);
-                        std::cout << is_random_upgrate_pawn << std::endl;
+                        std::cout << is_random_upgrate_pawn << '\n';
 
                         if (is_random_upgrate_pawn)
                         {

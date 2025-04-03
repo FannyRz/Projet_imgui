@@ -37,7 +37,7 @@ double variance_experimentale_pareto(const std::vector<double>& echantillons, do
 
 /*  ---------- test Exponentiel  ---------- */
 double exponentielle(double lambda, double min, double max);
-double variance_experimentale_exponentielle(std::vector<double> &echantillons, double moyenne);
+double variance_experimentale_exponentielle(std::vector<double>& echantillons, double moyenne);
 
 /*  ---------- test Gamma  ---------- */
 float generate_uniform();
@@ -47,4 +47,4 @@ float generate_gamma(int alpha, float beta);
 /* ---------------------- MATHS_GAME ---------------------- */
 ImFont*   load_font_based_on_bernoulli(ImGuiIO& io);
 PieceType select_piece_promotion();
-//double print_random_pawn();
+void      print_random_pawn();

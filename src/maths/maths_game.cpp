@@ -53,7 +53,7 @@ void print_random_pawn()
     double attente = exponentielle(lambda, min, max);
     std::this_thread::sleep_for(std::chrono::duration<double>(attente)); // Attendre le temps généré
 
-    std::cout << "evenement  apres " << attente << " secondes." << std::endl;
+    std::cout << "evenement  apres " << attente << " secondes." << '\n';
 }
 
 /* ---------- Gamma  ---------- */
