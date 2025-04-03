@@ -4,27 +4,27 @@
 #include "quick_imgui/quick_imgui.hpp"
 
 struct LoiDeGamma {
-    bool   is_display_chronometer = false;
+    bool   isDisplayChronometer = false;
     double moveTimeChronometer{};
 
     void increment_moveTimeChronometer();
-    void reset_LoiDeGamma();
+    void reset_loiDeGamma();
 };
 
 struct Chronometer {
     std::chrono::steady_clock::time_point gameStartTime{};
 
     // Fonction pour initialiser le chronomètre au début de la partie
-    void startChronometer();
+    void start_chronometer();
 
     // Affiche le temps écoulé depuis le début du jeu
-    void displayGameTime() const;
-    void reset_Chronometer();
+    void display_game_time() const;
+    void reset_chronometer();
 };
 
 /* ---------------------- MATHS_GENERATION_LOIS ---------------------- */
 /* ---------- test Bernoulli  ---------- */
-double genererDouble(double min, double max);
+double generer_double(double min, double max);
 int    bernoulli(double p);
 int    binomial(int n, double p);
 
@@ -40,9 +40,9 @@ double exponentielle(double lambda, double min, double max);
 double variance_experimentale_exponentielle(std::vector<double> &echantillons, double moyenne);
 
 /*  ---------- test Gamma  ---------- */
-float generateUniform();
-float generateExponential(float beta);
-float generateGamma(int alpha, float beta);
+float generate_uniform();
+float generate_exponential(float beta);
+float generate_gamma(int alpha, float beta);
 
 /* ---------------------- MATHS_GAME ---------------------- */
 ImFont*   load_font_based_on_bernoulli(ImGuiIO& io);

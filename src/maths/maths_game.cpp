@@ -1,7 +1,8 @@
-#include <iostream>
 #include <chrono>
+#include <iostream>
 #include <thread>
 #include "maths.hpp"
+
 
 /* ---------- Bernoulli  ---------- */
 ImFont* load_font_based_on_bernoulli(ImGuiIO& io)
@@ -26,7 +27,7 @@ PieceType select_piece_promotion()
     }
     else
     {
-        double value = genererDouble(0.0, 1.0);
+        double value = generer_double(0.0, 1.0);
         if (value < 0.33)
         {
             return PieceType::KNIGHT;
@@ -43,10 +44,11 @@ PieceType select_piece_promotion()
 }
 
 /* ---------- Exponentielle  ---------- */
-void print_random_pawn (){
-    double min = 0.0;
-    double max = 1.0;
-    double lambda = 0.5; 
+void print_random_pawn()
+{
+    double min    = 0.0;
+    double max    = 1.0;
+    double lambda = 0.5;
 
     double attente = exponentielle(lambda, min, max);
     std::this_thread::sleep_for(std::chrono::duration<double>(attente)); // Attendre le temps généré
@@ -54,33 +56,31 @@ void print_random_pawn (){
     std::cout << "evenement  apres " << attente << " secondes." << std::endl;
 }
 
-
-
 /* ---------- Gamma  ---------- */
 void LoiDeGamma::increment_moveTimeChronometer()
 {
-    moveTimeChronometer += generateGamma(2.0, 10.0);
+    moveTimeChronometer += generate_gamma(2.0, 10.0);
 
     if (moveTimeChronometer > 300)
     {
-        this->is_display_chronometer = true;
+        this->isDisplayChronometer = true;
     }
     std::cout << "Temps total accumule: " << moveTimeChronometer << " secondes" << '\n';
 }
 
-void LoiDeGamma::reset_LoiDeGamma()
+void LoiDeGamma::reset_loiDeGamma()
 {
-    is_display_chronometer = false;
-    moveTimeChronometer    = 0.f;
+    isDisplayChronometer = false;
+    moveTimeChronometer  = 0.f;
 }
 
 /* ---------- Chronometer  ---------- */
-void Chronometer::startChronometer()
+void Chronometer::start_chronometer()
 {
     gameStartTime = std::chrono::steady_clock::now();
 }
 
-void Chronometer::displayGameTime() const
+void Chronometer::display_game_time() const
 {
     // Calcul du temps écoulé depuis le début du jeu
     std::chrono::steady_clock::time_point currentTime = std::chrono::steady_clock::now();
@@ -91,7 +91,7 @@ void Chronometer::displayGameTime() const
     ImGui::Text("Temps de jeu : %02d:%02d", minutes, seconds);
 }
 
-void Chronometer::reset_Chronometer()
+void Chronometer::reset_chronometer()
 {
-    startChronometer();
+    start_chronometer();
 }

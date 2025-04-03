@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 
     // Font
     app.get_chessboard().set_font(load_font_based_on_bernoulli(io));
-    app.get_chessboard().get_chronometer().startChronometer();
+    app.get_chessboard().get_chronometer().start_chronometer();
     app.get_chessboard().set_position();
 
     /*=============================================================*/
