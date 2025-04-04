@@ -5,9 +5,6 @@
 
 void Skybox::setup_skybox()
 {
-    // Charger et configurer le shader pour la skybox
-    shaderLoader.loadShaders("shaders/skybox.vs.glsl", "shaders/skybox.fs.glsl");
-
     // Créer le VAO, VBO et EBO
     glGenVertexArrays(1, &skyboxVAO);
     glGenBuffers(1, &skyboxVBO);
@@ -31,6 +28,11 @@ void Skybox::setup_skybox()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 };
+
+void Skybox::setup_shader()
+{
+    this->shader_skybox.load_shader("shaders/skybox.vs.glsl", "shaders/skybox.fs.glsl");
+}
 
 void Skybox::load_cubemap()
 {
@@ -64,26 +66,23 @@ void Skybox::load_cubemap()
     }
 }
 
-// void Skybox::draw_skybox(const glm::mat4& projection, const glm::mat4& view)
-// {
-// // Obtenir le programme du shader depuis le ShaderLoader
-// glimac::Program* skyboxProgram = shaderLoader.getProgram();
+void Skybox::draw_skybox(const glm::mat4& projection, const glm::mat4& view)
+{
+    // Utiliser le shader
+    this->shader_skybox.use();
 
-// // Utiliser le shader
-// skyboxProgram->use();
+    // Ne pas modifier la position de la caméra pour la skybox (supprimer la translation de la vue)
+    glm::mat4 viewNoTranslation = glm::mat4(glm::mat3(view)); // Supprimer la translation de la vue
 
-// // Ne pas modifier la position de la caméra pour la skybox (supprimer la translation de la vue)
-// glm::mat4 viewNoTranslation = glm::mat4(glm::mat3(view));  // Supprimer la translation de la vue
+    // Lier la texture de la cubemap
+    glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapTexture);
 
-// // Lier la texture de la cubemap
-// glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapTexture);
+    // Activer le VAO de la skybox
+    glBindVertexArray(skyboxVAO);
 
-// // Activer le VAO de la skybox
-// glBindVertexArray(skyboxVAO);
+    // Dessiner la skybox
+    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(cubemapIndices.size()), GL_UNSIGNED_INT, 0);
 
-// // Dessiner la skybox
-// glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(cubemapIndices.size()), GL_UNSIGNED_INT, 0);
-
-// // Désactiver le VAO
-// glBindVertexArray(0);
-// }
+    // Désactiver le VAO
+    glBindVertexArray(0);
+}

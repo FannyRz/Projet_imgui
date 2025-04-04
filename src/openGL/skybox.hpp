@@ -3,7 +3,7 @@
 #include <array>
 #include <string>
 #include "OpenGLutils/object/object.hpp"
-#include "shaders/ShaderLoader.hpp"
+#include "shaders/shader.hpp"
 
 class Skybox {
 private:
@@ -70,12 +70,13 @@ private:
     unsigned int skyboxVBO;
     unsigned int skyboxEBO;
 
-    ShaderLoader shaderLoader;  // Ajout du gestionnaire de shader
+    Shader shader_skybox;
 
 public:
     Skybox() = default;
 
     void setup_skybox();
+    void setup_shader();
     void load_cubemap();
-    // void draw_skybox(const glm::mat4& projection, const glm::mat4& view);
+    void draw_skybox(const glm::mat4& projection, const glm::mat4& view);
 };

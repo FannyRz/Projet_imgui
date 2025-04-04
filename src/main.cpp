@@ -47,6 +47,9 @@ int main(int argc, char* argv[])
                     GLuint vbo{};
 
                     app.get_renderer().setup_obj();
+                    app.get_renderer().get_skybox().setup_shader();
+                    app.get_renderer().get_skybox().setup_skybox();
+                    app.get_renderer().get_skybox().load_cubemap();
                 },
 
             .loop = [&]() {
