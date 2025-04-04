@@ -1,7 +1,7 @@
 #include <glad/glad.h>
 #include <imgui.h>
-#include "OpenGLutils/glimac/glimac/FilePath.hpp"
 #include "App.hpp"
+#include "OpenGLutils/glimac/glimac/FilePath.hpp"
 #include "chessBoard.hpp"
 #include "maths/maths.hpp"
 #include "quick_imgui/quick_imgui.hpp"
@@ -46,8 +46,6 @@ int main(int argc, char* argv[])
                 [&]() {
                     GLuint vbo{};
 
-       
-
                     app.get_renderer().setup_obj();
                 },
 
@@ -56,7 +54,6 @@ int main(int argc, char* argv[])
         glClear(GL_COLOR_BUFFER_BIT);
 
                 app.get_renderer().draw_obj();
-
 
         ImGui::Begin("Le jeu d'echec de la mort qui tue !!");
 

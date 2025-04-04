@@ -34,17 +34,17 @@ void ChessBoard::draw_board()
     {
         // Initialisation du temps au début
         elapsed_time = current_time;
-        //std::cout << "Temps initialisé à: " << elapsed_time << std::endl;
+        // std::cout << "Temps initialisé à: " << elapsed_time << std::endl;
     }
 
     // Calculer le temps écoulé depuis la dernière mise à jour
     double delta_time = current_time - elapsed_time;
 
     // Debug : afficher le temps écoulé et vérifier la logique
-    //std::cout << "Temps actuel: " << current_time << ", Elapsed Time: " << elapsed_time << ", Delta Time: " << delta_time << std::endl;
-    //std::cout << "Ajout d'un pion après " << 2 * exponentielle_time << " secondes." << std::endl;
+    // std::cout << "Temps actuel: " << current_time << ", Elapsed Time: " << elapsed_time << ", Delta Time: " << delta_time << std::endl;
+    // std::cout << "Ajout d'un pion après " << 2 * exponentielle_time << " secondes." << std::endl;
 
-    if (delta_time >= 2*exponentielle_time && !pion_placed)
+    if (delta_time >= 2 * exponentielle_time && !pion_placed)
     {
         // Réinitialiser elapsed_time après le calcul du delta_time
         elapsed_time = current_time; // Mettre à jour elapsed_time pour le prochain cycle
@@ -134,7 +134,7 @@ void ChessBoard::draw_board()
                     }
                     if (this->position_pieces[x][y]->get_type() == PieceType::PAWN && piece_at_the_end(x, y))
                     {
-                        _selectedPawn              = this->select_pawn_to_upgrade(x, y);
+                        _selectedPawn               = this->select_pawn_to_upgrade(x, y);
                         bool is_random_upgrate_pawn = bernoulli(0.7);
                         std::cout << is_random_upgrate_pawn << '\n';
 
