@@ -47,16 +47,17 @@ int main(int argc, char* argv[])
                     GLuint vbo{};
 
                     app.get_renderer().setup_obj();
-                    app.get_renderer().get_skybox().setup_shader();
-                    app.get_renderer().get_skybox().setup_skybox();
-                    app.get_renderer().get_skybox().load_cubemap();
+                    app.get_renderer().setup_shader();
+                    // app.get_renderer().get_skybox().setup_shader();
+                    // app.get_renderer().get_skybox().setup_skybox();
+                    // app.get_renderer().get_skybox().load_cubemap();
                 },
 
             .loop = [&]() {
         glClearColor(1., 0.5, 0.5, 1.);
         glClear(GL_COLOR_BUFFER_BIT);
 
-                app.get_renderer().draw_obj();
+                app.get_renderer().draw_pieces(0,0);
 
         ImGui::Begin("Le jeu d'echec de la mort qui tue !!");
 
@@ -97,7 +98,7 @@ int main(int argc, char* argv[])
 
         ImGui::End(); },
 
-            // .key_callback             = [](int key, int scancode, int action, int mods) { std::cout << "Key: " << key << " Scancode: " << scancode << " Action: " << action << " Mods: " << mods << '\n'; },
+            // .key_callback = [](int key, int scancode, int action, int mods) { std::cout << "Key: " << key << " Scancode: " << scancode << " Action: " << action << " Mods: " << mods << '\n'; },
             // .mouse_button_callback    = [](int button, int action, int mods) { std::cout << "Button: " << button << " Action: " << action << " Mods: " << mods << '\n'; },
             // .cursor_position_callback = [](double xpos, double ypos) { std::cout << "Position: " << xpos << ' ' << ypos << '\n'; },
             // .scroll_callback          = [](double xoffset, double yoffset) { std::cout << "Scroll: " << xoffset << ' ' << yoffset << '\n'; },

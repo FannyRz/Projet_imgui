@@ -1,17 +1,17 @@
 // #include <OpenGL/gl.h>
+#include "shader.hpp"
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <optional>
 #include <sstream>
 #include "glm/gtc/type_ptr.hpp"
-#include "shader.hpp"
 
 void Shader::load_shader(const std::string& vertexPath, const std::string& fragmentPath)
 {
-    std::string relativePath   = "../../shaders/";
-    GLuint      vertexShader   = compile_shader(relativePath + vertexPath, GL_VERTEX_SHADER);
-    GLuint      fragmentShader = compile_shader(relativePath + fragmentPath, GL_FRAGMENT_SHADER);
-    _programID                = glCreateProgram();
+    GLuint vertexShader   = compile_shader(vertexPath, GL_VERTEX_SHADER);
+    GLuint fragmentShader = compile_shader(fragmentPath, GL_FRAGMENT_SHADER);
+    _programID            = glCreateProgram();
     glAttachShader(_programID, vertexShader);
     glAttachShader(_programID, fragmentShader);
     glLinkProgram(_programID);
@@ -48,7 +48,7 @@ GLuint Shader::getID() const
 GLuint Shader::compile_shader(const std::string& path, GLenum type)
 {
     std::string sourceCode = read_file(path);
-    const char* code       = sourceCode.c_str();
+    const char* code = sourceCode.c_str();
 
     GLuint shader = glCreateShader(type);
     glShaderSource(shader, 1, &code, nullptr);
@@ -81,6 +81,13 @@ void Shader::set_uniform_matrix_4fv(const std::string& name, const glm::mat4& va
     std::optional<GLint> location = get_uniform_location(name);
     if (location.has_value())
         glUniformMatrix4fv(location.value(), 1, GL_FALSE, glm::value_ptr(value));
+}
+
+void Shader::set_uniform_vector_4f(const std::string& name, const glm::vec4& value)
+{
+    std::optional<GLint> location = get_uniform_location(name);
+    if (location.has_value())
+        glUniform4fv(location.value(), 1, glm::value_ptr(value));
 }
 
 void Shader::set_uniform_3fv(const std::string& name, const glm::vec3& value)
@@ -120,4 +127,3 @@ std::optional<GLint> Shader::get_uniform_location(const std::string& name)
     _uniform_cache[name] = location;
     return location;
 }
-
