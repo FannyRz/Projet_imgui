@@ -75,8 +75,13 @@ private:
 public:
     Skybox() = default;
 
-    void setup_skybox();
-    void setup_shader();
+    void    setup_skybox();
+    void    setup_shader();
+    Shader* get_shader_skybox() { return &this->shader_skybox; };
+
+    unsigned int get_VAO_skybox() const { return this->skyboxVAO; };
+    unsigned int get_texture_skybox() const { return this->cubeMapTexture; };
+
     void load_cubemap();
     void draw_skybox(const glm::mat4& projection, const glm::mat4& view);
 };

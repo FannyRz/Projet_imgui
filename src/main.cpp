@@ -37,27 +37,31 @@ int main(int argc, char* argv[])
     // program.use();
 
     /*=============================================================*/
-    GLuint vao{};
     quick_imgui::loop(
 
         "Quick ImGui",
         {
             .init =
                 [&]() {
-                    GLuint vbo{};
+                    /* pour gerer la 3D */
+                    glEnable(GL_DEPTH_TEST);
+                    glEnable(GL_BLEND);
+                    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                    glEnable(GL_DEPTH);
 
                     app.get_renderer().setup_obj();
                     app.get_renderer().setup_shader();
-                    // app.get_renderer().get_skybox().setup_shader();
-                    // app.get_renderer().get_skybox().setup_skybox();
-                    // app.get_renderer().get_skybox().load_cubemap();
+                    app.get_renderer().get_skybox().setup_shader();
+                    app.get_renderer().get_skybox().setup_skybox();
+                    app.get_renderer().get_skybox().load_cubemap();
                 },
 
             .loop = [&]() {
         glClearColor(1., 0.5, 0.5, 1.);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
                 app.get_renderer().draw_pieces(0,0);
+                app.get_renderer().render_skybox();
 
         ImGui::Begin("Le jeu d'echec de la mort qui tue !!");
 
@@ -91,10 +95,6 @@ int main(int argc, char* argv[])
         ImGui::PopStyleVar(2);
         ImGui::PopFont();
         ImGui::EndGroup();
-
-        glBindVertexArray(vao);
-        glDrawArrays(GL_TRIANGLES, 0, 2);
-        glBindVertexArray(0);
 
         ImGui::End(); },
 

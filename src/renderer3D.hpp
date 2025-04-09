@@ -16,7 +16,7 @@ private:
 
 public:
     void render_board(ChessBoard& _chessboard);
-    // void render_skybox();
+    void render_skybox();
     Skybox& get_skybox() { return this->_skybox; }
 
     void setup_obj();

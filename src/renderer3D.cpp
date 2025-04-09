@@ -39,12 +39,31 @@ void Renderer3D::setup_shader()
     _shader.use();
 }
 
-// void Renderer3D::render_skybox()
-// {
-//     skybox.setup_skybox();
-//     skybox.load_cubemap();
-//     // skybox.draw_skybox(projection, view);
-// }
+void Renderer3D::render_skybox()
+{
+    this->_skybox.get_shader_skybox()->use();
+
+    glDepthFunc(GL_LEQUAL);
+    glDepthMask(GL_FALSE);
+
+    glm::mat4 projection = glm::perspective(glm::radians(70.f), 1.f, 0.1f, 100.f);
+    glm::mat4 view       = glm::mat4(
+        glm::mat3(glm::lookAt(glm::normalize(_trackballCamera.getPosition()), glm::vec3(0., 0., 0.), glm::vec3(0, 1, 0)))
+    );
+
+    this->_skybox.get_shader_skybox()->set_uniform_matrix_4fv("projection", projection);
+    this->_skybox.get_shader_skybox()->set_uniform_matrix_4fv("view", view);
+    this->_skybox.get_shader_skybox()->set_uniform_1i("textureSkybox", 0);
+
+    glBindVertexArray(_skybox.get_VAO_skybox());
+    glBindTexture(GL_TEXTURE_CUBE_MAP, _skybox.get_texture_skybox());
+    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
+    glDepthFunc(GL_LESS);
+    glDepthMask(GL_TRUE);
+}
 
 void Renderer3D::setup_obj()
 {
@@ -67,9 +86,11 @@ void Renderer3D::setup_obj()
 
 void Renderer3D::draw_pieces(int x, int y)
 {
+    this->_shader.use();
+    _trackballCamera.rotateLeft(0.1);
     glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), 1.f, 0.1f, 100.f);
 
-    glm::mat4 MVMatrix = glm::scale(glm::mat4(1), glm::vec3(0.2, 0.2, 0.2)); // Scale
+    glm::mat4 MVMatrix = glm::scale(glm::mat4(1), glm::vec3(1, 1, 1)); // Scale
     // glm::mat4 MVPMatrix = glm::translate(glm::mat4(1), glm::vec3(0, 0, -5)); // Translation
     // glm::mat4 MV          = glm::rotate(MVMatrix, windowManager.getTime(), glm::vec3(0, 1, 0)); // Translation * Rotation
     glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
