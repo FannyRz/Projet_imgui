@@ -83,5 +83,5 @@ public:
     unsigned int get_texture_skybox() const { return this->cubeMapTexture; };
 
     void load_cubemap();
-    void draw_skybox(const glm::mat4& projection, const glm::mat4& view);
+    // void draw_skybox(const glm::mat4& projection, const glm::mat4& view);
 };

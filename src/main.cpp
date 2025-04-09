@@ -1,7 +1,6 @@
 #include <glad/glad.h>
 #include <imgui.h>
 #include "App.hpp"
-#include "OpenGLutils/glimac/glimac/FilePath.hpp"
 #include "chessBoard.hpp"
 #include "maths/maths.hpp"
 #include "quick_imgui/quick_imgui.hpp"
@@ -31,7 +30,6 @@ int main(int argc, char* argv[])
      * HERE SHOULD COME THE INITIALIZATION CODE
      *********************************/
 
-    glimac::FilePath applicationPath(argv[0]);
     // glimac::Program  program = glimac::loadProgram("../../../fonts/color.vs.glsl", "../../../fonts/color.fs.glsl");
 
     // program.use();
@@ -60,8 +58,9 @@ int main(int argc, char* argv[])
         glClearColor(1., 0.5, 0.5, 1.);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-                app.get_renderer().draw_pieces(0,0);
-                app.get_renderer().render_skybox();
+        app.get_renderer().draw_chessboard();
+        app.get_renderer().draw_pieces(0,0);
+        app.get_renderer().render_skybox();
 
         ImGui::Begin("Le jeu d'echec de la mort qui tue !!");
 

@@ -2,8 +2,9 @@
 
 #include <glad/glad.h>
 #include <glfw/src/internal.h>
+#include <iostream>
 #include <string>
-#include "../glimac/glimac/Image.hpp"
+#include "../../openGL/stb_image.h"
 
 class Texture {
 private:
@@ -13,20 +14,27 @@ public:
     Texture() = default;
     Texture(const std::string& path)
     {
-        std::unique_ptr<glimac::Image>
-            img = glimac::loadImage(path);
-        if (img == nullptr)
-            std::cerr << "Error loading image" << '\n';
-
         glGenTextures(1, &texture);
         glBindTexture(GL_TEXTURE_2D, texture);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->getWidth(), img->getHeight(), 0, GL_RGBA, GL_FLOAT, img->getPixels());
+
+        int            width, height, nrChannels;
+        unsigned char* data =
+            stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
+        if (data)
+        {
+            stbi_set_flip_vertically_on_load(false);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+            stbi_image_free(data);
+        }
+        else
+        {
+            std::cout << "Failed to load texture: " << path << std::endl;
+            stbi_image_free(data);
+        }
+
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glBindTexture(GL_TEXTURE_2D, 0);
     };
-    ~Texture()
-    {
-        glDeleteTextures(1, &texture);
-    };
+    ~Texture() { glDeleteTextures(1, &texture); };
 };
