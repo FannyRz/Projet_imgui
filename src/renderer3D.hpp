@@ -7,7 +7,6 @@
 #include "openGLutils/TrackBall.hpp"
 #include "openGl/skybox.hpp"
 
-
 class Renderer3D {
 private:
     std::vector<Object> listOfObjects;
@@ -25,5 +24,6 @@ public:
     void button_action();
     void draw_obj();
     void draw_chessboard();
-    void draw_pieces(int x, int y);
+    int  from_type_to_obj(PieceType type);
+    void draw_pieces(std::array<std::array<std::unique_ptr<Piece>, 8>, 8>* position_pieces);
 };

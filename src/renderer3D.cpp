@@ -8,32 +8,12 @@
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/matrix.hpp"
 #include "glm/trigonometric.hpp"
+#include "pieces/pieces.hpp"
 
 void Renderer3D::render_board(ChessBoard& _chessboard)
 {
     _chessboard.draw_board();
 }
-
-// void Renderer3D::button_action()
-// {
-//     if (glfwGetKey(manager.getWindow(), GLFW_KEY_RIGHT) == GLFW_PRESS)
-//     this->_trackballCamera.rotateLeft(0.8);
-
-//   if (glfwGetKey(manager.getWindow(), GLFW_KEY_LEFT) == GLFW_PRESS)
-//     this->_trackballCamera.rotateLeft(-0.8);
-
-//   if (glfwGetKey(manager.getWindow(), GLFW_KEY_UP) == GLFW_PRESS)
-//     this->_trackballCamera.rotateUp(-0.8);
-
-//   if (glfwGetKey(manager.getWindow(), GLFW_KEY_DOWN) == GLFW_PRESS)
-//     this->_trackballCamera.rotateUp(0.8);
-
-//   if (glfwGetKey(manager.getWindow(), GLFW_KEY_W) == GLFW_PRESS)
-//     this->_trackballCamera.moveFront(-0.5);
-
-//   if (glfwGetKey(manager.getWindow(), GLFW_KEY_S) == GLFW_PRESS)
-//     this->_trackballCamera.moveFront(0.5);
-// }
 
 void Renderer3D::setup_shader()
 {
@@ -89,7 +69,7 @@ void Renderer3D::draw_chessboard()
     glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), 1.f, 0.1f, 100.f);
 
     glm::mat4 MVMatrix = glm::rotate(glm::mat4(1), glm::radians(90.f), glm::vec3(1, 0, 0)); // Rotation
-    MVMatrix           = glm::translate(MVMatrix, glm::vec3(0, 0, 1.3));                      // Translation
+    MVMatrix           = glm::translate(MVMatrix, glm::vec3(0, 0, 1.3));                    // Translation
     MVMatrix           = glm::scale(MVMatrix, glm::vec3(1, 1, 0.2));                        // Scale
 
     glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
@@ -111,9 +91,9 @@ void Renderer3D::draw_chessboard()
         {
             glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), 1.f, 0.1f, 100.f);
 
-            glm::mat4 MVMatrix = glm::rotate(glm::mat4(1), glm::radians(90.f), glm::vec3(1, 0, 0));                                        // Rotation
+            glm::mat4 MVMatrix = glm::rotate(glm::mat4(1), glm::radians(90.f), glm::vec3(1, 0, 0));                                            // Rotation
             MVMatrix           = glm::translate(MVMatrix, glm::vec3(x * tailleCase - 3.5 * tailleCase, y * tailleCase - 3.5 * tailleCase, 0)); // Translation
-            MVMatrix           = glm::scale(MVMatrix, glm::vec3(0.1, 0.1, 0.1));                                                           // Scale
+            MVMatrix           = glm::scale(MVMatrix, glm::vec3(0.1, 0.1, 0.1));                                                               // Scale
 
             glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
             glm::mat4 MVPMatrix    = ProjMatrix * this->_trackballCamera.getViewMatrix() * MVMatrix;
@@ -131,25 +111,70 @@ void Renderer3D::draw_chessboard()
     }
 }
 
-void Renderer3D::draw_pieces(int x, int y)
+int Renderer3D::from_type_to_obj(PieceType type)
+{
+    switch (type)
+    {
+    case PieceType::BISHOP:
+        return 0;
+        break;
+    case PieceType::KING:
+        return 1;
+        break;
+    case PieceType::KNIGHT:
+        return 2;
+        break;
+    case PieceType::PAWN:
+        return 3;
+        break;
+    case PieceType::QUEEN:
+        return 4;
+        break;
+    case PieceType::ROOK:
+        return 5;
+        break;
+    default:
+        std::cerr << "Erreur: from_type_to obj /n";
+        return -1;
+    }
+}
+
+void Renderer3D::draw_pieces(std::array<std::array<std::unique_ptr<Piece>, 8>, 8>* position_pieces)
 {
     _trackballCamera.rotateLeft(0.1);
-    glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), 1.f, 0.1f, 100.f);
 
-    // glm::mat4 MVMatrix = glm::translate(MVMatrix, glm::vec3(0, 0, -5)); // Translation
-    // glm::mat4 MVMatrix          = glm::rotate(MVMatrix, windowManager.getTime(), glm::vec3(0, 1, 0)); // Rotation
-    glm::mat4 MVMatrix = glm::scale(glm::mat4(1), glm::vec3(0.5, 0.5, 0.5)); // Scale
+    float tailleCase = 4.5;
 
-    glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
-    glm::mat4 MVPMatrix    = ProjMatrix * this->_trackballCamera.getViewMatrix() * MVMatrix;
-    glm::vec4 Color        = glm::vec4(1, 0, 0, 1);
+    for (int x{0}; x < 8; x++)
+    {
+        for (int y{0}; y < 8; y++)
+        {
+            if (position_pieces->at(x).at(y) != nullptr)
+            {
+                glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), 1.f, 0.1f, 100.f);
 
-    this->_shader.set_uniform_matrix_4fv("uMVMatrix", MVMatrix);
-    this->_shader.set_uniform_matrix_4fv("uNormalMatrix", NormalMatrix);
-    this->_shader.set_uniform_matrix_4fv("uMVPMatrix", MVPMatrix);
-    this->_shader.set_uniform_vector_4f("uColor", Color);
+                // glm::mat4 MVMatrix = glm::rotate(glm::mat4(1), glm::radians(90.f), glm::vec3(1, 0, 0));                                            // Rotation
+                glm::mat4 MVMatrix = glm::translate(glm::mat4(1), glm::vec3(x * tailleCase - 3.5 * tailleCase, 0, y * tailleCase - 3.5 * tailleCase)); // Translation
+                MVMatrix           = glm::scale(MVMatrix, glm::vec3(0.5, 0.5, 0.5));
 
-    glBindVertexArray(listOfObjects[1].getVAO()->getGLuint());
-    glDrawArrays(GL_TRIANGLES, 0, listOfObjects[1].getVAO()->getSize());
-    glBindVertexArray(0);
+                // glm::mat4 MVMatrix = glm::translate(MVMatrix, glm::vec3(0, 0, -5)); // Translation
+                // MVMatrix           = glm::translate(MVMatrix, glm::vec3(x * tailleCase - 3.5 * tailleCase, y * tailleCase - 3.5 * tailleCase, 0)); // Translation
+                // glm::mat4 MVMatrix = glm::scale(glm::mat4(1), glm::vec3(0.5, 0.5, 0.5));                                                           // Scale
+
+                glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
+                glm::mat4 MVPMatrix    = ProjMatrix * this->_trackballCamera.getViewMatrix() * MVMatrix;
+                glm::vec4 Color        = glm::vec4(1, 0, 0, 1);
+
+                this->_shader.set_uniform_matrix_4fv("uMVMatrix", MVMatrix);
+                this->_shader.set_uniform_matrix_4fv("uNormalMatrix", NormalMatrix);
+                this->_shader.set_uniform_matrix_4fv("uMVPMatrix", MVPMatrix);
+                this->_shader.set_uniform_vector_4f("uColor", Color);
+
+                int numberObj = from_type_to_obj(position_pieces->at(x).at(y)->get_type());
+                glBindVertexArray(listOfObjects[numberObj].getVAO()->getGLuint());
+                glDrawArrays(GL_TRIANGLES, 0, listOfObjects[numberObj].getVAO()->getSize());
+                glBindVertexArray(0);
+            }
+        }
+    }
 }

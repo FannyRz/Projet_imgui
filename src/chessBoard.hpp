@@ -54,6 +54,8 @@ public:
 
     void draw_board();
 
+    std::array<std::array<std::unique_ptr<Piece>, 8>, 8>* get_position_pieces() { return &this->position_pieces; };
+
     void select_selectedPiece(int x, int y);
     void deselect_selectedPiece();
 

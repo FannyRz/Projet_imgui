@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         app.get_renderer().draw_chessboard();
-        app.get_renderer().draw_pieces(0,0);
+        app.get_renderer().draw_pieces(app.get_chessboard().get_position_pieces());
         app.get_renderer().render_skybox();
 
         ImGui::Begin("Le jeu d'echec de la mort qui tue !!");
