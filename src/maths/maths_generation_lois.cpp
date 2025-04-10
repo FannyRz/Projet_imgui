@@ -1,6 +1,7 @@
-#include <random>
 #include <iostream>
+#include <random>
 #include "maths.hpp"
+
 
 // Fonction pour générer un nombre aléatoire entre 2 valeurs
 double generer_double(double min, double max)
@@ -55,12 +56,12 @@ int poisson(double lambda)
                   // de sortir de la boucle
 }
 
-/********************************************************PARETO***************************************************/  
+/********************************************************PARETO***************************************************/
 
 // Fonction pour générer la loi de Pareto
 double pareto(double alpha, double x0)
 {
-    double u = generer_double(0.0, 1.0);     // Génère un nombre aléatoire entre 0 et 1
+    double u = generer_double(0.0, 1.0);    // Génère un nombre aléatoire entre 0 et 1
     return x0 * pow(1.0 - u, -1.0 / alpha); // Transformation inverse pour la loi de Pareto
 }
 
@@ -75,7 +76,6 @@ double variance_experimentale_pareto(const std::vector<double>& echantillons, do
     return somme / echantillons.size();
 }
 
-
 // Fonction pour générer une variable aléatoire suivant une loi uniforme [0,1]
 float generate_uniform()
 {
@@ -85,7 +85,12 @@ float generate_uniform()
     return dist(gen);
 }
 
-
+// Fonction pour générer une variable suivant une loi exponentielle de paramètre 1/beta
+float generate_exponential(float beta)
+{
+    float U = generate_uniform();
+    return -beta * std::log(U);
+}
 
 // Fonction pour générer une variable suivant une loi Gamma
 float generate_gamma(int alpha, float beta)

@@ -41,6 +41,9 @@ int main(int argc, char* argv[])
         {
             .init =
                 [&]() {
+                    /*pour la 2D */
+                    ImGui::GetStyle().Colors[ImGuiCol_WindowBg] = ImVec4(0.5f, 0.2f, 0.f, 1.0f);
+
                     /* pour gerer la 3D */
                     glEnable(GL_DEPTH_TEST);
                     glEnable(GL_BLEND);
