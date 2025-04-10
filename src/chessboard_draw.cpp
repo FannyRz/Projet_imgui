@@ -11,69 +11,6 @@
 
 void ChessBoard::draw_board()
 {
-    static double exponentielle_time = 0.0;   // Temps de la fonction exponentielle
-    static double elapsed_time       = 0.0;   // Temps écoulé pour comparaison avec exponentielle_time
-    static bool   pion_placed        = false; // Variable pour vérifier si "Pion ajouté" a déjà été affiché
-
-    // Calcul du délai d'attente (en secondes) à partir de la fonction exponentielle
-    double lambda = 1.0 / 60.0; // Paramètre de la loi exponentielle
-    double min    = 0.0;        // Valeur minimale pour éviter des délais trop courts
-    double max    = 10.0;       // Valeur maximale pour limiter la durée d'attente
-
-    // Ne calculer l'exponentielle que lors de la première itération
-    if (exponentielle_time == 0.0)
-    {
-        exponentielle_time = exponentielle(lambda, min, max);
-        std::cout << "Exponentielle Time Calculé: " << exponentielle_time << " secondes." << std::endl;
-    }
-
-    // Récupérer le temps écoulé (en secondes)
-    double current_time = ImGui::GetTime(); // Récupère le temps actuel (en secondes)
-
-    if (elapsed_time == 0.0)
-    {
-        // Initialisation du temps au début
-        elapsed_time = current_time;
-        //std::cout << "Temps initialisé à: " << elapsed_time << std::endl;
-    }
-
-    // Calculer le temps écoulé depuis la dernière mise à jour
-    double delta_time = current_time - elapsed_time;
-
-    // Debug : afficher le temps écoulé et vérifier la logique
-    //std::cout << "Temps actuel: " << current_time << ", Elapsed Time: " << elapsed_time << ", Delta Time: " << delta_time << std::endl;
-    //std::cout << "Ajout d'un pion après " << 2 * exponentielle_time << " secondes." << std::endl;
-
-    if (delta_time >= 2*exponentielle_time && !pion_placed)
-    {
-        // Réinitialiser elapsed_time après le calcul du delta_time
-        elapsed_time = current_time; // Mettre à jour elapsed_time pour le prochain cycle
-        std::cout << "Ajout d'un pion après " << 2 * exponentielle_time << " secondes." << std::endl;
-
-        for (int x = 0; x < 8; ++x)
-        {
-            for (int y = 0; y < 8; ++y)
-            {
-                // Vérifier si la case est vide (aucune pièce présente)
-                if (position_pieces[x][y] == nullptr)
-                {
-                    // Attendre le temps généré par exponentielle_time
-                    std::this_thread::sleep_for(std::chrono::duration<double>(exponentielle_time)); // Attendre avant d'ajouter le pion
-                    std::cout << "Événement après " << exponentielle_time << " secondes." << std::endl;
-
-                    // Ajouter un pion à cette case
-                    position_pieces[x][y] = std::make_unique<Pawn>(PieceColor::WHITE, x, y); // Ajouter un pion blanc
-                    pion_placed           = true;                                            // Marquer que le pion a été placé
-                    break;                                                                   // Sortir de la boucle une fois qu'un pion est placé
-                }
-            }
-            if (pion_placed)
-            {
-                break; // Sortir de la boucle externe une fois que le pion est placé
-            }
-        }
-    }
-
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{0.f, 0.f}); // Bordure entre les cases à zéro.
     for (int x{0}; x < 8; x++)
     {
