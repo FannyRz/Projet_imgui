@@ -1,8 +1,8 @@
 #pragma once
 
+#include <algorithm>
 #include <unordered_set>
 #include "glm/ext/matrix_float4x4.hpp"
-#include <algorithm>
 
 class TrackballCamera {
 private:
@@ -18,21 +18,16 @@ public:
         : m_fDistance(distance), m_fAngleX(angleX), m_fAngleY(angleY) {};
     ~TrackballCamera() = default;
 
-    void moveFront(float delta)
-    {
-        m_fDistance += delta;
-        m_fDistance = std::clamp(m_fDistance, 20.f, 70.f);
-    }
-    void rotateLeft(float degrees) { m_fAngleY += degrees; }
-    void rotateUp(float degrees)
-    {
-        m_fAngleX += degrees;
-        m_fAngleX = std::clamp(m_fAngleX, 5.f, 60.f);
-    }
+    void move_front(float delta);
+    void rotate_left(float degrees);
+    void rotate_up(float degrees);
 
-    glm::mat4 getViewMatrix() const;
-    glm::vec3 getPosition() const;
+    glm::mat4 get_viewMatrix() const;
+    glm::vec3 get_position() const;
 
-    void                     HandleCameraInput();
-    std::unordered_set<int>& get_keysDown() { return this->keysDown; };
+    void                     handle_camera_input();
+    std::unordered_set<int>& get_keysDown()
+    {
+        return this->keysDown;
+    };
 };

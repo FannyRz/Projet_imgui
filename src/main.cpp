@@ -1,8 +1,6 @@
 #include <glad/glad.h>
 #include <imgui.h>
 #include "App.hpp"
-#include "chessBoard.hpp"
-#include "maths/maths.hpp"
 #include "quick_imgui/quick_imgui.hpp"
 
 int main(int argc, char* argv[])
@@ -18,90 +16,24 @@ int main(int argc, char* argv[])
     ImFont* bigDefaultFont = io.Fonts->AddFontDefault();
     bigDefaultFont->Scale  = 1.5f;
 
-    // Font
-    app.get_chessboard().set_font(load_font_based_on_bernoulli(io));
-    app.get_chessboard().get_chronometer().start_chronometer();
-    app.get_chessboard().set_position();
-
     /*=============================================================*/
     quick_imgui::loop(
 
         "Quick ImGui",
         {
+
             .init =
                 [&]() {
-                    /*pour la 2D */
-                    ImGui::GetStyle().Colors[ImGuiCol_WindowBg] = ImVec4(0.5f, 0.2f, 0.f, 1.0f);
-
-                    /* pour gerer la 3D */
-                    glEnable(GL_DEPTH_TEST);
-                    glEnable(GL_BLEND);
-                    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-                    glEnable(GL_DEPTH);
-
-                    app.get_renderer().setup_obj();
-                    app.get_renderer().setup_shader();
-                    app.get_renderer().get_skybox().setup_shader();
-                    app.get_renderer().get_skybox().setup_skybox();
-                    app.get_renderer().get_skybox().load_cubemap();
+                    app.init_renderer2D(io);
+                    app.init_renderer3D();
                 },
 
-            .loop = [&]() {
-                glClearColor(1., 0.5, 0.5, 1.);
-                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-                app.get_renderer().draw_chessboard();
-                app.get_renderer().draw_pieces(app.get_chessboard().get_position_pieces());
-                app.get_renderer().render_skybox();
-
-                ImGui::Begin("Le jeu d'echec de la mort qui tue !!");
-
-                // Afficher l'échiquier en premier
-                ImGui::BeginGroup();
-                app.update();
-                ImGui::EndGroup();
-
-                // Garder les boutons sur la même ligne
-                ImGui::SameLine();
-
-                // Ajouter un espace pour pousser les boutons à droite
-                ImGui::Dummy(ImVec2(20, 0));
-                ImGui::SameLine();
-                ImGui::BeginGroup();
-                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 10)); // Augmente l'espacement interne du bouton
-                ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(20, 20));  // Espacement entre les boutons
-                ImGui::PushFont(bigDefaultFont);
-                ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.4f, 0.0f, 1.0f});
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 0, 0, 255));
-
-                if (ImGui::Button("Recommencer une partie !", ImVec2(250, 50)))
-                {
-                    app.get_chessboard().reset_board();
-                }
-                if (ImGui::Button("Quitter la partie !", ImVec2(250, 50)))
-                {
-                    exit(0);
-                }
-                ImGui::PopStyleColor(2);
-                ImGui::PopStyleVar(2);
-                ImGui::PopFont();
-                ImGui::EndGroup();
-
-                ImGui::End();
-
-                app.get_renderer().get_camera().HandleCameraInput();
-            },
+            .loop = [&]() { app.loop(bigDefaultFont); },
 
             .key_callback = [&](int key, int scancode, int action, int mods) {
-                if (action == GLFW_PRESS)
-                {
-                    app.get_renderer().get_camera().get_keysDown().insert(key);
-                }
-                else if (action == GLFW_RELEASE)
-                {
-                    app.get_renderer().get_camera().get_keysDown().erase(key);
-                }
+                app.key_callback(key, action);
             }
+
             // .mouse_button_callback    = [](int button, int action, int mods) { std::cout << "Button: " << button << " Action: " << action << " Mods: " << mods << '\n'; },
             // .cursor_position_callback = [](double xpos, double ypos) { std::cout << "Position: " << xpos << ' ' << ypos << '\n'; },
             // .scroll_callback          = [](double xoffset, double yoffset) { std::cout << "Scroll: " << xoffset << ' ' << yoffset << '\n'; },

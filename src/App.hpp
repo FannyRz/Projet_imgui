@@ -1,15 +1,19 @@
 #pragma once
 
 #include "chessBoard.hpp"
-#include "renderer3D.hpp"
+#include "renderer.hpp"
 
 class App {
 private:
     ChessBoard _chessboard{};
-    Renderer3D _renderer{};
+    Renderer _renderer{};
 
 public:
-    void        update();
-    ChessBoard& get_chessboard() { return this->_chessboard; };
-    Renderer3D& get_renderer() { return this->_renderer; };
+    void init_renderer2D(ImGuiIO& io);
+    void init_renderer3D();
+
+    void update();
+    void loop(ImFont* bigDefaultFont);
+
+    void key_callback(int key, int action);
 };

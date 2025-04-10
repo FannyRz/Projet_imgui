@@ -4,7 +4,7 @@
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/ext/vector_float3.hpp"
 
-glm::mat4 TrackballCamera::getViewMatrix() const
+glm::mat4 TrackballCamera::get_viewMatrix() const
 {
     glm::mat4 viewMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0.f, 0.f, -m_fDistance));
     viewMatrix           = glm::rotate(viewMatrix, glm::radians(m_fAngleX), glm::vec3(1.f, 0.f, 0.f));
@@ -12,13 +12,30 @@ glm::mat4 TrackballCamera::getViewMatrix() const
     return viewMatrix;
 }
 
-glm::vec3 TrackballCamera::getPosition() const
+glm::vec3 TrackballCamera::get_position() const
 {
-    glm::vec4 position = glm::inverse(getViewMatrix()) * glm::vec4(0, 0, 0, 1);
+    glm::vec4 position = glm::inverse(get_viewMatrix()) * glm::vec4(0, 0, 0, 1);
     return glm::vec3(position);
 }
 
-void TrackballCamera::HandleCameraInput()
+void TrackballCamera::move_front(float delta)
+{
+    m_fDistance += delta;
+    m_fDistance = std::clamp(m_fDistance, 20.f, 70.f);
+}
+
+void TrackballCamera::rotate_up(float degrees)
+{
+    m_fAngleX += degrees;
+    m_fAngleX = std::clamp(m_fAngleX, 5.f, 60.f);
+}
+
+void TrackballCamera::rotate_left(float degrees)
+{
+    m_fAngleY += degrees;
+}
+
+void TrackballCamera::handle_camera_input()
 {
     static float lastFrame    = glfwGetTime();
     float        currentFrame = glfwGetTime();
@@ -26,32 +43,32 @@ void TrackballCamera::HandleCameraInput()
     lastFrame                 = currentFrame;
 
     // Variables pour la vitesse de déplacement et rotation
-    float moveSpeed     = 50.0f * deltaTime;
-    float rotateSpeed   = 60.0f * deltaTime;
+    float moveSpeed   = 50.0f * deltaTime;
+    float rotateSpeed = 60.0f * deltaTime;
 
     // Déplacer la caméra en fonction des touches pressées
     if (keysDown.contains(GLFW_KEY_UP))
     {
-        rotateUp(rotateSpeed); // Haut
+        rotate_up(rotateSpeed); // Haut
     }
     if (keysDown.contains(GLFW_KEY_DOWN))
     {
-        rotateUp(-rotateSpeed); // Bas
+        rotate_up(-rotateSpeed); // Bas
     }
     if (keysDown.contains(GLFW_KEY_LEFT))
     {
-        rotateLeft(-rotateSpeed); // Gauche
+        rotate_left(-rotateSpeed); // Gauche
     }
     if (keysDown.contains(GLFW_KEY_RIGHT))
     {
-        rotateLeft(rotateSpeed); // Droite
+        rotate_left(rotateSpeed); // Droite
     }
     if (keysDown.contains(GLFW_KEY_W))
     {
-        moveFront(-moveSpeed); // Avancer
+        move_front(-moveSpeed); // Avancer
     }
     if (keysDown.contains(GLFW_KEY_S))
     {
-        moveFront(moveSpeed); // Reculer
+        move_front(moveSpeed); // Reculer
     }
 }

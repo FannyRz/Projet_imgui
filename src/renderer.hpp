@@ -7,7 +7,7 @@
 #include "openGLutils/TrackBall.hpp"
 #include "openGl/skybox.hpp"
 
-class Renderer3D {
+class Renderer {
 private:
     std::vector<Object> listOfObjects;
     Skybox              _skybox{};

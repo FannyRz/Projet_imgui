@@ -1,4 +1,4 @@
-#include "renderer3D.hpp"
+#include "renderer.hpp"
 #include <imgui.h>
 #include <vector>
 #include "OpenGLutils/object/object.hpp"
@@ -10,18 +10,18 @@
 #include "glm/trigonometric.hpp"
 #include "pieces/pieces.hpp"
 
-void Renderer3D::render_board(ChessBoard& _chessboard)
+void Renderer::render_board(ChessBoard& _chessboard)
 {
     _chessboard.draw_board();
 }
 
-void Renderer3D::setup_shader()
+void Renderer::setup_shader()
 {
     _shader.load_shader("../../src/openGL/shaders/pieces.vs.glsl", "../../src/openGL/shaders/pieces.fs.glsl");
     _shader.use();
 }
 
-void Renderer3D::render_skybox()
+void Renderer::render_skybox()
 {
     this->_skybox.get_shader_skybox()->use();
 
@@ -30,7 +30,7 @@ void Renderer3D::render_skybox()
 
     glm::mat4 projection = glm::perspective(glm::radians(70.f), 1.f, 0.1f, 100.f);
     glm::mat4 view       = glm::mat4(
-        glm::mat3(glm::lookAt(glm::normalize(_trackballCamera.getPosition()), glm::vec3(0., 0., 0.), glm::vec3(0, 1, 0)))
+        glm::mat3(glm::lookAt(glm::normalize(_trackballCamera.get_position()), glm::vec3(0., 0., 0.), glm::vec3(0, 1, 0)))
     );
 
     this->_skybox.get_shader_skybox()->set_uniform_matrix_4fv("projection", projection);
@@ -47,7 +47,7 @@ void Renderer3D::render_skybox()
     glDepthMask(GL_TRUE);
 }
 
-void Renderer3D::setup_obj()
+void Renderer::setup_obj()
 {
     this->listOfObjects = std::vector<Object>(8);
     listOfObjects[0].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/bishop/Bishop1.obj");
@@ -56,11 +56,10 @@ void Renderer3D::setup_obj()
     listOfObjects[3].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/pawn/Pawn1.obj");
     listOfObjects[4].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/queen/Queen1.obj");
     listOfObjects[5].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/rook/Rook1.obj");
-    // listOfObjects[6].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/Pawn_lucas.obj");
     listOfObjects[6].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/chessboard/Chessboard.obj");
 }
 
-void Renderer3D::draw_chessboard()
+void Renderer::draw_chessboard()
 {
     this->_shader.use();
 
@@ -73,7 +72,7 @@ void Renderer3D::draw_chessboard()
     MVMatrix           = glm::scale(MVMatrix, glm::vec3(1, 1, 0.4));
 
     glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
-    glm::mat4 MVPMatrix    = ProjMatrix * this->_trackballCamera.getViewMatrix() * MVMatrix;
+    glm::mat4 MVPMatrix    = ProjMatrix * this->_trackballCamera.get_viewMatrix() * MVMatrix;
     glm::vec4 Color        = glm::vec4(0.5, 0.2, 0, 1);
 
     this->_shader.set_uniform_matrix_4fv("uMVMatrix", MVMatrix);
@@ -96,7 +95,7 @@ void Renderer3D::draw_chessboard()
             MVMatrix           = glm::scale(MVMatrix, glm::vec3(0.1, 0.1, 0.5));
 
             glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
-            glm::mat4 MVPMatrix    = ProjMatrix * this->_trackballCamera.getViewMatrix() * MVMatrix;
+            glm::mat4 MVPMatrix    = ProjMatrix * this->_trackballCamera.get_viewMatrix() * MVMatrix;
 
             glm::vec4 Color = ((x + y) % 2 != 0) ? glm::vec4(0.8, 0.4, 0, 1) : glm::vec4(1, 0.7, 0, 1);
 
@@ -112,7 +111,7 @@ void Renderer3D::draw_chessboard()
     }
 }
 
-int Renderer3D::from_type_to_obj(PieceType type)
+int Renderer::from_type_to_obj(PieceType type)
 {
     switch (type)
     {
@@ -140,7 +139,7 @@ int Renderer3D::from_type_to_obj(PieceType type)
     }
 }
 
-void Renderer3D::draw_pieces(std::array<std::array<std::unique_ptr<Piece>, 8>, 8>* position_pieces)
+void Renderer::draw_pieces(std::array<std::array<std::unique_ptr<Piece>, 8>, 8>* position_pieces)
 {
     // _trackballCamera.rotateLeft(0.1);
 
@@ -162,7 +161,7 @@ void Renderer3D::draw_pieces(std::array<std::array<std::unique_ptr<Piece>, 8>, 8
                     MVMatrix           = glm::rotate(MVMatrix, glm::radians(-90.f), glm::vec3(0, 1, 0));
 
                     glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
-                    glm::mat4 MVPMatrix    = ProjMatrix * this->_trackballCamera.getViewMatrix() * MVMatrix;
+                    glm::mat4 MVPMatrix    = ProjMatrix * this->_trackballCamera.get_viewMatrix() * MVMatrix;
                     glm::vec4 Color        = glm::vec4(1, 1, 1, 1);
 
                     this->_shader.set_uniform_matrix_4fv("uMVMatrix", MVMatrix);
@@ -178,7 +177,7 @@ void Renderer3D::draw_pieces(std::array<std::array<std::unique_ptr<Piece>, 8>, 8
                     MVMatrix           = glm::rotate(MVMatrix, glm::radians(90.f), glm::vec3(0, 1, 0));
 
                     glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
-                    glm::mat4 MVPMatrix    = ProjMatrix * this->_trackballCamera.getViewMatrix() * MVMatrix;
+                    glm::mat4 MVPMatrix    = ProjMatrix * this->_trackballCamera.get_viewMatrix() * MVMatrix;
                     glm::vec4 Color        = glm::vec4(0, 0, 0, 1);
 
                     this->_shader.set_uniform_matrix_4fv("uMVMatrix", MVMatrix);
