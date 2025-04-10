@@ -1,8 +1,8 @@
 #include "renderer.hpp"
 #include <imgui.h>
 #include <vector>
-#include "OpenGLutils/object/object.hpp"
-#include "OpenGLutils/object/texture.hpp"
+#include "openGL/OpenGLutils/object/object.hpp"
+#include "openGL/OpenGLutils/object/texture.hpp"
 #include "chessBoard.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
@@ -49,14 +49,14 @@ void Renderer::render_skybox()
 
 void Renderer::setup_obj()
 {
-    this->listOfObjects = std::vector<Object>(8);
-    listOfObjects[0].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/bishop/Bishop1.obj");
-    listOfObjects[1].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/king/King1.obj");
-    listOfObjects[2].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/knight/Knight1.obj");
-    listOfObjects[3].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/pawn/Pawn1.obj");
-    listOfObjects[4].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/queen/Queen1.obj");
-    listOfObjects[5].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/rook/Rook1.obj");
-    listOfObjects[6].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/chessboard/Chessboard.obj");
+    this->_listOfObjects = std::vector<Object>(8);
+    _listOfObjects[0].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/bishop/Bishop.obj");
+    _listOfObjects[1].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/king/King.obj");
+    _listOfObjects[2].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/knight/Knight.obj");
+    _listOfObjects[3].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/pawn/Pawn.obj");
+    _listOfObjects[4].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/queen/Queen.obj");
+    _listOfObjects[5].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/rook/Rook.obj");
+    _listOfObjects[6].obj_loader("../../assets/texture/tintin.png", "../../assets/obj/chessboard/Chessboard.obj");
 }
 
 void Renderer::draw_chessboard()
@@ -80,8 +80,8 @@ void Renderer::draw_chessboard()
     this->_shader.set_uniform_matrix_4fv("uMVPMatrix", MVPMatrix);
     this->_shader.set_uniform_vector_4f("uColor", Color);
 
-    glBindVertexArray(listOfObjects[6].getVAO()->getGLuint());
-    glDrawArrays(GL_TRIANGLES, 0, listOfObjects[6].getVAO()->getSize());
+    glBindVertexArray(_listOfObjects[6].getVAO()->getGLuint());
+    glDrawArrays(GL_TRIANGLES, 0, _listOfObjects[6].getVAO()->getSize());
     glBindVertexArray(0);
 
     for (int x{0}; x < 8; x++)
@@ -104,8 +104,8 @@ void Renderer::draw_chessboard()
             this->_shader.set_uniform_matrix_4fv("uMVPMatrix", MVPMatrix);
             this->_shader.set_uniform_vector_4f("uColor", Color);
 
-            glBindVertexArray(listOfObjects[6].getVAO()->getGLuint());
-            glDrawArrays(GL_TRIANGLES, 0, listOfObjects[6].getVAO()->getSize());
+            glBindVertexArray(_listOfObjects[6].getVAO()->getGLuint());
+            glDrawArrays(GL_TRIANGLES, 0, _listOfObjects[6].getVAO()->getSize());
             glBindVertexArray(0);
         }
     }
@@ -141,8 +141,6 @@ int Renderer::from_type_to_obj(PieceType type)
 
 void Renderer::draw_pieces(std::array<std::array<std::unique_ptr<Piece>, 8>, 8>* position_pieces)
 {
-    // _trackballCamera.rotateLeft(0.1);
-
     float tailleCase = 4.5;
 
     for (int x{0}; x < 8; x++)
@@ -153,42 +151,22 @@ void Renderer::draw_pieces(std::array<std::array<std::unique_ptr<Piece>, 8>, 8>*
             {
                 glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), 1.f, 0.1f, 100.f);
 
-                if (position_pieces->at(x).at(y)->get_color() == PieceColor::BLACK)
-                {
-                    // Rotation
-                    glm::mat4 MVMatrix = glm::translate(glm::mat4(1), glm::vec3(x * tailleCase - 3.5 * tailleCase, 0, y * tailleCase - 3.5 * tailleCase));
-                    MVMatrix           = glm::scale(MVMatrix, glm::vec3(0.5, 0.5, 0.5));
-                    MVMatrix           = glm::rotate(MVMatrix, glm::radians(-90.f), glm::vec3(0, 1, 0));
+                glm::mat4 MVMatrix = glm::translate(glm::mat4(1), glm::vec3(x * tailleCase - 3.5 * tailleCase, 0, (7.-y) * tailleCase - 3.5 * tailleCase));
+                MVMatrix           = glm::scale(MVMatrix, glm::vec3(0.5, 0.5, 0.5));
+                MVMatrix           = (position_pieces->at(x).at(y)->get_color() == PieceColor::BLACK) ? glm::rotate(MVMatrix, glm::radians(-90.f), glm::vec3(0, 1, 0)) : glm::rotate(MVMatrix, glm::radians(90.f), glm::vec3(0, 1, 0));
 
-                    glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
-                    glm::mat4 MVPMatrix    = ProjMatrix * this->_trackballCamera.get_viewMatrix() * MVMatrix;
-                    glm::vec4 Color        = glm::vec4(1, 1, 1, 1);
+                glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
+                glm::mat4 MVPMatrix    = ProjMatrix * this->_trackballCamera.get_viewMatrix() * MVMatrix;
+                glm::vec4 Color        = (position_pieces->at(x).at(y)->get_color() == PieceColor::BLACK) ? glm::vec4(0,0,0,1) : glm::vec4(1,1,1,1);
 
-                    this->_shader.set_uniform_matrix_4fv("uMVMatrix", MVMatrix);
-                    this->_shader.set_uniform_matrix_4fv("uNormalMatrix", NormalMatrix);
-                    this->_shader.set_uniform_matrix_4fv("uMVPMatrix", MVPMatrix);
-                    this->_shader.set_uniform_vector_4f("uColor", Color);
-                }
-                else
-                {
-                    // Rotation
-                    glm::mat4 MVMatrix = glm::translate(glm::mat4(1), glm::vec3(x * tailleCase - 3.5 * tailleCase, 0, y * tailleCase - 3.5 * tailleCase));
-                    MVMatrix           = glm::scale(MVMatrix, glm::vec3(0.5, 0.5, 0.5));
-                    MVMatrix           = glm::rotate(MVMatrix, glm::radians(90.f), glm::vec3(0, 1, 0));
-
-                    glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
-                    glm::mat4 MVPMatrix    = ProjMatrix * this->_trackballCamera.get_viewMatrix() * MVMatrix;
-                    glm::vec4 Color        = glm::vec4(0, 0, 0, 1);
-
-                    this->_shader.set_uniform_matrix_4fv("uMVMatrix", MVMatrix);
-                    this->_shader.set_uniform_matrix_4fv("uNormalMatrix", NormalMatrix);
-                    this->_shader.set_uniform_matrix_4fv("uMVPMatrix", MVPMatrix);
-                    this->_shader.set_uniform_vector_4f("uColor", Color);
-                }
+                this->_shader.set_uniform_matrix_4fv("uMVMatrix", MVMatrix);
+                this->_shader.set_uniform_matrix_4fv("uNormalMatrix", NormalMatrix);
+                this->_shader.set_uniform_matrix_4fv("uMVPMatrix", MVPMatrix);
+                this->_shader.set_uniform_vector_4f("uColor", Color);
 
                 int numberObj = from_type_to_obj(position_pieces->at(x).at(y)->get_type());
-                glBindVertexArray(listOfObjects[numberObj].getVAO()->getGLuint());
-                glDrawArrays(GL_TRIANGLES, 0, listOfObjects[numberObj].getVAO()->getSize());
+                glBindVertexArray(_listOfObjects[numberObj].getVAO()->getGLuint());
+                glDrawArrays(GL_TRIANGLES, 0, _listOfObjects[numberObj].getVAO()->getSize());
                 glBindVertexArray(0);
             }
         }

@@ -17,10 +17,10 @@ void ChessBoard::draw_board()
         for (int y{0}; y < 8; y++)
         {
             bool FontActive = false;
-            if (position_pieces[x][y] != nullptr)
+            if (_positionPieces[x][y] != nullptr)
             {
                 ImGui::PushFont(this->get_font());
-                ImGui::PushStyleColor(ImGuiCol_Text, (position_pieces[x][y]->get_color() == PieceColor::BLACK) ? IM_COL32(25, 25, 25, 255) : IM_COL32(250, 250, 250, 255));
+                ImGui::PushStyleColor(ImGuiCol_Text, (_positionPieces[x][y]->get_color() == PieceColor::BLACK) ? IM_COL32(25, 25, 25, 255) : IM_COL32(250, 250, 250, 255));
                 FontActive = true;
             }
 
@@ -37,12 +37,12 @@ void ChessBoard::draw_board()
             if (_selected.has_value())
             {
                 auto all_possible_move = this->get_all_possible_move();
-                if (this->_enPassantPiece.has_value() && this->_selected->piece->get_type() == PieceType::PAWN)
+                if (this->_enPassantPiece.has_value() && this->_selected->_piece->get_type() == PieceType::PAWN)
                 {
                     get_en_passant();
                 }
 
-                if (x == _selected->position_x && y == _selected->position_y) // case selectionne
+                if (x == _selected->_position_x && y == _selected->_position_y) // case selectionne
                 {
                     ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 8.0f); // Bordure plus épaisse
                     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.5f, 0.0f, 0.5f, 1.0f));
@@ -56,20 +56,20 @@ void ChessBoard::draw_board()
                 }
             }
 
-            if (ImGui::Button((position_pieces[x][y] != nullptr ? from_type_to_char(x, y) + "##" + std::to_string(x) + "_" + std::to_string(y) : "##" + std::to_string(x) + "_" + std::to_string(y)).c_str(), ImVec2{80.f, 80.f}))
+            if (ImGui::Button((_positionPieces[x][y] != nullptr ? from_type_to_char(x, y) + "##" + std::to_string(x) + "_" + std::to_string(y) : "##" + std::to_string(x) + "_" + std::to_string(y)).c_str(), ImVec2{80.f, 80.f}))
             {
-                if (_selected.has_value() && x == _selected->position_x && y == _selected->position_y)
+                if (_selected.has_value() && x == _selected->_position_x && y == _selected->_position_y)
                 {
                     this->deselect_selectedPiece();
                 }
                 else if (_selected.has_value() && can_move(x, y))
                 {
-                    move(_selected->position_x, _selected->position_y, x, y);
+                    move(_selected->_position_x, _selected->_position_y, x, y);
                     if (!_loiDeGamma.isDisplayChronometer)
                     {
                         this->_loiDeGamma.increment_moveTimeChronometer();
                     }
-                    if (this->position_pieces[x][y]->get_type() == PieceType::PAWN && piece_at_the_end(x, y))
+                    if (this->_positionPieces[x][y]->get_type() == PieceType::PAWN && piece_at_the_end(x, y))
                     {
                         _selectedPawn               = this->select_pawn_to_upgrade(x, y);
                         bool is_random_upgrate_pawn = bernoulli(0.7);
@@ -81,10 +81,10 @@ void ChessBoard::draw_board()
                         }
                         else
                         {
-                            change_piece(x, y, select_piece_promotion(), _selectedPawn->piece->get_color());
+                            change_piece(x, y, select_piece_promotion(), _selectedPawn->_piece->get_color());
                         }
                     }
-                    if (game_won)
+                    if (is_game_won)
                     {
                         ImGui::OpenPopup("WIN");
                     }

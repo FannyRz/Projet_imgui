@@ -1,10 +1,11 @@
 #version 330 core
-layout (location = 0) in vec3 aPos;  // Position de chaque vertex
 
-out vec3 texCoords;  // Coordonnées de texture à envoyer au fragment shader
+layout (location = 0) in vec3 aPos;  // Position de chaque vertex
 
 uniform mat4 projection;
 uniform mat4 view;
+
+out vec3 texCoords;  // Coordonnées de texture à envoyer au fragment shader
 
 void main()
 {

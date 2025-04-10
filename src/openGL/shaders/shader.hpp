@@ -12,7 +12,7 @@ public:
     ~Shader();
 
     void   use() const;
-    GLuint getID() const;
+    GLuint get_ID() const;
     void   load_shader(const std::string& vertexPath, const std::string& fragmentPath);
     void   set_uniform_matrix_4fv(const std::string& name, const glm::mat4& value);
     void   set_uniform_vector_4f(const std::string& name, const glm::vec4& value);

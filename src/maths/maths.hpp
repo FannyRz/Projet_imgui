@@ -24,15 +24,15 @@ struct Chronometer {
 
 /* ---------------------- MATHS_GENERATION_LOIS ---------------------- */
 double generate_double(double min, double max);
-float generate_variance(std::vector<int>& echantillons, double moyenne);
+double generate_variance(std::vector<int>& echantillons, double moyenne);
 
 /* ---------- test Géométrique & Uniforme ---------- */
-int geometrique(double p, double min, double max);
+int   geometrique(double p, double min, double max);
 float uniform();
 
 /* ---------- test Bernoulli  ---------- */
-int    bernoulli(double p);
-int    binomial(int n, double p);
+int bernoulli(double p);
+int binomial(int n, double p);
 
 /*  ---------- test Pareto  ---------- */
 double pareto(double alpha, double x0);
@@ -44,17 +44,14 @@ float exponential(float beta);
 int poisson(double lambda);
 
 /* ---------- test Normale  ---------- */
-int normale(double mu, double sigma, double min, double max);
+double normale(double mu, double sigma, double min, double max);
 
 /*  ---------- test Gamma  ---------- */
 float gamma(int alpha, float beta);
 
 /* ---------- test Cauchy  ---------- */
-float cauchy(double x0, double gamma, double min, double max);
+double cauchy(double x0, double gamma, double min, double max);
 
 /* ---------------------- MATHS_GAME ---------------------- */
 ImFont*   load_font_based_on_bernoulli(ImGuiIO& io);
 PieceType select_piece_promotion();
-
-
-

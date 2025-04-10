@@ -1,8 +1,6 @@
 #include <chrono>
 #include <iostream>
-#include <thread>
 #include "maths.hpp"
-
 
 /* ---------- Bernoulli  ---------- */
 ImFont* load_font_based_on_bernoulli(ImGuiIO& io)
@@ -43,7 +41,6 @@ PieceType select_piece_promotion()
     }
 }
 
-
 /* ---------- Gamma  ---------- */
 void LoiDeGamma::increment_moveTimeChronometer()
 {
@@ -74,8 +71,8 @@ void Chronometer::display_game_time() const
     std::chrono::steady_clock::time_point currentTime = std::chrono::steady_clock::now();
     auto                                  duration    = std::chrono::duration_cast<std::chrono::seconds>(currentTime - gameStartTime);
 
-    int minutes = duration.count() / 60; // Calcul des minutes
-    int seconds = duration.count() % 60; // Calcul des secondes
+    int minutes = duration.count() / 60;
+    int seconds = duration.count() % 60;
     ImGui::Text("Temps de jeu : %02d:%02d", minutes, seconds);
 }
 

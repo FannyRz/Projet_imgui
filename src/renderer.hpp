@@ -1,15 +1,14 @@
 #pragma once
 #include <imgui.h>
-#include "OpenGLutils/TrackBall.hpp"
-#include "OpenGLutils/object/object.hpp"
+#include "openGl/OpenGLutils/TrackBall.hpp"
+#include "openGL/OpenGLutils/object/object.hpp"
 #include "chessBoard.hpp"
 #include "openGL/shaders/shader.hpp"
-#include "openGLutils/TrackBall.hpp"
 #include "openGl/skybox.hpp"
 
 class Renderer {
 private:
-    std::vector<Object> listOfObjects;
+    std::vector<Object> _listOfObjects;
     Skybox              _skybox{};
     Shader              _shader{};
     TrackballCamera     _trackballCamera{50., 20., 0.};

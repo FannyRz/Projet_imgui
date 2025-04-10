@@ -1,8 +1,6 @@
 #pragma once
 #include <imgui.h>
 #include <array>
-#include <chrono>
-#include <iostream>
 #include <memory>
 #include <optional>
 #include <string>
@@ -10,23 +8,23 @@
 #include "pieces/pieces.hpp"
 
 struct SelectedPiece {
-    Piece*                           piece;
-    int                              position_x;
-    int                              position_y;
-    PieceColor                       piececolor;
-    std::vector<std::pair<int, int>> all_possible_move{}; //->pour savoir les déplacements possibles
+    Piece*                           _piece;
+    int                              _position_x;
+    int                              _position_y;
+    PieceColor                       _piececolor;
+    std::vector<std::pair<int, int>> all_possible_move{}; // pour savoir les déplacements possibles
 };
 
 struct EnPassantPiece {
-    Piece*              piece;
+    Piece*              _piece;
     std::vector<Piece*> en_passant_piece{}; // pour garder en memoire les cases qui peuvent manger en_passant
 };
 
 struct PieceButton {
-    PieceType   type;
-    const char* white_label;
-    const char* black_label;
-    ImVec4      color;
+    PieceType   _type;
+    const char* _whiteLabel;
+    const char* _blackLabel;
+    ImVec4      _color;
 };
 
 class ChessBoard {
@@ -34,53 +32,57 @@ private:
     std::optional<SelectedPiece>  _selected;
     std::optional<EnPassantPiece> _enPassantPiece;
     std::optional<SelectedPiece>  _selectedPawn;
-    LoiDeGamma                    _loiDeGamma;
-    Chronometer                   _chronometer;
 
-    std::array<std::array<std::unique_ptr<Piece>, 8>, 8> position_pieces{}; // tableau de positions initiales des pièces
-    ImFont*                                              font;
-    bool                                                 piece_Moved   = false;
-    bool                                                 is_white_turn = true;
-    bool                                                 game_won      = false;
-    PieceColor                                           winner_color;
+    LoiDeGamma  _loiDeGamma;
+    Chronometer _chronometer;
+
+    std::array<std::array<std::unique_ptr<Piece>, 8>, 8> _positionPieces{}; // tableau des positions initiales des pièces
+    ImFont*                                              _font;
+    bool                                                 is_piece_moved = false;
+    bool                                                 is_white_turn  = true;
+    bool                                                 is_game_won    = false;
+    PieceColor                                           _winnerColor;
 
 public:
-    void    set_font(ImFont* font) { this->font = font; };
-    ImFont* get_font() const { return this->font; };
-
-    void set_position();
-
-    std::vector<std::pair<int, int>> get_all_possible_move() { return _selected.has_value() ? _selected->all_possible_move : std::vector<std::pair<int, int>>{}; }
-
+    /* ---------- chessboard_draw.cpp ---------- */
     void draw_board();
 
-    std::array<std::array<std::unique_ptr<Piece>, 8>, 8>* get_position_pieces() { return &this->position_pieces; };
-
-    void select_selectedPiece(int x, int y);
-    void deselect_selectedPiece();
-
-    void       set_loiDeGamma(const LoiDeGamma& loiDeGamma) { _loiDeGamma = loiDeGamma; }
-    LoiDeGamma get_loiDeGamma() const { return this->_loiDeGamma; }
-
-    Chronometer& get_chronometer() { return this->_chronometer; }
-
+    /* ---------- chessboard_game.cpp ---------- */
+    void                         deselect_selectedPiece();
+    void                         select_selectedPiece(int x, int y);
     std::optional<SelectedPiece> select_pawn_to_upgrade(int x, int y);
-    std::string                  from_type_to_char(int x, int y) const;
-    void                         move(int x, int y, int new_x, int new_y);
-    bool                         can_move(int new_x, int new_y);
-    bool                         get_piece(int x, int y);
-    void                         set_is_white_turn(bool is_white_turn) { this->is_white_turn = is_white_turn; };
-    bool                         get_is_white_turn() const { return this->is_white_turn; };
-    bool                         is_my_turn(int x, int y);
-    bool                         piece_at_the_end(int x, int y);
-    void                         print_popup(std::optional<SelectedPiece> selected);
-    void                         print_popup_win();
-    void                         change_piece(int x, int y, PieceType nouveau_type, PieceColor color);
-    void                         reset_board();
+
+    void move(int x, int y, int new_x, int new_y);
+    bool can_move(int new_x, int new_y);
 
     /*gestion de en_passant*/
     void set_en_passant(int x, int y);
     void get_en_passant();
     void attack_en_passant();
     void reset_en_passant();
+
+    /*gestion upgrade*/
+    bool piece_at_the_end(int x, int y);
+    void change_piece(int x, int y, PieceType nouveau_type, PieceColor color);
+
+    /* ---------- chessboard_utils.cpp ---------- */
+    std::string from_type_to_char(int x, int y) const;
+    void        set_position();
+    bool        get_piece(int x, int y);
+    bool        is_my_turn(int x, int y);
+    void        print_popup(std::optional<SelectedPiece> selected);
+    void        print_popup_win();
+    void        reset_board();
+
+    /* ---------- autres ---------- */
+    void                                                  set_font(ImFont* font) { this->_font = font; };
+    ImFont*                                               get_font() const { return this->_font; };
+    std::vector<std::pair<int, int>>                      get_all_possible_move() { return _selected.has_value() ? _selected->all_possible_move : std::vector<std::pair<int, int>>{}; }
+    std::array<std::array<std::unique_ptr<Piece>, 8>, 8>* get_position_pieces() { return &this->_positionPieces; };
+    void                                                  set_is_white_turn(bool is_white_turn) { this->is_white_turn = is_white_turn; };
+    bool                                                  get_is_white_turn() const { return this->is_white_turn; };
+
+    void         set_loiDeGamma(const LoiDeGamma& loiDeGamma) { _loiDeGamma = loiDeGamma; }
+    LoiDeGamma   get_loiDeGamma() const { return this->_loiDeGamma; }
+    Chronometer& get_chronometer() { return this->_chronometer; }
 };

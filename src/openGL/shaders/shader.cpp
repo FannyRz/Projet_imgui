@@ -1,4 +1,3 @@
-// #include <OpenGL/gl.h>
 #include "shader.hpp"
 #include <filesystem>
 #include <fstream>
@@ -40,7 +39,7 @@ void Shader::use() const
     glUseProgram(_programID);
 }
 
-GLuint Shader::getID() const
+GLuint Shader::get_ID() const
 {
     return _programID;
 }
@@ -48,7 +47,7 @@ GLuint Shader::getID() const
 GLuint Shader::compile_shader(const std::string& path, GLenum type)
 {
     std::string sourceCode = read_file(path);
-    const char* code = sourceCode.c_str();
+    const char* code       = sourceCode.c_str();
 
     GLuint shader = glCreateShader(type);
     glShaderSource(shader, 1, &code, nullptr);

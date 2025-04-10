@@ -3,7 +3,6 @@
 #include <random>
 #include "maths.hpp"
 
-
 // Fonction pour générer un nombre aléatoire entre 2 valeurs
 double generate_double(double min, double max)
 {
@@ -14,7 +13,7 @@ double generate_double(double min, double max)
 }
 
 // Fonction pour générer une variable
-float generate_variance(std::vector<int>& echantillons, double moyenne)
+double generate_variance(std::vector<int>& echantillons, double moyenne)
 {
     double somme = 0.0;
     for (int echantillon : echantillons)
@@ -52,7 +51,7 @@ int bernoulli(double p)
 // Fonction pour simuler la loi de Pareto
 double pareto(double alpha, double x0)
 {
-    double u = generate_double(0.0, 1.0);    // Génère un nombre aléatoire entre 0 et 1
+    double u = generate_double(0.0, 1.0);   // Génère un nombre aléatoire entre 0 et 1
     return x0 * pow(1.0 - u, -1.0 / alpha); // Transformation inverse pour la loi de Pareto
 }
 
@@ -82,13 +81,12 @@ int poisson(double lambda)
         p *= dis(gen);
         ++k;
     }
-    return k - 1; // On retourne k-1, car k est incrémenté une dernière fois avant
-                  // de sortir de la boucle
+    return k - 1; // On retourne k-1, car k est incrémenté une dernière fois avant de sortir de la boucle
 }
 
 /********************************************************6_NORMALE***************************************************/
 // Fonction pour simuler une loi normale
-int normale(double mu, double sigma, double min, double max)
+double normale(double mu, double sigma, double min, double max)
 {
     double u1 = generate_double(min, max);
     double u2 = generate_double(min, max);
@@ -117,12 +115,12 @@ float gamma(int alpha, float beta)
 
 /********************************************************8_CAUCHY***************************************************/
 // Fonction pour simuler une loi de Cauchy
-float cauchy(double x0, double gamma, double min, double max)
+double cauchy(double x0, double gamma, double min, double max)
 {
-    double x;
+    double x{};
     do
     {
-        double u = generate_double(0.00001, 0.999999); // e Evite exactement 0 et 1 a cause de tan
+        double u = generate_double(0.00001, 0.999999); // Evite exactement 0 et 1 a cause de tan()
         x        = x0 + gamma * std::tan(std::numbers::pi * (u - 0.5));
     } while (x < min || x > max);
     return x;
@@ -139,4 +137,3 @@ int binomial(int n, double p)
     }
     return y;
 }
-

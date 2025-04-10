@@ -6,19 +6,19 @@
 void Skybox::setup_skybox()
 {
     // Créer le VAO, VBO et EBO
-    glGenVertexArrays(1, &skyboxVAO);
-    glGenBuffers(1, &skyboxVBO);
-    glGenBuffers(1, &skyboxEBO);
+    glGenVertexArrays(1, &_skyboxVAO);
+    glGenBuffers(1, &_skyboxVBO);
+    glGenBuffers(1, &_skyboxEBO);
 
-    glBindVertexArray(skyboxVAO);
+    glBindVertexArray(_skyboxVAO);
 
     // VBO pour les coordonnées des vertices
-    glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * cubemapCoordinates.size(), cubemapCoordinates.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, _skyboxVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * _cubemapCoordinates.size(), _cubemapCoordinates.data(), GL_STATIC_DRAW);
 
     // EBO pour les indices des triangles
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skyboxEBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * cubemapIndices.size(), cubemapIndices.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _skyboxEBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * _cubemapIndices.size(), _cubemapIndices.data(), GL_STATIC_DRAW);
 
     // Définir les attributs du vertex (coordonnées)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
@@ -32,13 +32,13 @@ void Skybox::setup_skybox()
 
 void Skybox::setup_shader()
 {
-    this->shader_skybox.load_shader("../../src/openGL/shaders/skybox.vs.glsl", "../../src/openGL/shaders/skybox.fs.glsl");
+    this->_shaderSkybox.load_shader("../../src/openGL/shaders/skybox.vs.glsl", "../../src/openGL/shaders/skybox.fs.glsl");
 }
 
 void Skybox::load_cubemap()
 {
-    glGenTextures(1, &cubeMapTexture);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapTexture);
+    glGenTextures(1, &_cubeMapTexture);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, _cubeMapTexture);
 
     for (unsigned int i = 0; i < 6; i++)
     {
@@ -46,7 +46,7 @@ void Skybox::load_cubemap()
         int height     = 0;
         int nbChannels = 0;
 
-        unsigned char* imageData = stbi_load(cubemapFaces[i].c_str(), &width, &height, &nbChannels, 0);
+        unsigned char* imageData = stbi_load(_cubemapFaces[i].c_str(), &width, &height, &nbChannels, 0);
 
         if (!imageData)
         {
