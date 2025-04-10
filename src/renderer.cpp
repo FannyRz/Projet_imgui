@@ -1,13 +1,13 @@
 #include "renderer.hpp"
 #include <imgui.h>
 #include <vector>
-#include "openGL/OpenGLutils/object/object.hpp"
-#include "openGL/OpenGLutils/object/texture.hpp"
 #include "chessBoard.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/matrix.hpp"
 #include "glm/trigonometric.hpp"
+#include "openGL/OpenGLutils/object/object.hpp"
+#include "openGL/OpenGLutils/object/texture.hpp"
 #include "pieces/pieces.hpp"
 
 void Renderer::render_board(ChessBoard& _chessboard)
@@ -150,19 +150,24 @@ void Renderer::draw_pieces(std::array<std::array<std::unique_ptr<Piece>, 8>, 8>*
             if (position_pieces->at(x).at(y) != nullptr)
             {
                 glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), 1.f, 0.1f, 100.f);
+                glm::mat4 ViewMatrix = this->_trackballCamera.get_viewMatrix();
 
-                glm::mat4 MVMatrix = glm::translate(glm::mat4(1), glm::vec3(x * tailleCase - 3.5 * tailleCase, 0, (7.-y) * tailleCase - 3.5 * tailleCase));
+                glm::mat4 MVMatrix = glm::translate(glm::mat4(1), glm::vec3(x * tailleCase - 3.5 * tailleCase, 0, (7. - y) * tailleCase - 3.5 * tailleCase));
                 MVMatrix           = glm::scale(MVMatrix, glm::vec3(0.5, 0.5, 0.5));
                 MVMatrix           = (position_pieces->at(x).at(y)->get_color() == PieceColor::BLACK) ? glm::rotate(MVMatrix, glm::radians(-90.f), glm::vec3(0, 1, 0)) : glm::rotate(MVMatrix, glm::radians(90.f), glm::vec3(0, 1, 0));
 
                 glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
                 glm::mat4 MVPMatrix    = ProjMatrix * this->_trackballCamera.get_viewMatrix() * MVMatrix;
-                glm::vec4 Color        = (position_pieces->at(x).at(y)->get_color() == PieceColor::BLACK) ? glm::vec4(0,0,0,1) : glm::vec4(1,1,1,1);
+                glm::vec4 Color        = (position_pieces->at(x).at(y)->get_color() == PieceColor::BLACK) ? glm::vec4(0.4, 0.3, 0.4, 1) : glm::vec4(0.9, 0.9, 0.9, 1);
+
+                glm::vec3 lightWorldPos = glm::vec3(0.f, 0.f, 0.f);
+                glm::vec3 lightViewPos  = glm::vec3(ViewMatrix * glm::vec4(lightWorldPos, 20.0f));
 
                 this->_shader.set_uniform_matrix_4fv("uMVMatrix", MVMatrix);
                 this->_shader.set_uniform_matrix_4fv("uNormalMatrix", NormalMatrix);
                 this->_shader.set_uniform_matrix_4fv("uMVPMatrix", MVPMatrix);
                 this->_shader.set_uniform_vector_4f("uColor", Color);
+                this->_shader.set_uniform_vector_3f("uLightPos", lightViewPos);
 
                 int numberObj = from_type_to_obj(position_pieces->at(x).at(y)->get_type());
                 glBindVertexArray(_listOfObjects[numberObj].getVAO()->getGLuint());
