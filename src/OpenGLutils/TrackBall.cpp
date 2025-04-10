@@ -1,5 +1,6 @@
 #include "TrackBall.hpp"
 #include "glm/ext/matrix_transform.hpp"
+#include "glm/ext/vector_float3.hpp"
 
 glm::mat4 TrackballCamera::getViewMatrix() const
 {
@@ -7,4 +8,10 @@ glm::mat4 TrackballCamera::getViewMatrix() const
     viewMatrix           = glm::rotate(viewMatrix, glm::radians(m_fAngleX), glm::vec3(1.f, 0.f, 0.f));
     viewMatrix           = glm::rotate(viewMatrix, glm::radians(m_fAngleY), glm::vec3(0.f, 1.f, 0.f));
     return viewMatrix;
+}
+
+glm::vec3 TrackballCamera::getPosition() const
+{
+    glm::vec4 position = glm::inverse(getViewMatrix()) * glm::vec4(0,0,0,1);
+    return glm::vec3(position);
 }

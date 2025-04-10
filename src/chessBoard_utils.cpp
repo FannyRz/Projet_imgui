@@ -186,6 +186,6 @@ void ChessBoard::reset_board()
     }
 
     set_position();
-    _chronometer.reset_Chronometer();
-    _loiDeGamma.reset_LoiDeGamma();
+    _chronometer.reset_chronometer();
+    _loiDeGamma.reset_loiDeGamma();
 }

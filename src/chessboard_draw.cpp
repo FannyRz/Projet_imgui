@@ -11,7 +11,7 @@
 
 void ChessBoard::draw_board()
 {
-    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{0.f, 0.f}); // Bordure entre les cases à zéro.
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{0.f, 0.f}); // Bordure entre les cases à zéro.
     for (int x{0}; x < 8; x++)
     {
         for (int y{0}; y < 8; y++)
@@ -65,15 +65,15 @@ void ChessBoard::draw_board()
                 else if (_selected.has_value() && can_move(x, y))
                 {
                     move(_selected->position_x, _selected->position_y, x, y);
-                    if (!_loiDeGamma.is_display_chronometer)
+                    if (!_loiDeGamma.isDisplayChronometer)
                     {
                         this->_loiDeGamma.increment_moveTimeChronometer();
                     }
                     if (this->position_pieces[x][y]->get_type() == PieceType::PAWN && piece_at_the_end(x, y))
                     {
-                        _selectedPawn              = this->select_pawn_to_upgrade(x, y);
+                        _selectedPawn               = this->select_pawn_to_upgrade(x, y);
                         bool is_random_upgrate_pawn = bernoulli(0.7);
-                        std::cout << is_random_upgrate_pawn << std::endl;
+                        std::cout << is_random_upgrate_pawn << '\n';
 
                         if (is_random_upgrate_pawn)
                         {
@@ -117,9 +117,9 @@ void ChessBoard::draw_board()
         }
     }
 
-    if (_loiDeGamma.is_display_chronometer)
+    if (_loiDeGamma.isDisplayChronometer)
     {
-        _chronometer.displayGameTime();
+        _chronometer.display_game_time();
     }
 
     // Affichage de la popup pour upgrade un pion

@@ -1,6 +1,5 @@
 #include <glad/glad.h>
 #include <imgui.h>
-#include "OpenGLutils/glimac/glimac/FilePath.hpp"
 #include "App.hpp"
 #include "chessBoard.hpp"
 #include "maths/maths.hpp"
@@ -21,7 +20,7 @@ int main(int argc, char* argv[])
 
     // Font
     app.get_chessboard().set_font(load_font_based_on_bernoulli(io));
-    app.get_chessboard().get_chronometer().startChronometer();
+    app.get_chessboard().get_chronometer().start_chronometer();
     app.get_chessboard().set_position();
 
     /*=============================================================*/
@@ -31,32 +30,37 @@ int main(int argc, char* argv[])
      * HERE SHOULD COME THE INITIALIZATION CODE
      *********************************/
 
-    glimac::FilePath applicationPath(argv[0]);
     // glimac::Program  program = glimac::loadProgram("../../../fonts/color.vs.glsl", "../../../fonts/color.fs.glsl");
 
     // program.use();
 
     /*=============================================================*/
-    GLuint vao{};
     quick_imgui::loop(
 
         "Quick ImGui",
         {
             .init =
                 [&]() {
-                    GLuint vbo{};
-
-       
+                    /* pour gerer la 3D */
+                    glEnable(GL_DEPTH_TEST);
+                    glEnable(GL_BLEND);
+                    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                    glEnable(GL_DEPTH);
 
                     app.get_renderer().setup_obj();
+                    app.get_renderer().setup_shader();
+                    app.get_renderer().get_skybox().setup_shader();
+                    app.get_renderer().get_skybox().setup_skybox();
+                    app.get_renderer().get_skybox().load_cubemap();
                 },
 
             .loop = [&]() {
         glClearColor(1., 0.5, 0.5, 1.);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-                app.get_renderer().draw_obj();
-
+        app.get_renderer().draw_chessboard();
+        app.get_renderer().draw_pieces(app.get_chessboard().get_position_pieces());
+        app.get_renderer().render_skybox();
 
         ImGui::Begin("Le jeu d'echec de la mort qui tue !!");
 
@@ -91,13 +95,9 @@ int main(int argc, char* argv[])
         ImGui::PopFont();
         ImGui::EndGroup();
 
-        glBindVertexArray(vao);
-        glDrawArrays(GL_TRIANGLES, 0, 2);
-        glBindVertexArray(0);
-
         ImGui::End(); },
 
-            // .key_callback             = [](int key, int scancode, int action, int mods) { std::cout << "Key: " << key << " Scancode: " << scancode << " Action: " << action << " Mods: " << mods << '\n'; },
+            // .key_callback = [](int key, int scancode, int action, int mods) { std::cout << "Key: " << key << " Scancode: " << scancode << " Action: " << action << " Mods: " << mods << '\n'; },
             // .mouse_button_callback    = [](int button, int action, int mods) { std::cout << "Button: " << button << " Action: " << action << " Mods: " << mods << '\n'; },
             // .cursor_position_callback = [](double xpos, double ypos) { std::cout << "Position: " << xpos << ' ' << ypos << '\n'; },
             // .scroll_callback          = [](double xoffset, double yoffset) { std::cout << "Scroll: " << xoffset << ' ' << yoffset << '\n'; },

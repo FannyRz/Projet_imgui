@@ -3,7 +3,7 @@
 #include "maths.hpp"
 
 // Fonction pour générer un nombre aléatoire entre 2 valeurs
-double genererDouble(double min, double max)
+double generer_double(double min, double max)
 {
     std::random_device                     rd;                // Initialisation du générateur aléatoire basé sur le matériel
     std::mt19937                           gen(rd());         // Générateur de nombres aléatoires
@@ -16,7 +16,7 @@ double genererDouble(double min, double max)
 // Fonction pour simuler une loi de Bernoulli
 int bernoulli(double p)
 {
-    return genererDouble(0.0, 1.0) < p; // Compare le nombre généré avec p pour obtenir un nombre aleatoire en 0 et 1
+    return generer_double(0.0, 1.0) < p; // Compare le nombre généré avec p pour obtenir un nombre aleatoire en 0 et 1
 }
 
 /********************************************************BINOMIAL***************************************************/
@@ -60,7 +60,7 @@ int poisson(double lambda)
 // Fonction pour générer la loi de Pareto
 double pareto(double alpha, double x0)
 {
-    double u = genererDouble(0.0, 1.0);     // Génère un nombre aléatoire entre 0 et 1
+    double u = generer_double(0.0, 1.0);     // Génère un nombre aléatoire entre 0 et 1
     return x0 * pow(1.0 - u, -1.0 / alpha); // Transformation inverse pour la loi de Pareto
 }
 
@@ -75,8 +75,9 @@ double variance_experimentale_pareto(const std::vector<double>& echantillons, do
     return somme / echantillons.size();
 }
 
+
 // Fonction pour générer une variable aléatoire suivant une loi uniforme [0,1]
-float generateUniform()
+float generate_uniform()
 {
     std::random_device                    rd;
     std::mt19937                          gen(rd());
@@ -85,15 +86,16 @@ float generateUniform()
 }
 
 
+
 // Fonction pour générer une variable suivant une loi Gamma
-float generateGamma(int alpha, float beta)
+float generate_gamma(int alpha, float beta)
 {
     float sum = 0.0f;
 
     // Somme de alpha variables exponentielles
     for (int i = 0; i < alpha; ++i)
     {
-        sum += generateExponential(beta);
+        sum += generate_exponential(beta);
     }
 
     return sum;
