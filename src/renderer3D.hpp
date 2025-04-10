@@ -15,9 +15,10 @@ private:
     TrackballCamera     _trackballCamera{50., 20., 0.};
 
 public:
-    void    render_board(ChessBoard& _chessboard);
-    void    render_skybox();
-    Skybox& get_skybox() { return this->_skybox; }
+    void             render_board(ChessBoard& _chessboard);
+    void             render_skybox();
+    Skybox&          get_skybox() { return this->_skybox; }
+    TrackballCamera& get_camera() { return this->_trackballCamera; };
 
     void setup_obj();
     void setup_shader();

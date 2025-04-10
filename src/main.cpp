@@ -24,23 +24,15 @@ int main(int argc, char* argv[])
     app.get_chessboard().set_position();
 
     /*=============================================================*/
-    /* Initialize the library */
-
-    /*********************************
-     * HERE SHOULD COME THE INITIALIZATION CODE
-     *********************************/
-
-    // glimac::Program  program = glimac::loadProgram("../../../fonts/color.vs.glsl", "../../../fonts/color.fs.glsl");
-
-    // program.use();
-
-    /*=============================================================*/
     quick_imgui::loop(
 
         "Quick ImGui",
         {
             .init =
                 [&]() {
+                    /*pour la 2D */
+                    ImGui::GetStyle().Colors[ImGuiCol_WindowBg] = ImVec4(0.5f, 0.2f, 0.f, 1.0f);
+
                     /* pour gerer la 3D */
                     glEnable(GL_DEPTH_TEST);
                     glEnable(GL_BLEND);
@@ -55,49 +47,61 @@ int main(int argc, char* argv[])
                 },
 
             .loop = [&]() {
-        glClearColor(1., 0.5, 0.5, 1.);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                glClearColor(1., 0.5, 0.5, 1.);
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        app.get_renderer().draw_chessboard();
-        app.get_renderer().draw_pieces(app.get_chessboard().get_position_pieces());
-        app.get_renderer().render_skybox();
+                app.get_renderer().draw_chessboard();
+                app.get_renderer().draw_pieces(app.get_chessboard().get_position_pieces());
+                app.get_renderer().render_skybox();
 
-        ImGui::Begin("Le jeu d'echec de la mort qui tue !!");
+                ImGui::Begin("Le jeu d'echec de la mort qui tue !!");
 
-        // Afficher l'échiquier en premier
-        ImGui::BeginGroup();
-        app.update();
-        ImGui::EndGroup();
+                // Afficher l'échiquier en premier
+                ImGui::BeginGroup();
+                app.update();
+                ImGui::EndGroup();
 
-        // Garder les boutons sur la même ligne
-        ImGui::SameLine();
+                // Garder les boutons sur la même ligne
+                ImGui::SameLine();
 
-        // Ajouter un espace pour pousser les boutons à droite
-        ImGui::Dummy(ImVec2(20, 0));
-        ImGui::SameLine();
-        ImGui::BeginGroup();
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 10)); // Augmente l'espacement interne du bouton
-        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(20, 20));  // Espacement entre les boutons
-        ImGui::PushFont(bigDefaultFont);
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.4f, 0.0f, 1.0f});
-        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 0, 0, 255));
+                // Ajouter un espace pour pousser les boutons à droite
+                ImGui::Dummy(ImVec2(20, 0));
+                ImGui::SameLine();
+                ImGui::BeginGroup();
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10, 10)); // Augmente l'espacement interne du bouton
+                ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(20, 20));  // Espacement entre les boutons
+                ImGui::PushFont(bigDefaultFont);
+                ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{0.8f, 0.4f, 0.0f, 1.0f});
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 0, 0, 255));
 
-        if (ImGui::Button("Recommencer une partie !", ImVec2(250, 50)))
-        {
-            app.get_chessboard().reset_board();
-        }
-        if (ImGui::Button("Quitter la partie !", ImVec2(250, 50)))
-        {
-            exit(0);
-        }
-        ImGui::PopStyleColor(2);
-        ImGui::PopStyleVar(2);
-        ImGui::PopFont();
-        ImGui::EndGroup();
+                if (ImGui::Button("Recommencer une partie !", ImVec2(250, 50)))
+                {
+                    app.get_chessboard().reset_board();
+                }
+                if (ImGui::Button("Quitter la partie !", ImVec2(250, 50)))
+                {
+                    exit(0);
+                }
+                ImGui::PopStyleColor(2);
+                ImGui::PopStyleVar(2);
+                ImGui::PopFont();
+                ImGui::EndGroup();
 
-        ImGui::End(); },
+                ImGui::End();
 
-            // .key_callback = [](int key, int scancode, int action, int mods) { std::cout << "Key: " << key << " Scancode: " << scancode << " Action: " << action << " Mods: " << mods << '\n'; },
+                app.get_renderer().get_camera().HandleCameraInput();
+            },
+
+            .key_callback = [&](int key, int scancode, int action, int mods) {
+                if (action == GLFW_PRESS)
+                {
+                    app.get_renderer().get_camera().get_keysDown().insert(key);
+                }
+                else if (action == GLFW_RELEASE)
+                {
+                    app.get_renderer().get_camera().get_keysDown().erase(key);
+                }
+            }
             // .mouse_button_callback    = [](int button, int action, int mods) { std::cout << "Button: " << button << " Action: " << action << " Mods: " << mods << '\n'; },
             // .cursor_position_callback = [](double xpos, double ypos) { std::cout << "Position: " << xpos << ' ' << ypos << '\n'; },
             // .scroll_callback          = [](double xoffset, double yoffset) { std::cout << "Scroll: " << xoffset << ' ' << yoffset << '\n'; },
