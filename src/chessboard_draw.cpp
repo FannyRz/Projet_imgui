@@ -11,7 +11,7 @@
 
 void ChessBoard::draw_board()
 {
-        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{0.f, 0.f}); // Bordure entre les cases à zéro.
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{0.f, 0.f}); // Bordure entre les cases à zéro.
     for (int x{0}; x < 8; x++)
     {
         for (int y{0}; y < 8; y++)
