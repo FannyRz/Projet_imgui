@@ -70,7 +70,7 @@ void Renderer3D::draw_chessboard()
 
     glm::mat4 MVMatrix = glm::rotate(glm::mat4(1), glm::radians(90.f), glm::vec3(1, 0, 0));
     MVMatrix           = glm::translate(MVMatrix, glm::vec3(0, 0, 1));
-    MVMatrix           = glm::scale(MVMatrix, glm::vec3(1, 1, 0.2));
+    MVMatrix           = glm::scale(MVMatrix, glm::vec3(1, 1, 0.4));
 
     glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
     glm::mat4 MVPMatrix    = ProjMatrix * this->_trackballCamera.getViewMatrix() * MVMatrix;
@@ -91,9 +91,9 @@ void Renderer3D::draw_chessboard()
         {
             glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), 1.f, 0.1f, 100.f);
 
-            glm::mat4 MVMatrix = glm::rotate(glm::mat4(1), glm::radians(90.f), glm::vec3(1, 0, 0));                                            // Rotation
-            MVMatrix           = glm::translate(MVMatrix, glm::vec3(x * tailleCase - 3.5 * tailleCase, y * tailleCase - 3.5 * tailleCase, 0)); // Translation
-            MVMatrix           = glm::scale(MVMatrix, glm::vec3(0.1, 0.1, 0.1));                                                               // Scale
+            glm::mat4 MVMatrix = glm::rotate(glm::mat4(1), glm::radians(90.f), glm::vec3(1, 0, 0));
+            MVMatrix           = glm::translate(MVMatrix, glm::vec3(x * tailleCase - 3.5 * tailleCase, y * tailleCase - 3.5 * tailleCase, 0));
+            MVMatrix           = glm::scale(MVMatrix, glm::vec3(0.1, 0.1, 0.5));
 
             glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
             glm::mat4 MVPMatrix    = ProjMatrix * this->_trackballCamera.getViewMatrix() * MVMatrix;
@@ -142,7 +142,7 @@ int Renderer3D::from_type_to_obj(PieceType type)
 
 void Renderer3D::draw_pieces(std::array<std::array<std::unique_ptr<Piece>, 8>, 8>* position_pieces)
 {
-    _trackballCamera.rotateLeft(0.1);
+    // _trackballCamera.rotateLeft(0.1);
 
     float tailleCase = 4.5;
 

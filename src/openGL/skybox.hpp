@@ -64,7 +64,6 @@ private:
         "../../assets/texture/skybox/bottom.png",
         "../../assets/texture/skybox/back.png",
         "../../assets/texture/skybox/front.png"
-
     };
 
     unsigned int skyboxVAO;
@@ -84,5 +83,4 @@ public:
     unsigned int get_texture_skybox() const { return this->cubeMapTexture; };
 
     void load_cubemap();
-    // void draw_skybox(const glm::mat4& projection, const glm::mat4& view);
 };
