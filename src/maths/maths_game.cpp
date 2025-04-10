@@ -27,7 +27,7 @@ PieceType select_piece_promotion()
     }
     else
     {
-        double value = generer_double(0.0, 1.0);
+        double value = generate_double(0.0, 1.0);
         if (value < 0.33)
         {
             return PieceType::KNIGHT;
@@ -47,7 +47,7 @@ PieceType select_piece_promotion()
 /* ---------- Gamma  ---------- */
 void LoiDeGamma::increment_moveTimeChronometer()
 {
-    moveTimeChronometer += generate_gamma(2.0, 10.0);
+    moveTimeChronometer += gamma(2.0, 10.0);
 
     if (moveTimeChronometer > 300)
     {
