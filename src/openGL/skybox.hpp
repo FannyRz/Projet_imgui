@@ -63,7 +63,8 @@ private:
         "../../assets/texture/skybox/top.png",
         "../../assets/texture/skybox/bottom.png",
         "../../assets/texture/skybox/back.png",
-        "../../assets/texture/skybox/front.png",
+        "../../assets/texture/skybox/front.png"
+
     };
 
     unsigned int skyboxVAO;

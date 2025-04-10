@@ -40,19 +40,13 @@ void Skybox::load_cubemap()
     glGenTextures(1, &cubeMapTexture);
     glBindTexture(GL_TEXTURE_CUBE_MAP, cubeMapTexture);
 
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
     for (unsigned int i = 0; i < 6; i++)
     {
         int width      = 0;
-        int heigh      = 0;
+        int height     = 0;
         int nbChannels = 0;
 
-        unsigned char* imageData = stbi_load(cubemapFaces[i].c_str(), &width, &heigh, &nbChannels, 0);
+        unsigned char* imageData = stbi_load(cubemapFaces[i].c_str(), &width, &height, &nbChannels, 0);
 
         if (!imageData)
         {
@@ -62,9 +56,16 @@ void Skybox::load_cubemap()
 
         stbi_set_flip_vertically_on_load(false);
 
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, heigh, 0, GL_RGB, GL_UNSIGNED_BYTE, imageData);
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
         stbi_image_free(imageData);
     }
+
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
