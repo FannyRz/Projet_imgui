@@ -85,7 +85,12 @@ float generate_uniform()
     return dist(gen);
 }
 
-
+// Fonction pour générer une variable suivant une loi exponentielle de paramètre 1/beta
+float generate_exponential(float beta)
+{
+    float U = generate_uniform();
+    return -beta * std::log(U);
+}
 
 // Fonction pour générer une variable suivant une loi Gamma
 float generate_gamma(int alpha, float beta)
