@@ -47,6 +47,18 @@ int bernoulli(double p)
     return generate_double(0.0, 1.0) < p; // Compare le nombre généré avec p pour obtenir un nombre aleatoire en 0 et 1
 }
 
+/********************************************************BINOMIAL***************************************************/
+// Fonction pour simuler une loi binomiale (n, p)
+int binomial(int n, double p)
+{
+    int y = 0;
+    for (int i = 0; i < n; ++i)
+    {
+        y += bernoulli(p); // Ajoute un succès si bernoulli(p) retourne 1
+    }
+    return y;
+}
+
 /********************************************************3_PARETO***************************************************/
 // Fonction pour simuler la loi de Pareto
 double pareto(double alpha, double x0)
@@ -126,14 +138,26 @@ double cauchy(double x0, double gamma, double min, double max)
     return x;
 }
 
-/********************************************************BINOMIAL***************************************************/
-// Fonction pour simuler une loi binomiale (n, p)
-int binomial(int n, double p)
-{
-    int y = 0;
-    for (int i = 0; i < n; ++i)
-    {
-        y += bernoulli(p); // Ajoute un succès si bernoulli(p) retourne 1
-    }
-    return y;
-}
+
+// /********************************************************9_CHAINE DE MARKOV***************************************************/
+// // Fonction pour simuler une chaine de Markov à trois états
+// void simulerTransitionMarkov(Piece& piece) {
+//     double r = generate_double(0.0, 1.0);  // Génère un nombre aléatoire entre 0 et 1
+
+//     switch (piece.etatMarkov) {
+//         case 0:  // Fidèle
+//             if (r < 0.02) {
+//                 piece.etatMarkov = 1;  // Devient influencée
+//             }
+//             break;
+//         case 1:  // Influencée
+//             if (r < 0.10) {
+//                 piece.etatMarkov = 2;  // Devient convertie
+//                 piece.changerEquipe(); 
+//             }
+//             break;
+//         case 2:
+//             // État absorbant, ne change pas
+//             break;
+//     }
+// }

@@ -52,6 +52,9 @@ float gamma(int alpha, float beta);
 /* ---------- test Cauchy  ---------- */
 double cauchy(double x0, double gamma, double min, double max);
 
+/* ---------- test chaine de Markov  ---------- */
+void simulerTransitionMarkov(Piece& piece);
+
 /* ---------------------- MATHS_GAME ---------------------- */
 ImFont*   load_font_based_on_bernoulli(ImGuiIO& io);
 PieceType select_piece_promotion();
